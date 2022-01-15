@@ -7,6 +7,7 @@ import diploma from '../abis/Diploma.json';
 import faculty from '../abis/Faculty.json';
 import {ethers} from 'ethers';
 import ReactDOM from "react-dom";
+import {render} from "@testing-library/react";
 
 const courseAddress = "0x137aA0A0E7c7d3A8160733Bf60197E106667A33d";
 const departmentAddress = "0x509ea9C47d37174e99f0cB509e726E4d63fb91ec";
@@ -17,6 +18,14 @@ const departmentAbi = department.abi;
 const diplomaAbi = diploma.abi;
 const facultyAbi = faculty.abi;
 
+function returnButton(){
+    ReactDOM.render(
+        <React.StrictMode>
+            <App/>
+        </React.StrictMode>,
+        document.getElementById('root')
+    );
+}
 /////////////////////////////////////// READ FUNCTIONS /////////////////////////////////////////////////////////////////
 function DiplomaList(props) {//TODO Organise table looks
     return (
@@ -35,6 +44,7 @@ function DiplomaList(props) {//TODO Organise table looks
                     return <h5>{item}</h5>;
                 })}
             </td>
+            <button onClick={(e)=> returnButton()}>Geri</button>
         </div>
     );
 }
@@ -49,6 +59,7 @@ function FacultyList(props){//TODO Organise table looks
                     return <h5>{item}</h5>;
                 })}
             </td>
+            <button onClick={(e)=> returnButton()}>Geri</button>
         </div>
     );
 }
@@ -63,6 +74,7 @@ function DepartmentList(props){
                     return <h5>{item}</h5>;
                 })}
             </td>
+            <button onClick={(e)=> returnButton()}>Geri</button>
         </div>
     );
 }
@@ -77,6 +89,7 @@ function InstructorList(props){
                     return <h5>{item}</h5>;
                 })}
             </td>
+            <button onClick={(e)=> returnButton()}>Geri</button>
         </div>
     );
 }
@@ -91,6 +104,7 @@ function StudentList(props){
                     return <h5>{item}</h5>;
                 })}
             </td>
+            <button onClick={(e)=> returnButton()}>Geri</button>
         </div>
     );
 }
@@ -127,15 +141,58 @@ function MintDiploma(props) {
                 />
             </label>
             <input type="submit"/>
+            <button onClick={(e)=> returnButton()}>Geri</button>
         </form>
     )
 }
 function AddStudent(props){
     const [address, setAddress] = useState("");
-
+    let facultyID = "";
+    let departmentID = "";
+    async function setFacultyName(value){
+        facultyID = await props.facultyContract.getFacultyID(value)
+        let departmentAddressList = await props.facultyContract.getDepartments(facultyID)
+        let departmentListTemp = [];
+        for(let i = 0; i<departmentAddressList.length; i++){
+            const totalSupplyDepartment = await props.departmentContract.getTotalSupply();
+            for(let j = 1; j<=totalSupplyDepartment; j++){
+                let departmentAddress = await props.departmentContract.ownerOf(j);
+                if(departmentAddress == departmentAddressList[i]){
+                    departmentListTemp.push(await props.departmentContract.getDepartmentName(j))
+                }
+            }
+        }
+        const departmentSelect = document.getElementById("departmentSelect")
+        removeOptions(departmentSelect)
+        let newOption = new Option("Select a Department");
+        newOption.selected = true;
+        newOption.hidden = true;
+        departmentSelect.add(newOption, undefined)
+        for(let i = 0; i<departmentListTemp.length; i++){
+            let newOption = new Option(departmentListTemp[i]);
+            departmentSelect.add(newOption, undefined)
+        }
+        departmentSelect.hidden=false;
+    }
+    async function setDepartmentName(value) {
+        departmentID = await props.departmentContract.getDepartmentID(value)
+        const addressForm = document.getElementById("addressForm")
+        addressForm.hidden=false
+        const button = document.getElementById("button")
+        button.hidden=false
+    }
     const handleSubmit = async (event) => {
         event.preventDefault();
+        let allStudents = await props.departmentContract.getStudentRoles()
+        if(allStudents.indexOf(address)>-1){//existance check
+            alert(`${address} is already a student`)
+            return;
+        }
+        let departmentStudents = await props.departmentContract.getStudents(departmentID)
+        let temp = departmentStudents.slice()
+        temp.push(address)
         //TODO tek transaction'a toplanabilir
+        await props.departmentContract.setStudents(departmentID,temp)
         await props.courseContract.grantStudentRole(address)
         await props.departmentContract.grantStudentRole(address)
         await props.diplomaContract.grantStudentRole(address)
@@ -143,17 +200,31 @@ function AddStudent(props){
         //TODO write fail alert messages
         alert(`${address} is a Student Now`)
     }
-
     return (
-        <form onSubmit={handleSubmit}>
-            <label>Enter Student Address:
+        <form onSubmit={handleSubmit} >
+
+            <select id="facultySelect"
+                    type="text"
+                    onChange={(e) => setFacultyName(e.target.value)}>
+                <option selected hidden>Select a Faculty</option>
+                {props.facultyNames.map(item => {
+                    return <option>{item}</option>
+                })}
+            </select>
+            <select id="departmentSelect"
+                    hidden
+                    type="text"
+                    onChange={(e) => setDepartmentName(e.target.value)}>
+            </select>
+            <label id="addressForm" hidden>Enter Student Address:
                 <input
                     type="text"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                 />
             </label>
-            <input type="submit"/>
+            <input type="submit" id="button" hidden/>
+            <button onClick={(e)=> returnButton()}>Geri</button>
         </form>
     )
 }
@@ -188,6 +259,7 @@ function AddFaculty(props){
                 />
             </label>
             <input type="submit"/>
+            <button onClick={(e)=> returnButton()}>Geri</button>
         </form>
     )
 }
@@ -241,15 +313,61 @@ function AddDepartment(props){
                 })}
             </select>
             <input type="submit"/>
+            <button onClick={(e)=> returnButton()}>Geri</button>
         </form>
     )
 }
 function AddInstructor(props){
     const [address, setAddress] = useState("");
-
+    let facultyID = "";
+    let departmentID = "";
+    async function setFacultyName(value){
+        facultyID = await props.facultyContract.getFacultyID(value)
+        let departmentAddressList = await props.facultyContract.getDepartments(facultyID)
+        let departmentListTemp = [];
+        for(let i = 0; i<departmentAddressList.length; i++){
+            const totalSupplyDepartment = await props.departmentContract.getTotalSupply();
+            for(let j = 1; j<=totalSupplyDepartment; j++){
+                let departmentAddress = await props.departmentContract.ownerOf(j);
+                if(departmentAddress == departmentAddressList[i]){
+                    departmentListTemp.push(await props.departmentContract.getDepartmentName(j))
+                }
+            }
+        }
+        const departmentSelect = document.getElementById("departmentSelect")
+        removeOptions(departmentSelect)
+        let newOption = new Option("Select a Department");
+        newOption.selected = true;
+        newOption.hidden = true;
+        departmentSelect.add(newOption, undefined)
+        for(let i = 0; i<departmentListTemp.length; i++){
+            let newOption = new Option(departmentListTemp[i]);
+            departmentSelect.add(newOption, undefined)
+        }
+        departmentSelect.hidden=false;
+    }
+    async function setDepartmentName(value) {
+        departmentID = await props.departmentContract.getDepartmentID(value)
+        const addressForm = document.getElementById("addressForm")
+        addressForm.hidden=false
+        const button = document.getElementById("button")
+        button.hidden=false
+    }
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        let allInstructors = await props.departmentContract.getInstructorRoles()
+        if(allInstructors.indexOf(address)>-1){//existance check
+            alert(`${address} is already a instructor`)
+            return;
+        }
+        let departmentInstructors = await props.departmentContract.getInstructors(departmentID)
+        let temp = departmentInstructors.slice()
+        temp.push(address)
+        console.log(allInstructors)
+        console.log(departmentInstructors)
         //TODO tek transaction'a toplanabilir
+        await props.departmentContract.setInstructors(departmentID,temp)
         await props.courseContract.grantInstructorRole(address)
         await props.departmentContract.grantInstructorRole(address)
         await props.diplomaContract.grantInstructorRole(address)
@@ -259,15 +377,30 @@ function AddInstructor(props){
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <label>Enter Instructor Address:
+        <form onSubmit={handleSubmit} >
+
+            <select id="facultySelect"
+                    type="text"
+                    onChange={(e) => setFacultyName(e.target.value)}>
+                <option selected hidden>Select a Faculty</option>
+                {props.facultyNames.map(item => {
+                    return <option>{item}</option>
+                })}
+            </select>
+            <select id="departmentSelect"
+                    hidden
+                    type="text"
+                    onChange={(e) => setDepartmentName(e.target.value)}>
+            </select>
+            <label id="addressForm" hidden>Enter Instructor Address:
                 <input
                     type="text"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                 />
             </label>
-            <input type="submit"/>
+            <input type="submit" id="button" hidden/>
+            <button onClick={(e)=> returnButton()}>Geri</button>
         </form>
     )
 }
@@ -300,6 +433,7 @@ function RemoveFaculty(props){
                 />
             </label>
             <input type="submit"/>
+            <button onClick={(e)=> returnButton()}>Geri</button>
         </form>
     )
 }
@@ -330,6 +464,7 @@ function RemoveDepartment(props){
                 />
             </label>
             <input type="submit"/>
+            <button onClick={(e)=> returnButton()}>Geri</button>
         </form>
     )
 }
@@ -357,6 +492,7 @@ function RemoveInstructor(props){
                 />
             </label>
             <input type="submit"/>
+            <button onClick={(e)=> returnButton()}>Geri</button>
         </form>
     )
 }
@@ -384,6 +520,7 @@ function RemoveStudent(props){
                 />
             </label>
             <input type="submit"/>
+            <button onClick={(e)=> returnButton()}>Geri</button>
         </form>
     )
 }
@@ -521,9 +658,19 @@ function App() {
     function addStudentButton() {
         async function addStudentHandler() {
             const contracts = await getContracts(true, true, true, true);
+            const facultyAmount = await contracts[3].getTotalSupply();
+            let facultyNames = [];
+            let facultyIDs = [];
+            for(let i = 1; i<=Number(facultyAmount); i++){
+                let facultyName = await contracts[3].getFacultyName(i);
+                if(facultyName !== ""){
+                    facultyNames.push(facultyName);
+                    facultyIDs.push(i);
+                }
+            }
             ReactDOM.render(
                 <React.StrictMode>
-                    <AddStudent courseContract={contracts[0]} departmentContract={contracts[1]} diplomaContract={contracts[2]} facultyContract={contracts[3]}/>
+                    <AddStudent courseContract={contracts[0]} departmentContract={contracts[1]} diplomaContract={contracts[2]} facultyContract={contracts[3]} facultyNames={facultyNames}/>
                 </React.StrictMode>,
                 document.getElementById('root')
             );
@@ -579,9 +726,19 @@ function App() {
     function addInstructorButton() {
         async function addInstructorHandler() {
             const contracts = await getContracts(true, true, true, true);
+            const facultyAmount = await contracts[3].getTotalSupply();
+            let facultyNames = [];
+            let facultyIDs = [];
+            for(let i = 1; i<=Number(facultyAmount); i++){
+                let facultyName = await contracts[3].getFacultyName(i);
+                if(facultyName !== ""){
+                    facultyNames.push(facultyName);
+                    facultyIDs.push(i);
+                }
+            }
             ReactDOM.render(
                 <React.StrictMode>
-                    <AddInstructor courseContract={contracts[0]} departmentContract={contracts[1]} diplomaContract={contracts[2]} facultyContract={contracts[3]}/>
+                    <AddInstructor courseContract={contracts[0]} departmentContract={contracts[1]} diplomaContract={contracts[2]} facultyContract={contracts[3]} facultyNames={facultyNames}/>
                 </React.StrictMode>,
                 document.getElementById('root')
             );
@@ -713,6 +870,12 @@ async function getContracts(course = false, department = false, diploma = false,
             contracts.push(facultyContract)
         }
         return contracts
+    }
+}
+function removeOptions(selectElement) {
+    var i, L = selectElement.options.length - 1;
+    for(i = L; i >= 0; i--) {
+        selectElement.remove(i);
     }
 }
 export default App;
