@@ -8,10 +8,10 @@ import faculty from '../abis/Faculty.json';
 import {ethers} from 'ethers';
 import ReactDOM from "react-dom";
 
-const courseAddress = "0x06EAA29BFDd6612d3EE217c9f09Ef9Db07473d3E";
-const departmentAddress = "0x4C09209e8A7CC3796b580d6D58f45B3Bf43814F3";
-const diplomaAddress = "0xf953fac23fA73194bCd63fa3E0AaADfba09669FA";
-const facultyAddress = "0x2e0759A51B6b63dde197D93cC1549af8626b6Cc0";
+const courseAddress = "0x137aA0A0E7c7d3A8160733Bf60197E106667A33d";
+const departmentAddress = "0x509ea9C47d37174e99f0cB509e726E4d63fb91ec";
+const diplomaAddress = "0x02Fa051832be4B7c94Ec2cbca3A85C44f34A7708";
+const facultyAddress = "0x0959661990726C738391B3Ca6909238FD960Ca0c";
 const courseAbi = course.abi;
 const departmentAbi = department.abi;
 const diplomaAbi = diploma.abi;
@@ -192,18 +192,28 @@ function AddFaculty(props){
     )
 }
 function AddDepartment(props){
-    const [address, setAddress] = useState("");
+    const [departmentAddress, setDepartmentAddress] = useState("");
     const [departmentName, setDepartmentName] = useState("");
+    const [facultyName, setFacultyName] = useState("");
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        const facultyID = await props.facultyContract.getFacultyID(facultyName)
+        const facultyAddress = await props.facultyContract.ownerOf(facultyID)
+
+        const departments = await props.facultyContract.getDepartments(facultyID);
+        var departmentsTemp = departments.slice();
+        departmentsTemp.push(departmentAddress)
+        console.log(departmentsTemp)
+
         //TODO tek transaction'a toplanabilir
-        await props.departmentContract.mint(departmentName,address)
-        await props.courseContract.grantDepartmentRole(address)
-        await props.diplomaContract.grantDepartmentRole(address)
-        await props.facultyContract.grantDepartmentRole(address)
+        await props.departmentContract.mint(departmentName,departmentAddress,facultyAddress)
+        await props.facultyContract.setDepartments(facultyID, departmentsTemp)
+        await props.courseContract.grantDepartmentRole(departmentAddress)
+        await props.diplomaContract.grantDepartmentRole(departmentAddress)
+        await props.facultyContract.grantDepartmentRole(departmentAddress)
         //TODO write fail alert messages
-        alert(`${address} has the Department permissions Now`)
+        alert(`${departmentAddress} has the Department permissions Now`)
     }
 
     return (
@@ -218,10 +228,18 @@ function AddDepartment(props){
             <label>Enter Department Address:
                 <input
                     type="text"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
+                    value={departmentAddress}
+                    onChange={(e) => setDepartmentAddress(e.target.value)}
                 />
             </label>
+            <select type="text"
+                    value={facultyName}
+                    onChange={(e) => setFacultyName(e.target.value)}>
+                <option selected hidden>Select a Faculty</option>
+                {props.facultyNames.map(item => {
+                    return <option>{item}</option>
+                })}
+            </select>
             <input type="submit"/>
         </form>
     )
@@ -449,7 +467,7 @@ function App() {
         async function checkInstructorHandler() {
             const contracts = await getContracts(true, false, false, false);
             const courseContract = contracts[0]
-            const instructorAddresses = await courseContract.getInstructors();
+            const instructorAddresses = await courseContract.getInstructorRoles();
             ReactDOM.render(
                 <React.StrictMode>
                     <InstructorList instructorAddresses={instructorAddresses}/>
@@ -467,7 +485,7 @@ function App() {
         async function checkStudentHandler() {
             const contracts = await getContracts(true, false, false, false);
             const courseContract = contracts[0]
-            const studentAddresses = await courseContract.getStudents();
+            const studentAddresses = await courseContract.getStudentRoles();
             ReactDOM.render(
                 <React.StrictMode>
                     <StudentList studentAddresses={studentAddresses}/>
@@ -535,9 +553,19 @@ function App() {
     function addDepartmentButton() {
         async function addDepartmentHandler() {
             const contracts = await getContracts(true, true, true, true);
+            const facultyAmount = await contracts[3].getTotalSupply();
+            let facultyNames = [];
+            let facultyIDs = [];
+            for(let i = 1; i<=Number(facultyAmount); i++){
+                let facultyName = await contracts[3].getFacultyName(i);
+                if(facultyName !== ""){
+                    facultyNames.push(facultyName);
+                    facultyIDs.push(i);
+                }
+            }
             ReactDOM.render(
                 <React.StrictMode>
-                    <AddDepartment courseContract={contracts[0]} departmentContract={contracts[1]} diplomaContract={contracts[2]} facultyContract={contracts[3]}/>
+                    <AddDepartment courseContract={contracts[0]} departmentContract={contracts[1]} diplomaContract={contracts[2]} facultyContract={contracts[3]} facultyNames={facultyNames}/>
                 </React.StrictMode>,
                 document.getElementById('root')
             );
@@ -649,8 +677,8 @@ function App() {
                 {checkStudentButton()}
             </div>
             <div className='delete-operations'>
-                {removeFacultyButton()}
-                {removeDepartmentButton()}
+                {/*{removeFacultyButton()}*/}
+                {/*{removeDepartmentButton()}*/}
                 {removeInstructorButton()}
                 {removeStudentButton()}
             </div>
