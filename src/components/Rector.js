@@ -1,22 +1,12 @@
 import React, {useEffect} from 'react';
 import {useState} from 'react';
-import {useNavigate} from "react-router-dom";
-
 import './App.css';
-import Rector from './Rector.js';
-import Faculty from './Faculty.js';
-import Department from './Department.js';
-import Instructor from './Instructor.js';
-import Student from './Student.js';
-import Graduated from './Graduated.js';
-import NotRegistered from './NotRegistered.js';
 import course from '../abis/Course.json';
 import department from '../abis/Department.json';
 import diploma from '../abis/Diploma.json';
 import faculty from '../abis/Faculty.json';
 import {ethers} from 'ethers';
 import ReactDOM from "react-dom";
-import {render} from "@testing-library/react";
 
 const courseAddress = "0x06EAA29BFDd6612d3EE217c9f09Ef9Db07473d3E";
 const departmentAddress = "0x4C09209e8A7CC3796b580d6D58f45B3Bf43814F3";
@@ -382,52 +372,6 @@ function RemoveStudent(props){
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function App() {
 
-    // const [currentAccount, setCurrentAccount] = useState(null);
-    // const [currentAccountType, setAccountType] = useState(null);
-    //
-    // const checkWalletIsConnected = async () => {
-    //     const {ethereum} = window;
-    //
-    //     if (!ethereum) {
-    //         console.log("Make Sure you have Metamask installed!");
-    //         return;
-    //     } else {
-    //         console.log("You have the wallet. You're ready to go!")
-    //     }
-    //     const accounts = await ethereum.request({method: "eth_requestAccounts"});
-    //
-    //     if (accounts.length !== 0) {
-    //         const account = accounts[0];
-    //         console.log("Found a connected account: ", accounts[0]);
-    //         setCurrentAccount(account);
-    //
-    //         const provider = new ethers.providers.Web3Provider(ethereum);
-    //         const signer = provider.getSigner();
-    //         const diplomaContract = new ethers.Contract(diplomaAddress, diplomaAbi, signer);
-    //         if (await diplomaContract.hasRole(ethers.utils.solidityKeccak256(["string"], ["RECTOR_ROLE"]), account)) {
-    //             setAccountType("Rector")
-    //         } else if (await diplomaContract.hasRole(ethers.utils.solidityKeccak256(["string"], ["FACULTY_ROLE"]), account)) {
-    //             setAccountType("Faculty")
-    //         } else if (await diplomaContract.hasRole(ethers.utils.solidityKeccak256(["string"], ["DEPARTMENT_ROLE"]), account)) {
-    //             setAccountType("Department")
-    //         } else if (await diplomaContract.hasRole(ethers.utils.solidityKeccak256(["string"], ["INSTRUCTOR_ROLE"]), account)) {
-    //             setAccountType("Instructor")
-    //         } else if (await diplomaContract.hasRole(ethers.utils.solidityKeccak256(["string"], ["STUDENT_ROLE"]), account)) {
-    //             setAccountType("Student")
-    //         } else if (await diplomaContract.hasRole(ethers.utils.solidityKeccak256(["string"], ["GRADUATED_ROLE"]), account)) {
-    //             setAccountType("Graduated")
-    //         } else {
-    //             setAccountType("Not Registered")
-    //         }
-    //
-    //     } else {
-    //         console.log("No connected account found");
-    //     }
-    //
-    // }
-    // useEffect(() => {
-    //     checkWalletIsConnected();
-    // }, [])
 /////////////////////////////////////// READ FUNCTIONS /////////////////////////////////////////////////////////////////
     function checkDiplomaButton() {
         async function checkDiplomaHandler() {
