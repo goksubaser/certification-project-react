@@ -295,9 +295,90 @@ function RemoveFaculty(props){
         </form>
     )
 }
-function RemoveDepartment(props){}//TODO not yet completed
-function RemoveInstructor(props){}//TODO not yet completed
-function RemoveStudent(props){}//TODO not yet completed
+function RemoveDepartment(props){
+    const [departmentName, setDepartmentName] = useState("");
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        let id = await props.departmentContract.getDepartmentID(departmentName);
+        let address = await props.departmentContract.ownerOf(id);
+
+        //TODO tek transaction'a toplanabilir
+        await props.departmentContract.burn(departmentName)
+        await props.courseContract.revokeDepartmentRole(address)
+        await props.diplomaContract.revokeDepartmentRole(address)
+        await props.facultyContract.revokeDepartmentRole(address)
+        //TODO write fail alert messages
+        alert(`${departmentName} has removed`)
+    }
+    return (
+        <form onSubmit={handleSubmit}>
+            <label>Enter Department Name:
+                <input
+                    type="text"
+                    value={departmentName}
+                    onChange={(e) => setDepartmentName(e.target.value)}
+                />
+            </label>
+            <input type="submit"/>
+        </form>
+    )
+}
+function RemoveInstructor(props){
+    const [instructorAddress, setInstructorAddress] = useState("");
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        //TODO tek transaction'a toplanabilir
+        await props.courseContract.revokeInstructorRole(instructorAddress)
+        await props.departmentContract.revokeInstructorRole(instructorAddress)
+        await props.diplomaContract.revokeInstructorRole(instructorAddress)
+        await props.facultyContract.revokeInstructorRole(instructorAddress)
+        //TODO write fail alert messages
+        alert(`${instructorAddress} has removed`)
+    }
+    return (
+        <form onSubmit={handleSubmit}>
+            <label>Enter Instructor Address:
+                <input
+                    type="text"
+                    value={instructorAddress}
+                    onChange={(e) => setInstructorAddress(e.target.value)}
+                />
+            </label>
+            <input type="submit"/>
+        </form>
+    )
+}
+function RemoveStudent(props){
+    const [studentAddress, setStudentAddress] = useState("");
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        //TODO tek transaction'a toplanabilir
+        await props.courseContract.revokeStudentRole(studentAddress)
+        await props.departmentContract.revokeStudentRole(studentAddress)
+        await props.diplomaContract.revokeStudentRole(studentAddress)
+        await props.facultyContract.revokeStudentRole(studentAddress)
+        //TODO write fail alert messages
+        alert(`${studentAddress} has removed`)
+    }
+    return (
+        <form onSubmit={handleSubmit}>
+            <label>Enter Student Address:
+                <input
+                    type="text"
+                    value={studentAddress}
+                    onChange={(e) => setStudentAddress(e.target.value)}
+                />
+            </label>
+            <input type="submit"/>
+        </form>
+    )
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function App() {
 
@@ -572,7 +653,7 @@ function App() {
                 Remove Department
             </button>
         )
-    }//TODO not yet completed
+    }
     function removeInstructorButton() {
         async function removeInstructorHandler() {
             const contracts = await getContracts(true, true, true, true);
@@ -588,7 +669,7 @@ function App() {
                 Remove Instructor
             </button>
         )
-    }//TODO not yet completed
+    }
     function removeStudentButton() {
         async function removeStudentHandler() {
             const contracts = await getContracts(true, true, true, true);
@@ -604,7 +685,7 @@ function App() {
                 Remove Student
             </button>
         )
-    }//TODO not yet completed
+    }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     return (
