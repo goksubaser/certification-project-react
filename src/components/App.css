@@ -2,6 +2,18 @@
     text-align: center;
     margin: 100px;
 }
+/*.create-operations{*/
+/*    vertical-align: top;*/
+/*    text-align: left;*/
+/*}*/
+/*.read-operations{*/
+/*    vertical-align: top;*/
+/*    text-align: right;*/
+/*}*/
+/*.delete-operations{*/
+/*    vertical-align: bottom;*/
+/*    text-align: left;*/
+/*}*/
 
 .cta-button {
     padding: 15px;
@@ -17,7 +29,16 @@
     background: rgb(32, 129, 226);
 }
 
-.mint-nft-button {
+.create-button {
+    background: #ffa500;
+}
+.read-button {
+    background: #a00197;
+}
+.delete-button {
+    background: #ff0000;
+}
+.mint-nft-button{
     background: #ffa500;
 }
 /*table {*/

@@ -18,18 +18,17 @@ import {ethers} from 'ethers';
 import ReactDOM from "react-dom";
 import {render} from "@testing-library/react";
 
-const courseAddress = "0x62cc27a17B9150a887850F44050FC11094f62cd9";
-const departmentAddress = "0x6383dE255588ca45367fF7abCc89840087085235";
-const diplomaAddress = "0x233F273a48B35fA0c06DeEC6dE505dD50fc74294";
-const facultyAddress = "0xF92BDba7E2dF3ac24097c81E522a56A3dAE64be4";
-
+const courseAddress = "0x06EAA29BFDd6612d3EE217c9f09Ef9Db07473d3E";
+const departmentAddress = "0x4C09209e8A7CC3796b580d6D58f45B3Bf43814F3";
+const diplomaAddress = "0xf953fac23fA73194bCd63fa3E0AaADfba09669FA";
+const facultyAddress = "0x2e0759A51B6b63dde197D93cC1549af8626b6Cc0";
 const courseAbi = course.abi;
 const departmentAbi = department.abi;
 const diplomaAbi = diploma.abi;
 const facultyAbi = faculty.abi;
 
-//TODO test contract call sender's are correct?
-function DiplomaList(props) {
+/////////////////////////////////////// READ FUNCTIONS /////////////////////////////////////////////////////////////////
+function DiplomaList(props) {//TODO Organise table looks
     return (
         <div>
             <tr>
@@ -49,7 +48,64 @@ function DiplomaList(props) {
         </div>
     );
 }
-
+function FacultyList(props){//TODO Organise table looks
+    return (
+        <div>
+            <tr>
+                <th>Faculties</th>
+            </tr>
+            <td>
+                {props.facultyNames.map(item => {
+                    return <h5>{item}</h5>;
+                })}
+            </td>
+        </div>
+    );
+}
+function DepartmentList(props){
+    return (
+        <div>
+            <tr>
+                <th>Departments</th>
+            </tr>
+            <td>
+                {props.departmentNames.map(item => {
+                    return <h5>{item}</h5>;
+                })}
+            </td>
+        </div>
+    );
+}
+function InstructorList(props){
+    return (
+        <div>
+            <tr>
+                <th>Instructors</th>
+            </tr>
+            <td>
+                {props.instructorAddresses.map(item => {
+                    return <h5>{item}</h5>;
+                })}
+            </td>
+        </div>
+    );
+}
+function StudentList(props){
+    return (
+        <div>
+            <tr>
+                <th>Students</th>
+            </tr>
+            <td>
+                {props.studentAddresses.map(item => {
+                    return <h5>{item}</h5>;
+                })}
+            </td>
+        </div>
+    );
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////// CREATE FUNCTIONS ///////////////////////////////////////////////////////////////
 function MintDiploma(props) {
     const [address, setAddress] = useState("");
     const [link, setLink] = useState("");
@@ -111,7 +167,6 @@ function AddStudent(props){
         </form>
     )
 }
-
 function AddFaculty(props){
     const [address, setAddress] = useState("");
     const [facultyName, setFacultyName] = useState("");
@@ -146,7 +201,6 @@ function AddFaculty(props){
         </form>
     )
 }
-
 function AddDepartment(props){
     const [address, setAddress] = useState("");
     const [departmentName, setDepartmentName] = useState("");
@@ -209,7 +263,42 @@ function AddInstructor(props){
         </form>
     )
 }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////// DELETE FUNCTIONS ///////////////////////////////////////////////////////////////
+function RemoveFaculty(props){
+    const [facultyName, setFacultyName] = useState("");
 
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        let id = await props.facultyContract.getFacultyID(facultyName);
+        let address = await props.facultyContract.ownerOf(id);
+
+        //TODO tek transaction'a toplanabilir
+        await props.facultyContract.burn(facultyName)
+        await props.courseContract.revokeFacultyRole(address)
+        await props.departmentContract.revokeFacultyRole(address)
+        await props.diplomaContract.revokeFacultyRole(address)
+        //TODO write fail alert messages
+        alert(`${facultyName} has removed`)
+    }
+    return (
+        <form onSubmit={handleSubmit}>
+            <label>Enter Faculty Name:
+                <input
+                    type="text"
+                    value={facultyName}
+                    onChange={(e) => setFacultyName(e.target.value)}
+                />
+            </label>
+            <input type="submit"/>
+        </form>
+    )
+}
+function RemoveDepartment(props){}//TODO not yet completed
+function RemoveInstructor(props){}//TODO not yet completed
+function RemoveStudent(props){}//TODO not yet completed
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function App() {
 
     // const [currentAccount, setCurrentAccount] = useState(null);
@@ -258,9 +347,8 @@ function App() {
     // useEffect(() => {
     //     checkWalletIsConnected();
     // }, [])
-
+/////////////////////////////////////// READ FUNCTIONS /////////////////////////////////////////////////////////////////
     function checkDiplomaButton() {
-
         async function checkDiplomaHandler() {
             const contracts = await getContracts(false, false, true, false);
             const diplomaContract = contracts[0]
@@ -276,14 +364,100 @@ function App() {
                 document.getElementById('root')
             );
         }
-
         return (
-            <button onClick={checkDiplomaHandler} className='cta-button mint-nft-button'>
-                List of Graduates and Diplomas
+            <button onClick={checkDiplomaHandler} className='cta-button read-button'>
+                List Diplomas
             </button>
         )
     }
-
+    function checkFacultyButton(){
+        async function checkFacultyHandler() {
+            const contracts = await getContracts(false, false, false, true);
+            const facultyContract = contracts[0]
+            const totalSupply = await facultyContract.getTotalSupply();
+            let facultyNames = [];
+            for(var i = 1; i<=totalSupply; i++){
+                let facultyName = await facultyContract.getFacultyName(i);
+                if(facultyName !== ""){
+                    facultyNames.push(facultyName);
+                }
+            }
+            ReactDOM.render(
+                <React.StrictMode>
+                    <FacultyList facultyNames={facultyNames}/>
+                </React.StrictMode>,
+                document.getElementById('root')
+            );
+        }
+        return (
+            <button onClick={checkFacultyHandler} className='cta-button read-button'>
+                List Faculties
+            </button>
+        )
+    }
+    function checkDepartmentButton() {
+        async function checkDepartmentHandler() {
+            const contracts = await getContracts(false, true, false, false);
+            const departmentContract = contracts[0]
+            const totalSupply = await departmentContract.getTotalSupply();
+            let departmentNames = [];
+            for(var i = 1; i<=totalSupply; i++){
+                let departmentName = await departmentContract.getDepartmentName(i);
+                if(departmentName !== ""){
+                    departmentNames.push(departmentName);
+                }
+            }
+            ReactDOM.render(
+                <React.StrictMode>
+                    <DepartmentList departmentNames={departmentNames}/>
+                </React.StrictMode>,
+                document.getElementById('root')
+            );
+        }
+        return (
+            <button onClick={checkDepartmentHandler} className='cta-button read-button'>
+                List Departments
+            </button>
+        )
+    }
+    function checkInstructorButton() {
+        async function checkInstructorHandler() {
+            const contracts = await getContracts(true, false, false, false);
+            const courseContract = contracts[0]
+            const instructorAddresses = await courseContract.getInstructors();
+            ReactDOM.render(
+                <React.StrictMode>
+                    <InstructorList instructorAddresses={instructorAddresses}/>
+                </React.StrictMode>,
+                document.getElementById('root')
+            );
+        }
+        return (
+            <button onClick={checkInstructorHandler} className='cta-button read-button'>
+                List Instructors
+            </button>
+        )
+    }
+    function checkStudentButton() {
+        async function checkStudentHandler() {
+            const contracts = await getContracts(true, false, false, false);
+            const courseContract = contracts[0]
+            const studentAddresses = await courseContract.getStudents();
+            ReactDOM.render(
+                <React.StrictMode>
+                    <StudentList studentAddresses={studentAddresses}/>
+                </React.StrictMode>,
+                document.getElementById('root')
+            );
+        }
+        return (
+            <button onClick={checkStudentHandler} className='cta-button read-button'>
+                List Students
+            </button>
+        )
+    }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////// CREATE FUNCTIONS ///////////////////////////////////////////////////////////////
     function mintDiplomaButton() {
 
         async function mintDiplomaHandler() {
@@ -295,14 +469,12 @@ function App() {
                 document.getElementById('root')
             );
         }
-
         return (
-            <button onClick={mintDiplomaHandler} className='cta-button mint-nft-button'>
+            <button onClick={mintDiplomaHandler} className='cta-button create-button'>
                 Mint New Diploma
             </button>
         )
     }
-
     function addStudentButton() {
         async function addStudentHandler() {
             const contracts = await getContracts(true, true, true, true);
@@ -313,14 +485,12 @@ function App() {
                 document.getElementById('root')
             );
         }
-
         return (
-            <button onClick={addStudentHandler} className='cta-button mint-nft-button'>
+            <button onClick={addStudentHandler} className='cta-button create-button'>
                 Add New Student
             </button>
         )
     }
-
     function addFacultyButton() {
         async function addFacultyHandler() {
             const contracts = await getContracts(true, true, true, true);
@@ -331,14 +501,12 @@ function App() {
                 document.getElementById('root')
             );
         }
-
         return (
-            <button onClick={addFacultyHandler} className='cta-button mint-nft-button'>
+            <button onClick={addFacultyHandler} className='cta-button create-button'>
                 Add New Faculty
             </button>
         )
     }
-
     function addDepartmentButton() {
         async function addDepartmentHandler() {
             const contracts = await getContracts(true, true, true, true);
@@ -349,14 +517,12 @@ function App() {
                 document.getElementById('root')
             );
         }
-
         return (
-            <button onClick={addDepartmentHandler} className='cta-button mint-nft-button'>
+            <button onClick={addDepartmentHandler} className='cta-button create-button'>
                 Add New Department
             </button>
         )
     }
-
     function addInstructorButton() {
         async function addInstructorHandler() {
             const contracts = await getContracts(true, true, true, true);
@@ -367,33 +533,101 @@ function App() {
                 document.getElementById('root')
             );
         }
-
         return (
-            <button onClick={addInstructorHandler} className='cta-button mint-nft-button'>
+            <button onClick={addInstructorHandler} className='cta-button create-button'>
                 Add New Instructor
             </button>
         )
     }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////// DELETE FUNCTIONS ///////////////////////////////////////////////////////////////
+    function removeFacultyButton() {
+        async function removeFacultyHandler() {
+            const contracts = await getContracts(true, true, true, true);
+            ReactDOM.render(
+                <React.StrictMode>
+                    <RemoveFaculty courseContract={contracts[0]} departmentContract={contracts[1]} diplomaContract={contracts[2]} facultyContract={contracts[3]}/>
+                </React.StrictMode>,
+                document.getElementById('root')
+            );
+        }
+        return (
+            <button onClick={removeFacultyHandler} className='cta-button delete-button'>
+                Remove Faculty
+            </button>
+        )
+    }
+    function removeDepartmentButton() {
+        async function removeDepartmentHandler() {
+            const contracts = await getContracts(true, true, true, true);
+            ReactDOM.render(
+                <React.StrictMode>
+                    <RemoveDepartment courseContract={contracts[0]} departmentContract={contracts[1]} diplomaContract={contracts[2]} facultyContract={contracts[3]}/>
+                </React.StrictMode>,
+                document.getElementById('root')
+            );
+        }
+        return (
+            <button onClick={removeDepartmentHandler} className='cta-button delete-button'>
+                Remove Department
+            </button>
+        )
+    }//TODO not yet completed
+    function removeInstructorButton() {
+        async function removeInstructorHandler() {
+            const contracts = await getContracts(true, true, true, true);
+            ReactDOM.render(
+                <React.StrictMode>
+                    <RemoveInstructor courseContract={contracts[0]} departmentContract={contracts[1]} diplomaContract={contracts[2]} facultyContract={contracts[3]}/>
+                </React.StrictMode>,
+                document.getElementById('root')
+            );
+        }
+        return (
+            <button onClick={removeInstructorHandler} className='cta-button delete-button'>
+                Remove Instructor
+            </button>
+        )
+    }//TODO not yet completed
+    function removeStudentButton() {
+        async function removeStudentHandler() {
+            const contracts = await getContracts(true, true, true, true);
+            ReactDOM.render(
+                <React.StrictMode>
+                    <RemoveStudent courseContract={contracts[0]} departmentContract={contracts[1]} diplomaContract={contracts[2]} facultyContract={contracts[3]}/>
+                </React.StrictMode>,
+                document.getElementById('root')
+            );
+        }
+        return (
+            <button onClick={removeStudentHandler} className='cta-button delete-button'>
+                Remove Student
+            </button>
+        )
+    }//TODO not yet completed
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     return (
         <div className='main-app'>
-            <div>
-                {checkDiplomaButton()}
-            </div>
-            <div>
+            <div className='create-operations'>
+                {addFacultyButton()}
+                {addDepartmentButton()}
+                {addInstructorButton()}
                 {mintDiplomaButton()}
-            </div>
-            <div>
                 {addStudentButton()}
             </div>
-            <div>
-                {addFacultyButton()}
+            <div className='read-operations'>
+                {checkDiplomaButton()}
+                {checkFacultyButton()}
+                {checkDepartmentButton()}
+                {checkInstructorButton()}
+                {checkStudentButton()}
             </div>
-            <div>
-                {addDepartmentButton()}
-            </div>
-            <div>
-                {addInstructorButton()}
+            <div className='delete-operations'>
+                {removeFacultyButton()}
+                {removeDepartmentButton()}
+                {removeInstructorButton()}
+                {removeStudentButton()}
             </div>
         </div>
     )
