@@ -555,29 +555,90 @@ function RemoveInstructor(props){
     )
 }
 function RemoveStudent(props){
-    const [studentAddress, setStudentAddress] = useState("");
-
+    const [address, setAddress] = useState("");
+    let facultyID = "";
+    let departmentID = "";
+    async function setFacultyName(value){
+        facultyID = await props.facultyContract.getFacultyID(value)
+        let departmentAddressList = await props.facultyContract.getDepartments(facultyID)
+        let departmentListTemp = [];
+        for(let i = 0; i<departmentAddressList.length; i++){
+            const totalSupplyDepartment = await props.departmentContract.getTotalSupply();
+            for(let j = 1; j<=totalSupplyDepartment; j++){
+                let departmentAddress = await props.departmentContract.ownerOf(j);
+                if(departmentAddress == departmentAddressList[i]){
+                    departmentListTemp.push(await props.departmentContract.getDepartmentName(j))
+                }
+            }
+        }
+        const departmentSelect = document.getElementById("departmentSelect")
+        removeOptions(departmentSelect)
+        let newOption = new Option("Select a Department");
+        newOption.selected = true;
+        newOption.hidden = true;
+        departmentSelect.add(newOption, undefined)
+        for(let i = 0; i<departmentListTemp.length; i++){
+            let newOption = new Option(departmentListTemp[i]);
+            departmentSelect.add(newOption, undefined)
+        }
+        departmentSelect.hidden=false;
+    }
+    async function setDepartmentName(value) {
+        departmentID = await props.departmentContract.getDepartmentID(value)
+        const addressForm = document.getElementById("addressForm")
+        addressForm.hidden=false
+        const button = document.getElementById("button")
+        button.hidden=false
+    }
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        let allStudents = await props.departmentContract.getStudentRoles()
+        if(allStudents.indexOf(address)<=-1){//existance check
+            alert(`${address} is not an student`)
+            return;
+        }
+        let departmentStudents = await props.departmentContract.getStudents(departmentID)
+        if(departmentStudents.indexOf(address)<=-1){
+            alert(`${address} is not an student in this department`)
+            return;
+        }
+        let temp = departmentStudents.slice()
+        temp = temp.filter(e => e !== address);
+        console.log(allStudents)
+        console.log(departmentStudents)
         //TODO tek transaction'a toplanabilir
-        await props.courseContract.revokeStudentRole(studentAddress)
-        await props.departmentContract.revokeStudentRole(studentAddress)
-        await props.diplomaContract.revokeStudentRole(studentAddress)
-        await props.facultyContract.revokeStudentRole(studentAddress)
+        await props.departmentContract.setStudents(departmentID,temp)
+        await props.courseContract.revokeStudentRole(address)
+        await props.departmentContract.revokeStudentRole(address)
+        await props.diplomaContract.revokeStudentRole(address)
+        await props.facultyContract.revokeStudentRole(address)
         //TODO write fail alert messages
-        alert(`${studentAddress} has removed`)
+        alert(`${address} has removed`)
     }
     return (
         <form onSubmit={handleSubmit}>
-            <label>Enter Student Address:
+            <select id="facultySelect"
+                    type="text"
+                    onChange={(e) => setFacultyName(e.target.value)}>
+                <option selected hidden>Select a Faculty</option>
+                {props.facultyNames.map(item => {
+                    return <option>{item}</option>
+                })}
+            </select>
+            <select id="departmentSelect"
+                    hidden
+                    type="text"
+                    onChange={(e) => setDepartmentName(e.target.value)}>
+            </select>
+            <label id="addressForm" hidden>Enter Student Address:
                 <input
                     type="text"
-                    value={studentAddress}
-                    onChange={(e) => setStudentAddress(e.target.value)}
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
                 />
             </label>
-            <input type="submit"/>
+            <input type="submit" id="button" hidden/>
             <button onClick={(e)=> returnButton()}>Geri</button>
         </form>
     )
@@ -870,9 +931,19 @@ function App() {
     function removeStudentButton() {
         async function removeStudentHandler() {
             const contracts = await getContracts(true, true, true, true);
+            const facultyAmount = await contracts[3].getTotalSupply();
+            let facultyNames = [];
+            let facultyIDs = [];
+            for(let i = 1; i<=Number(facultyAmount); i++){
+                let facultyName = await contracts[3].getFacultyName(i);
+                if(facultyName !== ""){
+                    facultyNames.push(facultyName);
+                    facultyIDs.push(i);
+                }
+            }
             ReactDOM.render(
                 <React.StrictMode>
-                    <RemoveStudent courseContract={contracts[0]} departmentContract={contracts[1]} diplomaContract={contracts[2]} facultyContract={contracts[3]}/>
+                    <RemoveStudent courseContract={contracts[0]} departmentContract={contracts[1]} diplomaContract={contracts[2]} facultyContract={contracts[3]} facultyNames={facultyNames}/>
                 </React.StrictMode>,
                 document.getElementById('root')
             );
