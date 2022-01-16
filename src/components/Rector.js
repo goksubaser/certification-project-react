@@ -182,6 +182,7 @@ function AddStudent(props){
         button.hidden=false
     }
     const handleSubmit = async (event) => {
+        //TODO select'ten sonra başka yerlere tıklayınca değeri kaybediyor çünkü onChange
         event.preventDefault();
         let allStudents = await props.departmentContract.getStudentRoles()
         if(allStudents.indexOf(address)>-1){//existance check
@@ -199,6 +200,7 @@ function AddStudent(props){
         await props.facultyContract.grantStudentRole(address)
         //TODO write fail alert messages
         alert(`${address} is a Student Now`)
+        returnButton()
     }
     return (
         <form onSubmit={handleSubmit} >
@@ -234,6 +236,11 @@ function AddFaculty(props){
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        let allFaculties = await props.facultyContract.getFacultyRoles();
+        if(allFaculties.indexOf(address)>-1){
+            alert(`${address} has the Faculty permissions already`)
+            return;
+        }
         //TODO tek transaction'a toplanabilir
         await props.facultyContract.mint(facultyName, address)
         await props.courseContract.grantFacultyRole(address)
@@ -241,6 +248,7 @@ function AddFaculty(props){
         await props.diplomaContract.grantFacultyRole(address)
         //TODO write fail alert messages
         alert(`${address} has the Faculty permissions Now`)
+        returnButton()
     }
     return (
         <form onSubmit={handleSubmit}>
@@ -278,13 +286,17 @@ function AddDepartment(props){
         form.hidden = false;
     }
     const handleSubmit = async (event) => {
+        //TODO select'ten sonra başka yerlere tıklayınca değeri kaybediyor çünkü onChange
         event.preventDefault();
+        let allDepartments = await props.departmentContract.getDepartmentRoles();
+        if(allDepartments.indexOf(departmentAddress)>-1){
+            alert(`${departmentAddress} has the Department permissions already`)
+            return
+        }
         const facultyAddress = await props.facultyContract.ownerOf(facultyID)
         const departments = await props.facultyContract.getDepartments(facultyID);
         var departmentsTemp = departments.slice();
         departmentsTemp.push(departmentAddress)
-        console.log(departmentsTemp)
-
         //TODO tek transaction'a toplanabilir
         await props.departmentContract.mint(departmentName,departmentAddress,facultyAddress)
         await props.facultyContract.setDepartments(facultyID, departmentsTemp)
@@ -293,11 +305,12 @@ function AddDepartment(props){
         await props.facultyContract.grantDepartmentRole(departmentAddress)
         //TODO write fail alert messages
         alert(`${departmentAddress} has the Department permissions Now`)
+        returnButton()
     }
 
     return (
         <form onSubmit={handleSubmit}>
-            <select type="text"
+            <select type="text" id="select"
                     onChange={(e) => setFacultyName(e.target.value)}>
                 <option selected hidden>Select a Faculty</option>
                 {props.facultyNames.map(item => {
@@ -360,6 +373,7 @@ function AddInstructor(props){
         button.hidden=false
     }
     const handleSubmit = async (event) => {
+        //TODO select'ten sonra başka yerlere tıklayınca değeri kaybediyor çünkü onChange
         event.preventDefault();
 
         let allInstructors = await props.departmentContract.getInstructorRoles()
@@ -370,8 +384,6 @@ function AddInstructor(props){
         let departmentInstructors = await props.departmentContract.getInstructors(departmentID)
         let temp = departmentInstructors.slice()
         temp.push(address)
-        console.log(allInstructors)
-        console.log(departmentInstructors)
         //TODO tek transaction'a toplanabilir
         await props.departmentContract.setInstructors(departmentID,temp)
         await props.courseContract.grantInstructorRole(address)
@@ -380,6 +392,7 @@ function AddInstructor(props){
         await props.facultyContract.grantInstructorRole(address)
         //TODO write fail alert messages
         alert(`${address} is a Instructor Now`)
+        returnButton()
     }
 
     return (
@@ -511,6 +524,7 @@ function RemoveInstructor(props){
         button.hidden=false
     }
     const handleSubmit = async (event) => {
+        //TODO select'ten sonra başka yerlere tıklayınca değeri kaybediyor çünkü onChange
         event.preventDefault();
         let allInstructors = await props.departmentContract.getInstructorRoles()
         if(allInstructors.indexOf(address)<=-1){//existance check
@@ -597,8 +611,8 @@ function RemoveStudent(props){
         button.hidden=false
     }
     const handleSubmit = async (event) => {
+        //TODO select'ten sonra başka yerlere tıklayınca değeri kaybediyor çünkü onChange
         event.preventDefault();
-
         let allStudents = await props.departmentContract.getStudentRoles()
         if(allStudents.indexOf(address)<=-1){//existance check
             alert(`${address} is not an student`)
@@ -968,8 +982,8 @@ function App() {
                 {addFacultyButton()}
                 {addDepartmentButton()}
                 {addInstructorButton()}
-                {mintDiplomaButton()}
                 {addStudentButton()}
+                {mintDiplomaButton()}
             </div>
             <div className='read-operations'>
                 {checkDiplomaButton()}

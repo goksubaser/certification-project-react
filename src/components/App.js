@@ -29,7 +29,7 @@ function App() {
 
     const [currentAccount, setCurrentAccount] = useState(null);
     const [currentAccountType, setAccountType] = useState(null);
-
+//TODO if the address is not connected it returns the last opened connected address as the default address
     const checkWalletIsConnected = async () => {
         const {ethereum} = window;
 
