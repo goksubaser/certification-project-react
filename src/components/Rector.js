@@ -9,10 +9,10 @@ import {ethers} from 'ethers';
 import ReactDOM from "react-dom";
 import {render} from "@testing-library/react";
 
-const courseAddress = "0x137aA0A0E7c7d3A8160733Bf60197E106667A33d";
-const departmentAddress = "0x509ea9C47d37174e99f0cB509e726E4d63fb91ec";
-const diplomaAddress = "0x02Fa051832be4B7c94Ec2cbca3A85C44f34A7708";
-const facultyAddress = "0x0959661990726C738391B3Ca6909238FD960Ca0c";
+const courseAddress = "0xCAD61585cCBA628B0840163F2C8639536Bc22Fc6";
+const departmentAddress = "0xd090F4D8499E4F97a4393C96D1ab779D8e67c7CE";
+const diplomaAddress = "0xda2324CD8fD8E01FF681cDED86bA3D5f049ab84a";
+const facultyAddress = "0xA1C88e2F259fcF5F94F922738C1FEce5EFE8d31A";
 const courseAbi = course.abi;
 const departmentAbi = department.abi;
 const diplomaAbi = diploma.abi;
@@ -266,13 +266,20 @@ function AddFaculty(props){
 function AddDepartment(props){
     const [departmentAddress, setDepartmentAddress] = useState("");
     const [departmentName, setDepartmentName] = useState("");
-    const [facultyName, setFacultyName] = useState("");
-
+    // const [facultyName, setFacultyName] = useState("");
+    let facultyID;
+    async function setFacultyName(value){
+        facultyID = await props.facultyContract.getFacultyID(value)
+        let form = document.getElementById("enterName")
+        form.hidden = false;
+        form = document.getElementById("enterAddress")
+        form.hidden = false;
+        form = document.getElementById("button")
+        form.hidden = false;
+    }
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const facultyID = await props.facultyContract.getFacultyID(facultyName)
         const facultyAddress = await props.facultyContract.ownerOf(facultyID)
-
         const departments = await props.facultyContract.getDepartments(facultyID);
         var departmentsTemp = departments.slice();
         departmentsTemp.push(departmentAddress)
@@ -290,29 +297,28 @@ function AddDepartment(props){
 
     return (
         <form onSubmit={handleSubmit}>
-            <label>Enter Department Name:
-                <input
-                    type="text"
-                    value={departmentName}
-                    onChange={(e) => setDepartmentName(e.target.value)}
-                />
-            </label>
-            <label>Enter Department Address:
-                <input
-                    type="text"
-                    value={departmentAddress}
-                    onChange={(e) => setDepartmentAddress(e.target.value)}
-                />
-            </label>
             <select type="text"
-                    value={facultyName}
                     onChange={(e) => setFacultyName(e.target.value)}>
                 <option selected hidden>Select a Faculty</option>
                 {props.facultyNames.map(item => {
                     return <option>{item}</option>
                 })}
             </select>
-            <input type="submit"/>
+            <label id="enterName" hidden>Enter Department Name:
+                <input
+                    type="text"
+                    value={departmentName}
+                    onChange={(e) => setDepartmentName(e.target.value)}
+                />
+            </label>
+            <label id="enterAddress" hidden>Enter Department Address:
+                <input
+                    type="text"
+                    value={departmentAddress}
+                    onChange={(e) => setDepartmentAddress(e.target.value)}
+                />
+            </label>
+            <input type="submit" id="button" hidden/>
             <button onClick={(e)=> returnButton()}>Geri</button>
         </form>
     )
