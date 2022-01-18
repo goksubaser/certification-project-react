@@ -119,30 +119,32 @@ function StudentList(props){
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////// CREATE FUNCTIONS ///////////////////////////////////////////////////////////////
-function MintDiploma(props) {
+function AddFaculty(props){
     const [address, setAddress] = useState("");
-    const [link, setLink] = useState("");
+    const [facultyName, setFacultyName] = useState("");
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        await props.diplomaContract.mint(link, address)
-        await props.courseContract.grantGraduatedRole(address)
-        await props.departmentContract.grantGraduatedRole(address)
-        await props.facultyContract.grantGraduatedRole(address)
+        let allFaculties = await props.rolesContract.getFacultyRoles();
+        if(allFaculties.indexOf(address)>-1){
+            alert(`${address} has the Faculty permissions already`)
+            return;
+        }
+        await props.facultyContract.mint(facultyName, address)
         //TODO write fail alert messages
-        alert(`The Graduate ${address} Has The Diploma ${link} Now`)
+        alert(`${address} has the Faculty permissions Now`)
+        returnButton()
     }
-
     return (
         <form onSubmit={handleSubmit}>
-            <label>Enter Diploma Link:
+            <label>Enter Faculty Name:
                 <input
                     type="text"
-                    value={link}
-                    onChange={(e) => setLink(e.target.value)}
+                    value={facultyName}
+                    onChange={(e) => setFacultyName(e.target.value)}
                 />
             </label>
-            <label>Enter Student Address:
+            <label>Enter Faculty Address:
                 <input
                     type="text"
                     value={address}
@@ -150,6 +152,150 @@ function MintDiploma(props) {
                 />
             </label>
             <input type="submit"/>
+            <button onClick={(e)=> returnButton()}>Geri</button>
+        </form>
+    )
+}
+function AddDepartment(props){
+    const [departmentAddress, setDepartmentAddress] = useState("");
+    const [departmentName, setDepartmentName] = useState("");
+    // const [facultyName, setFacultyName] = useState("");
+    let facultyID;
+    async function setFacultyName(value){
+        facultyID = await props.facultyContract.getFacultyID(value)
+        let form = document.getElementById("enterName")
+        form.hidden = false;
+        form = document.getElementById("enterAddress")
+        form.hidden = false;
+        form = document.getElementById("button")
+        form.hidden = false;
+    }
+    const handleSubmit = async (event) => {
+        //TODO select'ten sonra başka yerlere tıklayınca değeri kaybediyor çünkü onChange
+        event.preventDefault();
+        let allDepartments = await props.rolesContract.getDepartmentRoles();
+        if(allDepartments.indexOf(departmentAddress)>-1){
+            alert(`${departmentAddress} has the Department permissions already`)
+            return
+        }
+        const facultyAddress = await props.facultyContract.ownerOf(facultyID)
+        await props.departmentContract.mint(departmentName,departmentAddress,facultyAddress)
+        //TODO write fail alert messages
+        alert(`${departmentAddress} has the Department permissions Now`)
+        returnButton()
+    }
+    return (
+        <form onSubmit={handleSubmit}>
+            <select type="text" id="select"
+                    onChange={(e) => setFacultyName(e.target.value)}>
+                <option selected hidden>Select a Faculty</option>
+                {props.facultyNames.map(item => {
+                    return <option>{item}</option>
+                })}
+            </select>
+            <label id="enterName" hidden>Enter Department Name:
+                <input
+                    type="text"
+                    value={departmentName}
+                    onChange={(e) => setDepartmentName(e.target.value)}
+                />
+            </label>
+            <label id="enterAddress" hidden>Enter Department Address:
+                <input
+                    type="text"
+                    value={departmentAddress}
+                    onChange={(e) => setDepartmentAddress(e.target.value)}
+                />
+            </label>
+            <input type="submit" id="button" hidden/>
+            <button onClick={(e)=> returnButton()}>Geri</button>
+        </form>
+    )
+}
+
+function AddInstructor(props){
+    const [address, setAddress] = useState("");
+    let facultyID = "";
+    let departmentID = "";
+    async function setFacultyName(value){
+        facultyID = await props.facultyContract.getFacultyID(value)
+        let departmentAddressList = await props.facultyContract.getDepartments(facultyID)
+        let departmentListTemp = [];
+        for(let i = 0; i<departmentAddressList.length; i++){
+            const totalSupplyDepartment = await props.departmentContract.getTotalSupply();
+            for(let j = 1; j<=totalSupplyDepartment; j++){
+                let departmentAddress = await props.departmentContract.ownerOf(j);
+                if(departmentAddress == departmentAddressList[i]){
+                    departmentListTemp.push(await props.departmentContract.getDepartmentName(j))
+                }
+            }
+        }
+        const departmentSelect = document.getElementById("departmentSelect")
+        removeOptions(departmentSelect)
+        let newOption = new Option("Select a Department");
+        newOption.selected = true;
+        newOption.hidden = true;
+        departmentSelect.add(newOption, undefined)
+        for(let i = 0; i<departmentListTemp.length; i++){
+            let newOption = new Option(departmentListTemp[i]);
+            departmentSelect.add(newOption, undefined)
+        }
+        departmentSelect.hidden=false;
+    }
+    async function setDepartmentName(value) {
+        departmentID = await props.departmentContract.getDepartmentID(value)
+        const addressForm = document.getElementById("addressForm")
+        addressForm.hidden=false
+        const button = document.getElementById("button")
+        button.hidden=false
+    }
+    const handleSubmit = async (event) => {
+        //TODO select'ten sonra başka yerlere tıklayınca değeri kaybediyor çünkü onChange
+        event.preventDefault();
+
+        let allInstructors = await props.departmentContract.getInstructorRoles()
+        if(allInstructors.indexOf(address)>-1){//existance check
+            alert(`${address} is already a instructor`)
+            return;
+        }
+        let departmentInstructors = await props.departmentContract.getInstructors(departmentID)
+        let temp = departmentInstructors.slice()
+        temp.push(address)
+        //TODO tek transaction'a toplanabilir
+        await props.departmentContract.setInstructors(departmentID,temp)
+        await props.courseContract.grantInstructorRole(address)
+        await props.departmentContract.grantInstructorRole(address)
+        await props.diplomaContract.grantInstructorRole(address)
+        await props.facultyContract.grantInstructorRole(address)
+        //TODO write fail alert messages
+        alert(`${address} is a Instructor Now`)
+        returnButton()
+    }
+
+    return (
+        <form onSubmit={handleSubmit} >
+
+            <select id="facultySelect"
+                    type="text"
+                    onChange={(e) => setFacultyName(e.target.value)}>
+                <option selected hidden>Select a Faculty</option>
+                {props.facultyNames.map(item => {
+                    return <option>{item}</option>
+                })}
+            </select>
+            <select id="departmentSelect"
+                    hidden
+                    type="text"
+                    onChange={(e) => setDepartmentName(e.target.value)}>
+            </select>
+            <label id="addressForm" hidden>Enter Instructor Address:
+                <input
+                    type="text"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                />
+            </label>
+            <input type="submit" id="button" hidden/>
             <button onClick={(e)=> returnButton()}>Geri</button>
         </form>
     )
@@ -239,33 +385,31 @@ function AddStudent(props){
         </form>
     )
 }
-function AddFaculty(props){
+
+function MintDiploma(props) {
     const [address, setAddress] = useState("");
-    const [facultyName, setFacultyName] = useState("");
+    const [link, setLink] = useState("");
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        let allFaculties = await props.rolesContract.getFacultyRoles();
-        if(allFaculties.indexOf(address)>-1){
-            alert(`${address} has the Faculty permissions already`)
-            return;
-        }
-        //TODO tek transaction'a toplanabilir
-        await props.facultyContract.mint(facultyName, address)
+        await props.diplomaContract.mint(link, address)
+        await props.courseContract.grantGraduatedRole(address)
+        await props.departmentContract.grantGraduatedRole(address)
+        await props.facultyContract.grantGraduatedRole(address)
         //TODO write fail alert messages
-        alert(`${address} has the Faculty permissions Now`)
-        returnButton()
+        alert(`The Graduate ${address} Has The Diploma ${link} Now`)
     }
+
     return (
         <form onSubmit={handleSubmit}>
-            <label>Enter Faculty Name:
+            <label>Enter Diploma Link:
                 <input
                     type="text"
-                    value={facultyName}
-                    onChange={(e) => setFacultyName(e.target.value)}
+                    value={link}
+                    onChange={(e) => setLink(e.target.value)}
                 />
             </label>
-            <label>Enter Faculty Address:
+            <label>Enter Student Address:
                 <input
                     type="text"
                     value={address}
@@ -273,158 +417,6 @@ function AddFaculty(props){
                 />
             </label>
             <input type="submit"/>
-            <button onClick={(e)=> returnButton()}>Geri</button>
-        </form>
-    )
-}
-function AddDepartment(props){
-    const [departmentAddress, setDepartmentAddress] = useState("");
-    const [departmentName, setDepartmentName] = useState("");
-    // const [facultyName, setFacultyName] = useState("");
-    let facultyID;
-    async function setFacultyName(value){
-        facultyID = await props.facultyContract.getFacultyID(value)
-        let form = document.getElementById("enterName")
-        form.hidden = false;
-        form = document.getElementById("enterAddress")
-        form.hidden = false;
-        form = document.getElementById("button")
-        form.hidden = false;
-    }
-    const handleSubmit = async (event) => {
-        //TODO select'ten sonra başka yerlere tıklayınca değeri kaybediyor çünkü onChange
-        event.preventDefault();
-        let allDepartments = await props.departmentContract.getDepartmentRoles();
-        if(allDepartments.indexOf(departmentAddress)>-1){
-            alert(`${departmentAddress} has the Department permissions already`)
-            return
-        }
-        const facultyAddress = await props.facultyContract.ownerOf(facultyID)
-        const departments = await props.facultyContract.getDepartments(facultyID);
-        var departmentsTemp = departments.slice();
-        departmentsTemp.push(departmentAddress)
-        //TODO tek transaction'a toplanabilir
-        await props.departmentContract.mint(departmentName,departmentAddress,facultyAddress)
-        await props.facultyContract.setDepartments(facultyID, departmentsTemp)
-        await props.courseContract.grantDepartmentRole(departmentAddress)
-        await props.diplomaContract.grantDepartmentRole(departmentAddress)
-        await props.facultyContract.grantDepartmentRole(departmentAddress)
-        //TODO write fail alert messages
-        alert(`${departmentAddress} has the Department permissions Now`)
-        returnButton()
-    }
-
-    return (
-        <form onSubmit={handleSubmit}>
-            <select type="text" id="select"
-                    onChange={(e) => setFacultyName(e.target.value)}>
-                <option selected hidden>Select a Faculty</option>
-                {props.facultyNames.map(item => {
-                    return <option>{item}</option>
-                })}
-            </select>
-            <label id="enterName" hidden>Enter Department Name:
-                <input
-                    type="text"
-                    value={departmentName}
-                    onChange={(e) => setDepartmentName(e.target.value)}
-                />
-            </label>
-            <label id="enterAddress" hidden>Enter Department Address:
-                <input
-                    type="text"
-                    value={departmentAddress}
-                    onChange={(e) => setDepartmentAddress(e.target.value)}
-                />
-            </label>
-            <input type="submit" id="button" hidden/>
-            <button onClick={(e)=> returnButton()}>Geri</button>
-        </form>
-    )
-}
-function AddInstructor(props){
-    const [address, setAddress] = useState("");
-    let facultyID = "";
-    let departmentID = "";
-    async function setFacultyName(value){
-        facultyID = await props.facultyContract.getFacultyID(value)
-        let departmentAddressList = await props.facultyContract.getDepartments(facultyID)
-        let departmentListTemp = [];
-        for(let i = 0; i<departmentAddressList.length; i++){
-            const totalSupplyDepartment = await props.departmentContract.getTotalSupply();
-            for(let j = 1; j<=totalSupplyDepartment; j++){
-                let departmentAddress = await props.departmentContract.ownerOf(j);
-                if(departmentAddress == departmentAddressList[i]){
-                    departmentListTemp.push(await props.departmentContract.getDepartmentName(j))
-                }
-            }
-        }
-        const departmentSelect = document.getElementById("departmentSelect")
-        removeOptions(departmentSelect)
-        let newOption = new Option("Select a Department");
-        newOption.selected = true;
-        newOption.hidden = true;
-        departmentSelect.add(newOption, undefined)
-        for(let i = 0; i<departmentListTemp.length; i++){
-            let newOption = new Option(departmentListTemp[i]);
-            departmentSelect.add(newOption, undefined)
-        }
-        departmentSelect.hidden=false;
-    }
-    async function setDepartmentName(value) {
-        departmentID = await props.departmentContract.getDepartmentID(value)
-        const addressForm = document.getElementById("addressForm")
-        addressForm.hidden=false
-        const button = document.getElementById("button")
-        button.hidden=false
-    }
-    const handleSubmit = async (event) => {
-        //TODO select'ten sonra başka yerlere tıklayınca değeri kaybediyor çünkü onChange
-        event.preventDefault();
-
-        let allInstructors = await props.departmentContract.getInstructorRoles()
-        if(allInstructors.indexOf(address)>-1){//existance check
-            alert(`${address} is already a instructor`)
-            return;
-        }
-        let departmentInstructors = await props.departmentContract.getInstructors(departmentID)
-        let temp = departmentInstructors.slice()
-        temp.push(address)
-        //TODO tek transaction'a toplanabilir
-        await props.departmentContract.setInstructors(departmentID,temp)
-        await props.courseContract.grantInstructorRole(address)
-        await props.departmentContract.grantInstructorRole(address)
-        await props.diplomaContract.grantInstructorRole(address)
-        await props.facultyContract.grantInstructorRole(address)
-        //TODO write fail alert messages
-        alert(`${address} is a Instructor Now`)
-        returnButton()
-    }
-
-    return (
-        <form onSubmit={handleSubmit} >
-
-            <select id="facultySelect"
-                    type="text"
-                    onChange={(e) => setFacultyName(e.target.value)}>
-                <option selected hidden>Select a Faculty</option>
-                {props.facultyNames.map(item => {
-                    return <option>{item}</option>
-                })}
-            </select>
-            <select id="departmentSelect"
-                    hidden
-                    type="text"
-                    onChange={(e) => setDepartmentName(e.target.value)}>
-            </select>
-            <label id="addressForm" hidden>Enter Instructor Address:
-                <input
-                    type="text"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                />
-            </label>
-            <input type="submit" id="button" hidden/>
             <button onClick={(e)=> returnButton()}>Geri</button>
         </form>
     )
@@ -801,12 +793,12 @@ function App() {
     }
     function addDepartmentButton() {
         async function addDepartmentHandler() {
-            const contracts = await getContracts(true, true, true, true);
-            const facultyAmount = await contracts[3].getTotalSupply();
+            const contracts = await getContracts(false, true, false, true,false,true,false);
+            const facultyAmount = await contracts[1].getTotalSupply();
             let facultyNames = [];
             let facultyIDs = [];
             for(let i = 1; i<=Number(facultyAmount); i++){
-                let facultyName = await contracts[3].getFacultyName(i);
+                let facultyName = await contracts[1].getFacultyName(i);
                 if(facultyName !== ""){
                     facultyNames.push(facultyName);
                     facultyIDs.push(i);
@@ -814,7 +806,7 @@ function App() {
             }
             ReactDOM.render(
                 <React.StrictMode>
-                    <AddDepartment courseContract={contracts[0]} departmentContract={contracts[1]} diplomaContract={contracts[2]} facultyContract={contracts[3]} facultyNames={facultyNames}/>
+                    <AddDepartment departmentContract={contracts[0]} facultyContract={contracts[1]} rolesContract={contracts[2]} facultyNames={facultyNames}/>
                 </React.StrictMode>,
                 document.getElementById('root')
             );
