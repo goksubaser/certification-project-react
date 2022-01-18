@@ -8,23 +8,14 @@ import Instructor from './Instructor.js';
 import Student from './Student.js';
 import Graduated from './Graduated.js';
 import NotRegistered from './NotRegistered.js';
-import course from '../abis/Course.json';
-import department from '../abis/Department.json';
-import diploma from '../abis/Diploma.json';
-import faculty from '../abis/Faculty.json';
+import env from '../env.json';
+import roles from '../abis/Roles.json';
 import {ethers} from 'ethers';
 import ReactDOM from "react-dom";
 
-const courseAddress = "0x4aBe37dE0CEd9304b2Db82e11991668f88F005B4";
-const departmentAddress = "0x752E3382cAccbbEF54d162e559B00b2dB6246945";
-const diplomaAddress = "0x2a5E4BF1aF54ac1E1b51a685d5dfBda71E6345Fc";
-const facultyAddress = "0x45D11B7A1ac6b37203E7ef69286309c75214D5Cf";
-const requestAddress = "0xEBD720B5a6fad8c79036a2Eaad159B482D04ff8F";
+const rolesAddress = env.rolesAddress
 
-const courseAbi = course.abi;
-const departmentAbi = department.abi;
-const diplomaAbi = diploma.abi;
-const facultyAbi = faculty.abi;
+const rolesAbi = roles.abi;
 
 function App() {
 
@@ -49,18 +40,18 @@ function App() {
 
             const provider = new ethers.providers.Web3Provider(ethereum);
             const signer = provider.getSigner();
-            const diplomaContract = new ethers.Contract(diplomaAddress, diplomaAbi, signer);
-            if (await diplomaContract.hasRole(ethers.utils.solidityKeccak256(["string"], ["RECTOR_ROLE"]), account)) {
+            const rolesContract = new ethers.Contract(rolesAddress, rolesAbi, signer);
+            if (await rolesContract.hasRectorRole(account)) {
                 setAccountType("Rector")
-            } else if (await diplomaContract.hasRole(ethers.utils.solidityKeccak256(["string"], ["FACULTY_ROLE"]), account)) {
+            } else if (await rolesContract.hasFacultyRole(account)) {
                 setAccountType("Faculty")
-            } else if (await diplomaContract.hasRole(ethers.utils.solidityKeccak256(["string"], ["DEPARTMENT_ROLE"]), account)) {
+            } else if (await rolesContract.hasDepartmentRole(account)) {
                 setAccountType("Department")
-            } else if (await diplomaContract.hasRole(ethers.utils.solidityKeccak256(["string"], ["INSTRUCTOR_ROLE"]), account)) {
+            } else if (await rolesContract.hasInstructorRole(account)) {
                 setAccountType("Instructor")
-            } else if (await diplomaContract.hasRole(ethers.utils.solidityKeccak256(["string"], ["STUDENT_ROLE"]), account)) {
+            } else if (await rolesContract.hasStudentRole(account)) {
                 setAccountType("Student")
-            } else if (await diplomaContract.hasRole(ethers.utils.solidityKeccak256(["string"], ["GRADUATED_ROLE"]), account)) {
+            } else if (await rolesContract.hasGraduatedRole(account)) {
                 setAccountType("Graduated")
             }else{
                 setAccountType("Not Registered")
@@ -85,18 +76,18 @@ function App() {
 
             const provider = new ethers.providers.Web3Provider(ethereum);
             const signer = provider.getSigner();
-            const diplomaContract = new ethers.Contract(diplomaAddress, diplomaAbi, signer);
-            if (await diplomaContract.hasRole(ethers.utils.solidityKeccak256(["string"], ["RECTOR_ROLE"]), account)) {
+            const rolesContract = new ethers.Contract(rolesAddress, rolesAbi, signer);
+            if (await rolesContract.hasRectorRole(account)) {
                 setAccountType("Rector")
-            } else if (await diplomaContract.hasRole(ethers.utils.solidityKeccak256(["string"], ["FACULTY_ROLE"]), account)) {
+            } else if (await rolesContract.hasFacultyRole(account)) {
                 setAccountType("Faculty")
-            } else if (await diplomaContract.hasRole(ethers.utils.solidityKeccak256(["string"], ["DEPARTMENT_ROLE"]), account)) {
+            } else if (await rolesContract.hasDepartmentRole(account)) {
                 setAccountType("Department")
-            } else if (await diplomaContract.hasRole(ethers.utils.solidityKeccak256(["string"], ["INSTRUCTOR_ROLE"]), account)) {
+            } else if (await rolesContract.hasInstructorRole(account)) {
                 setAccountType("Instructor")
-            } else if (await diplomaContract.hasRole(ethers.utils.solidityKeccak256(["string"], ["STUDENT_ROLE"]), account)) {
+            } else if (await rolesContract.hasStudentRole(account)) {
                 setAccountType("Student")
-            } else if (await diplomaContract.hasRole(ethers.utils.solidityKeccak256(["string"], ["GRADUATED_ROLE"]), account)) {
+            } else if (await rolesContract.hasGraduatedRole(account)) {
                 setAccountType("Graduated")
             }else{
                 setAccountType("Not Registered")
@@ -114,43 +105,43 @@ function App() {
 
                 const provider = new ethers.providers.Web3Provider(ethereum);
                 const signer = provider.getSigner();
-                const diplomaContract = new ethers.Contract(diplomaAddress, diplomaAbi, signer);
-                if (await diplomaContract.hasRole(ethers.utils.solidityKeccak256(["string"], ["RECTOR_ROLE"]), currentAccount)) {
+                const rolesContract = new ethers.Contract(rolesAddress, rolesAbi, signer);
+                if (await rolesContract.hasRectorRole(currentAccount)) {
                     ReactDOM.render(
                         <React.StrictMode>
                             <Rector />
                         </React.StrictMode>,
                         document.getElementById('root')
                     );
-                } else if (await diplomaContract.hasRole(ethers.utils.solidityKeccak256(["string"], ["FACULTY_ROLE"]), currentAccount)) {
+                } else if (await rolesContract.hasFacultyRole(currentAccount)) {
                     ReactDOM.render(
                         <React.StrictMode>
                             <Faculty />
                         </React.StrictMode>,
                         document.getElementById('root')
                     );
-                } else if (await diplomaContract.hasRole(ethers.utils.solidityKeccak256(["string"], ["DEPARTMENT_ROLE"]), currentAccount)) {
+                } else if (await rolesContract.hasDepartmentRole(currentAccount)) {
                     ReactDOM.render(
                         <React.StrictMode>
                             <Department />
                         </React.StrictMode>,
                         document.getElementById('root')
                     );
-                } else if (await diplomaContract.hasRole(ethers.utils.solidityKeccak256(["string"], ["INSTRUCTOR_ROLE"]), currentAccount)) {
+                } else if (await rolesContract.hasInstructorRole(currentAccount)) {
                     ReactDOM.render(
                         <React.StrictMode>
                             <Instructor />
                         </React.StrictMode>,
                         document.getElementById('root')
                     );
-                } else if (await diplomaContract.hasRole(ethers.utils.solidityKeccak256(["string"], ["STUDENT_ROLE"]), currentAccount)) {
+                } else if (await rolesContract.hasStudentRole(currentAccount)) {
                     ReactDOM.render(
                         <React.StrictMode>
                             <Student />
                         </React.StrictMode>,
                         document.getElementById('root')
                     );
-                } else if (await diplomaContract.hasRole(ethers.utils.solidityKeccak256(["string"], ["GRADUATED_ROLE"]), currentAccount)) {
+                } else if (await rolesContract.hasGraduatedRole(currentAccount)) {
                     ReactDOM.render(
                         <React.StrictMode>
                             <Graduated />

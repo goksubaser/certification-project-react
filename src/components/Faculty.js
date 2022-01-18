@@ -1,25 +1,32 @@
 import React, {useEffect} from 'react';
 import {useState} from 'react';
+import {ethers} from 'ethers';
+import ReactDOM from "react-dom";
+
 import './App.css';
+
 import course from '../abis/Course.json';
 import department from '../abis/Department.json';
 import diploma from '../abis/Diploma.json';
 import faculty from '../abis/Faculty.json';
+import roles from '../abis/Roles.json';
 import request from '../abis/Request.json';
-import {ethers} from 'ethers';
-import ReactDOM from "react-dom";
-import {render} from "@testing-library/react";
+import env from '../env.json';
 
-const courseAddress = "0x4aBe37dE0CEd9304b2Db82e11991668f88F005B4";
-const departmentAddress = "0x752E3382cAccbbEF54d162e559B00b2dB6246945";
-const diplomaAddress = "0x2a5E4BF1aF54ac1E1b51a685d5dfBda71E6345Fc";
-const facultyAddress = "0x45D11B7A1ac6b37203E7ef69286309c75214D5Cf";
-const requestAddress = "0xEBD720B5a6fad8c79036a2Eaad159B482D04ff8F";
+
+
+const courseAddress = env.courseAddress
+const departmentAddress = env.departmentAddress
+const diplomaAddress = env.diplomaAddress
+const facultyAddress = env.facultyAddress
+const requestAddress = env.requestAddress
+const rolesAddress = env.rolesAddress
 
 const courseAbi = course.abi;
 const departmentAbi = department.abi;
 const diplomaAbi = diploma.abi;
 const facultyAbi = faculty.abi;
+const rolesAbi = roles.abi;
 const requestAbi = request.abi;
 
 function returnButton(){
@@ -97,7 +104,7 @@ function App() {
 /////////////////////////////////////// CREATE FUNCTIONS ///////////////////////////////////////////////////////////////
     function readDiplomaRequestsButton() {
         async function readDiplomaRequestsHandler() {
-            const contracts = await getContracts(false,false,false,true,true, true);
+            const contracts = await getContracts(false,false,false,true,true,false, true);
             let facultyContract = contracts[0];
             let requests = await contracts[1].getDiplomaRequests();
             let account = contracts[2];
@@ -152,7 +159,7 @@ function App() {
     function readRequests() {
 
         async function createDiplomaHandler() {
-            const contracts = await getContracts(false, false, false, false,true);
+            const contracts = await getContracts(false, false, false, false,true, false, false);
             let requests = await contracts[0].getDiplomaRequests();
             for(var i = 0; i<requests.length; i++){
                 console.log(requests[i])
@@ -179,8 +186,7 @@ function App() {
         </div>
     )
 }
-async function getContracts(course = false, department = false, diploma = false, faculty = false, request=false, account = false)  {
-
+async function getContracts(course = false, department = false, diploma = false, faculty = false, request = false, roles = false, account = false) {
     const {ethereum} = window;
     if (!ethereum) {
         return;
@@ -211,11 +217,15 @@ async function getContracts(course = false, department = false, diploma = false,
             const requestContract = new ethers.Contract(requestAddress, requestAbi, signer);
             contracts.push(requestContract)
         }
+        if(roles){
+            const rolesContract = new ethers.Contract(rolesAddress, rolesAbi, signer);
+            contracts.push(rolesContract)
+        }
         if(account){
             const account = accounts[0];
             contracts.push(account)
         }
-        return (contracts);
+        return contracts
     }
 }
 export default App;

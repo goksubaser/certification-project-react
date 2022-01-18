@@ -1,25 +1,31 @@
 import React, {useEffect} from 'react';
 import {useState} from 'react';
+import {ethers} from 'ethers';
+import ReactDOM from "react-dom";
+
 import './App.css';
+
 import course from '../abis/Course.json';
 import department from '../abis/Department.json';
 import diploma from '../abis/Diploma.json';
 import faculty from '../abis/Faculty.json';
-import {ethers} from 'ethers';
-import ReactDOM from "react-dom";
-import {render} from "@testing-library/react";
+import roles from '../abis/Roles.json';
+import request from '../abis/Request.json';
+import env from '../env.json';
 
-const courseAddress = "0x4aBe37dE0CEd9304b2Db82e11991668f88F005B4";
-const departmentAddress = "0x752E3382cAccbbEF54d162e559B00b2dB6246945";
-const diplomaAddress = "0x2a5E4BF1aF54ac1E1b51a685d5dfBda71E6345Fc";
-const facultyAddress = "0x45D11B7A1ac6b37203E7ef69286309c75214D5Cf";
-const requestAddress = "0xEBD720B5a6fad8c79036a2Eaad159B482D04ff8F";
-
+const courseAddress = env.courseAddress
+const departmentAddress = env.departmentAddress
+const diplomaAddress = env.diplomaAddress
+const facultyAddress = env.facultyAddress
+const requestAddress = env.requestAddress
+const rolesAddress = env.rolesAddress
 
 const courseAbi = course.abi;
 const departmentAbi = department.abi;
 const diplomaAbi = diploma.abi;
 const facultyAbi = faculty.abi;
+const rolesAbi = roles.abi;
+const requestAbi = request.abi;
 
 function returnButton(){
     ReactDOM.render(
@@ -239,16 +245,13 @@ function AddFaculty(props){
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        let allFaculties = await props.facultyContract.getFacultyRoles();
+        let allFaculties = await props.rolesContract.getFacultyRoles();
         if(allFaculties.indexOf(address)>-1){
             alert(`${address} has the Faculty permissions already`)
             return;
         }
         //TODO tek transaction'a toplanabilir
         await props.facultyContract.mint(facultyName, address)
-        await props.courseContract.grantFacultyRole(address)
-        await props.departmentContract.grantFacultyRole(address)
-        await props.diplomaContract.grantFacultyRole(address)
         //TODO write fail alert messages
         alert(`${address} has the Faculty permissions Now`)
         returnButton()
@@ -780,55 +783,12 @@ function App() {
     }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////// CREATE FUNCTIONS ///////////////////////////////////////////////////////////////
-    function mintDiplomaButton() {
-
-        async function mintDiplomaHandler() {
-            const contracts = await getContracts(true, true, true, true);
-            ReactDOM.render(
-                <React.StrictMode>
-                    <MintDiploma courseContract={contracts[0]} departmentContract={contracts[1]} diplomaContract={contracts[2]} facultyContract={contracts[3]}/>
-                </React.StrictMode>,
-                document.getElementById('root')
-            );
-        }
-        return (
-            <button onClick={mintDiplomaHandler} className='cta-button create-button'>
-                Mint New Diploma
-            </button>
-        )
-    }
-    function addStudentButton() {
-        async function addStudentHandler() {
-            const contracts = await getContracts(true, true, true, true);
-            const facultyAmount = await contracts[3].getTotalSupply();
-            let facultyNames = [];
-            let facultyIDs = [];
-            for(let i = 1; i<=Number(facultyAmount); i++){
-                let facultyName = await contracts[3].getFacultyName(i);
-                if(facultyName !== ""){
-                    facultyNames.push(facultyName);
-                    facultyIDs.push(i);
-                }
-            }
-            ReactDOM.render(
-                <React.StrictMode>
-                    <AddStudent courseContract={contracts[0]} departmentContract={contracts[1]} diplomaContract={contracts[2]} facultyContract={contracts[3]} facultyNames={facultyNames}/>
-                </React.StrictMode>,
-                document.getElementById('root')
-            );
-        }
-        return (
-            <button onClick={addStudentHandler} className='cta-button create-button'>
-                Add New Student
-            </button>
-        )
-    }
     function addFacultyButton() {
         async function addFacultyHandler() {
-            const contracts = await getContracts(true, true, true, true);
+            const contracts = await getContracts(false, false, false, true, false, true, false);
             ReactDOM.render(
                 <React.StrictMode>
-                    <AddFaculty courseContract={contracts[0]} departmentContract={contracts[1]} diplomaContract={contracts[2]} facultyContract={contracts[3]}/>
+                    <AddFaculty facultyContract={contracts[0]} rolesContract={contracts[1]}/>
                 </React.StrictMode>,
                 document.getElementById('root')
             );
@@ -865,6 +825,7 @@ function App() {
             </button>
         )
     }
+
     function addInstructorButton() {
         async function addInstructorHandler() {
             const contracts = await getContracts(true, true, true, true);
@@ -888,6 +849,50 @@ function App() {
         return (
             <button onClick={addInstructorHandler} className='cta-button create-button'>
                 Add New Instructor
+            </button>
+        )
+    }
+    function addStudentButton() {
+        async function addStudentHandler() {
+            const contracts = await getContracts(true, true, true, true);
+            const facultyAmount = await contracts[3].getTotalSupply();
+            let facultyNames = [];
+            let facultyIDs = [];
+            for(let i = 1; i<=Number(facultyAmount); i++){
+                let facultyName = await contracts[3].getFacultyName(i);
+                if(facultyName !== ""){
+                    facultyNames.push(facultyName);
+                    facultyIDs.push(i);
+                }
+            }
+            ReactDOM.render(
+                <React.StrictMode>
+                    <AddStudent courseContract={contracts[0]} departmentContract={contracts[1]} diplomaContract={contracts[2]} facultyContract={contracts[3]} facultyNames={facultyNames}/>
+                </React.StrictMode>,
+                document.getElementById('root')
+            );
+        }
+        return (
+            <button onClick={addStudentHandler} className='cta-button create-button'>
+                Add New Student
+            </button>
+        )
+    }
+
+    function mintDiplomaButton() {
+
+        async function mintDiplomaHandler() {
+            const contracts = await getContracts(true, true, true, true);
+            ReactDOM.render(
+                <React.StrictMode>
+                    <MintDiploma courseContract={contracts[0]} departmentContract={contracts[1]} diplomaContract={contracts[2]} facultyContract={contracts[3]}/>
+                </React.StrictMode>,
+                document.getElementById('root')
+            );
+        }
+        return (
+            <button onClick={mintDiplomaHandler} className='cta-button create-button'>
+                Mint New Diploma
             </button>
         )
     }
@@ -1004,7 +1009,7 @@ function App() {
         </div>
     )
 }
-async function getContracts(course = false, department = false, diploma = false, faculty = false) {
+async function getContracts(course = false, department = false, diploma = false, faculty = false, request = false, roles = false, account = false) {
     const {ethereum} = window;
     if (!ethereum) {
         return;
@@ -1030,6 +1035,18 @@ async function getContracts(course = false, department = false, diploma = false,
         if (faculty) {
             const facultyContract = new ethers.Contract(facultyAddress, facultyAbi, signer);
             contracts.push(facultyContract)
+        }
+        if(request){
+            const requestContract = new ethers.Contract(requestAddress, requestAbi, signer);
+            contracts.push(requestContract)
+        }
+        if(roles){
+            const rolesContract = new ethers.Contract(rolesAddress, rolesAbi, signer);
+            contracts.push(rolesContract)
+        }
+        if(account){
+            const account = accounts[0];
+            contracts.push(account)
         }
         return contracts
     }
