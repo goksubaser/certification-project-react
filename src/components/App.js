@@ -15,10 +15,11 @@ import faculty from '../abis/Faculty.json';
 import {ethers} from 'ethers';
 import ReactDOM from "react-dom";
 
-const courseAddress = "0xCAD61585cCBA628B0840163F2C8639536Bc22Fc6";
-const departmentAddress = "0xd090F4D8499E4F97a4393C96D1ab779D8e67c7CE";
-const diplomaAddress = "0xda2324CD8fD8E01FF681cDED86bA3D5f049ab84a";
-const facultyAddress = "0xA1C88e2F259fcF5F94F922738C1FEce5EFE8d31A";
+const courseAddress = "0x4aBe37dE0CEd9304b2Db82e11991668f88F005B4";
+const departmentAddress = "0x752E3382cAccbbEF54d162e559B00b2dB6246945";
+const diplomaAddress = "0x2a5E4BF1aF54ac1E1b51a685d5dfBda71E6345Fc";
+const facultyAddress = "0x45D11B7A1ac6b37203E7ef69286309c75214D5Cf";
+const requestAddress = "0xEBD720B5a6fad8c79036a2Eaad159B482D04ff8F";
 
 const courseAbi = course.abi;
 const departmentAbi = department.abi;
