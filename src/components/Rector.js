@@ -36,27 +36,6 @@ function returnButton(){
     );
 }
 /////////////////////////////////////// READ FUNCTIONS /////////////////////////////////////////////////////////////////
-function DiplomaList(props) {//TODO Organise table looks
-    return (
-        <div>
-            <tr>
-                <th>Addresses</th>
-                <th>Links</th>
-            </tr>
-            <td>
-                {props.addresses.map(item => {
-                    return <h5>{item}</h5>;
-                })}
-            </td>
-            <td>
-                {props.links.map(item => {
-                    return <h5>{item}</h5>;
-                })}
-            </td>
-            <button onClick={(e)=> returnButton()}>Geri</button>
-        </div>
-    );
-}
 function FacultyList(props){//TODO Organise table looks
     return (
         <div>
@@ -71,7 +50,7 @@ function FacultyList(props){//TODO Organise table looks
             <button onClick={(e)=> returnButton()}>Geri</button>
         </div>
     );
-}
+}//DONE
 function DepartmentList(props){
     return (
         <div>
@@ -86,7 +65,8 @@ function DepartmentList(props){
             <button onClick={(e)=> returnButton()}>Geri</button>
         </div>
     );
-}
+}//DONE
+
 function InstructorList(props){
     return (
         <div>
@@ -101,7 +81,7 @@ function InstructorList(props){
             <button onClick={(e)=> returnButton()}>Geri</button>
         </div>
     );
-}
+}//DONE
 function StudentList(props){
     return (
         <div>
@@ -110,6 +90,28 @@ function StudentList(props){
             </tr>
             <td>
                 {props.studentAddresses.map(item => {
+                    return <h5>{item}</h5>;
+                })}
+            </td>
+            <button onClick={(e)=> returnButton()}>Geri</button>
+        </div>
+    );
+}//DONE
+
+function DiplomaList(props) {//TODO Organise table looks
+    return (
+        <div>
+            <tr>
+                <th>Addresses</th>
+                <th>Links</th>
+            </tr>
+            <td>
+                {props.addresses.map(item => {
+                    return <h5>{item}</h5>;
+                })}
+            </td>
+            <td>
+                {props.links.map(item => {
                     return <h5>{item}</h5>;
                 })}
             </td>
@@ -155,7 +157,7 @@ function AddFaculty(props){
             <button onClick={(e)=> returnButton()}>Geri</button>
         </form>
     )
-}
+}//DONE
 function AddDepartment(props){
     const [departmentAddress, setDepartmentAddress] = useState("");
     const [departmentName, setDepartmentName] = useState("");
@@ -211,7 +213,7 @@ function AddDepartment(props){
             <button onClick={(e)=> returnButton()}>Geri</button>
         </form>
     )
-}
+}//DONE
 
 function AddInstructor(props){
     const [address, setAddress] = useState("");
@@ -253,7 +255,7 @@ function AddInstructor(props){
         //TODO select'ten sonra başka yerlere tıklayınca değeri kaybediyor çünkü onChange
         event.preventDefault();
 
-        let allInstructors = await props.departmentContract.getInstructorRoles()
+        let allInstructors = await props.rolesContract.getInstructorRoles()
         if(allInstructors.indexOf(address)>-1){//existance check
             alert(`${address} is already a instructor`)
             return;
@@ -261,12 +263,9 @@ function AddInstructor(props){
         let departmentInstructors = await props.departmentContract.getInstructors(departmentID)
         let temp = departmentInstructors.slice()
         temp.push(address)
-        //TODO tek transaction'a toplanabilir
-        await props.departmentContract.setInstructors(departmentID,temp)
-        await props.courseContract.grantInstructorRole(address)
-        await props.departmentContract.grantInstructorRole(address)
-        await props.diplomaContract.grantInstructorRole(address)
-        await props.facultyContract.grantInstructorRole(address)
+
+        await props.departmentContract.setInstructors(departmentID,temp,"0x0000000000000000000000000000000000000000")
+
         //TODO write fail alert messages
         alert(`${address} is a Instructor Now`)
         returnButton()
@@ -299,7 +298,7 @@ function AddInstructor(props){
             <button onClick={(e)=> returnButton()}>Geri</button>
         </form>
     )
-}
+}//DONE
 function AddStudent(props){
     const [address, setAddress] = useState("");
     let facultyID = "";
@@ -339,7 +338,7 @@ function AddStudent(props){
     const handleSubmit = async (event) => {
         //TODO select'ten sonra başka yerlere tıklayınca değeri kaybediyor çünkü onChange
         event.preventDefault();
-        let allStudents = await props.departmentContract.getStudentRoles()
+        let allStudents = await props.rolesContract.getStudentRoles()
         if(allStudents.indexOf(address)>-1){//existance check
             alert(`${address} is already a student`)
             return;
@@ -347,12 +346,9 @@ function AddStudent(props){
         let departmentStudents = await props.departmentContract.getStudents(departmentID)
         let temp = departmentStudents.slice()
         temp.push(address)
-        //TODO tek transaction'a toplanabilir
-        await props.departmentContract.setStudents(departmentID,temp)
-        await props.courseContract.grantStudentRole(address)
-        await props.departmentContract.grantStudentRole(address)
-        await props.diplomaContract.grantStudentRole(address)
-        await props.facultyContract.grantStudentRole(address)
+
+        await props.departmentContract.setStudents(departmentID,temp,"0x0000000000000000000000000000000000000000")
+
         //TODO write fail alert messages
         alert(`${address} is a Student Now`)
         returnButton()
@@ -384,7 +380,7 @@ function AddStudent(props){
             <button onClick={(e)=> returnButton()}>Geri</button>
         </form>
     )
-}
+}//DONE
 
 function MintDiploma(props) {
     const [address, setAddress] = useState("");
@@ -524,7 +520,7 @@ function RemoveInstructor(props){
     const handleSubmit = async (event) => {
         //TODO select'ten sonra başka yerlere tıklayınca değeri kaybediyor çünkü onChange
         event.preventDefault();
-        let allInstructors = await props.departmentContract.getInstructorRoles()
+        let allInstructors = await props.rolesContract.getInstructorRoles()
         if(allInstructors.indexOf(address)<=-1){//existance check
             alert(`${address} is not an instructor`)
             return;
@@ -536,12 +532,9 @@ function RemoveInstructor(props){
         }
         let temp = departmentInstructors.slice()
         temp = temp.filter(e => e !== address);
-        //TODO tek transaction'a toplanabilir
-        await props.departmentContract.setInstructors(departmentID,temp)
-        await props.courseContract.revokeInstructorRole(address)
-        await props.departmentContract.revokeInstructorRole(address)
-        await props.diplomaContract.revokeInstructorRole(address)
-        await props.facultyContract.revokeInstructorRole(address)
+
+        await props.departmentContract.setInstructors(departmentID,temp,address)
+
         //TODO write fail alert messages
         alert(`${address} has removed`)
     }
@@ -571,7 +564,7 @@ function RemoveInstructor(props){
             <button onClick={(e)=> returnButton()}>Geri</button>
         </form>
     )
-}
+}//DONE
 function RemoveStudent(props){
     const [address, setAddress] = useState("");
     let facultyID = "";
@@ -611,7 +604,7 @@ function RemoveStudent(props){
     const handleSubmit = async (event) => {
         //TODO select'ten sonra başka yerlere tıklayınca değeri kaybediyor çünkü onChange
         event.preventDefault();
-        let allStudents = await props.departmentContract.getStudentRoles()
+        let allStudents = await props.rolesContract.getStudentRoles()
         if(allStudents.indexOf(address)<=-1){//existance check
             alert(`${address} is not an student`)
             return;
@@ -625,12 +618,9 @@ function RemoveStudent(props){
         temp = temp.filter(e => e !== address);
         console.log(allStudents)
         console.log(departmentStudents)
-        //TODO tek transaction'a toplanabilir
-        await props.departmentContract.setStudents(departmentID,temp)
-        await props.courseContract.revokeStudentRole(address)
-        await props.departmentContract.revokeStudentRole(address)
-        await props.diplomaContract.revokeStudentRole(address)
-        await props.facultyContract.revokeStudentRole(address)
+
+        await props.departmentContract.setStudents(departmentID,temp,address)
+
         //TODO write fail alert messages
         alert(`${address} has removed`)
     }
@@ -660,33 +650,11 @@ function RemoveStudent(props){
             <button onClick={(e)=> returnButton()}>Geri</button>
         </form>
     )
-}
+}//DONE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function App() {
 
 /////////////////////////////////////// READ FUNCTIONS /////////////////////////////////////////////////////////////////
-    function checkDiplomaButton() {
-        async function checkDiplomaHandler() {
-            const contracts = await getContracts(false, false, true, false);
-            const diplomaContract = contracts[0]
-            const diplomaLinks = await diplomaContract.getDiplomaLinks();
-            var diplomaAddresses = [];
-            for (var i = 1; i <= diplomaLinks.length; i++) {
-                diplomaAddresses.push(await diplomaContract.ownerOf(i));
-            }
-            ReactDOM.render(
-                <React.StrictMode>
-                    <DiplomaList links={diplomaLinks} addresses={diplomaAddresses}/>
-                </React.StrictMode>,
-                document.getElementById('root')
-            );
-        }
-        return (
-            <button onClick={checkDiplomaHandler} className='cta-button read-button'>
-                List Diplomas
-            </button>
-        )
-    }
     function checkFacultyButton(){
         async function checkFacultyHandler() {
             const contracts = await getContracts(false, false, false, true);
@@ -711,7 +679,7 @@ function App() {
                 List Faculties
             </button>
         )
-    }
+    }//DONE
     function checkDepartmentButton() {
         async function checkDepartmentHandler() {
             const contracts = await getContracts(false, true, false, false);
@@ -736,10 +704,11 @@ function App() {
                 List Departments
             </button>
         )
-    }
+    }//DONE
+
     function checkInstructorButton() {
         async function checkInstructorHandler() {
-            const contracts = await getContracts(true, false, false, false);
+            const contracts = await getContracts(false, false, false, false,false,true,false);
             const courseContract = contracts[0]
             const instructorAddresses = await courseContract.getInstructorRoles();
             ReactDOM.render(
@@ -754,10 +723,10 @@ function App() {
                 List Instructors
             </button>
         )
-    }
+    }//DONE
     function checkStudentButton() {
         async function checkStudentHandler() {
-            const contracts = await getContracts(true, false, false, false);
+            const contracts = await getContracts(false, false, false, false,false,true,false);
             const courseContract = contracts[0]
             const studentAddresses = await courseContract.getStudentRoles();
             ReactDOM.render(
@@ -770,6 +739,29 @@ function App() {
         return (
             <button onClick={checkStudentHandler} className='cta-button read-button'>
                 List Students
+            </button>
+        )
+    }//DONE
+
+    function checkDiplomaButton() {
+        async function checkDiplomaHandler() {
+            const contracts = await getContracts(false, false, true, false);
+            const diplomaContract = contracts[0]
+            const diplomaLinks = await diplomaContract.getDiplomaLinks();
+            var diplomaAddresses = [];
+            for (var i = 1; i <= diplomaLinks.length; i++) {
+                diplomaAddresses.push(await diplomaContract.ownerOf(i));
+            }
+            ReactDOM.render(
+                <React.StrictMode>
+                    <DiplomaList links={diplomaLinks} addresses={diplomaAddresses}/>
+                </React.StrictMode>,
+                document.getElementById('root')
+            );
+        }
+        return (
+            <button onClick={checkDiplomaHandler} className='cta-button read-button'>
+                List Diplomas
             </button>
         )
     }
@@ -790,7 +782,7 @@ function App() {
                 Add New Faculty
             </button>
         )
-    }
+    }//DONE
     function addDepartmentButton() {
         async function addDepartmentHandler() {
             const contracts = await getContracts(false, true, false, true,false,true,false);
@@ -816,16 +808,16 @@ function App() {
                 Add New Department
             </button>
         )
-    }
+    }//DONE
 
     function addInstructorButton() {
         async function addInstructorHandler() {
-            const contracts = await getContracts(true, true, true, true);
-            const facultyAmount = await contracts[3].getTotalSupply();
+            const contracts = await getContracts(false, true, false, true,false,true,false);
+            const facultyAmount = await contracts[1].getTotalSupply();
             let facultyNames = [];
             let facultyIDs = [];
             for(let i = 1; i<=Number(facultyAmount); i++){
-                let facultyName = await contracts[3].getFacultyName(i);
+                let facultyName = await contracts[1].getFacultyName(i);
                 if(facultyName !== ""){
                     facultyNames.push(facultyName);
                     facultyIDs.push(i);
@@ -833,7 +825,7 @@ function App() {
             }
             ReactDOM.render(
                 <React.StrictMode>
-                    <AddInstructor courseContract={contracts[0]} departmentContract={contracts[1]} diplomaContract={contracts[2]} facultyContract={contracts[3]} facultyNames={facultyNames}/>
+                    <AddInstructor departmentContract={contracts[0]} facultyContract={contracts[1]} rolesContract={contracts[2]} facultyNames={facultyNames}/>
                 </React.StrictMode>,
                 document.getElementById('root')
             );
@@ -843,15 +835,15 @@ function App() {
                 Add New Instructor
             </button>
         )
-    }
+    }//DONE
     function addStudentButton() {
         async function addStudentHandler() {
-            const contracts = await getContracts(true, true, true, true);
-            const facultyAmount = await contracts[3].getTotalSupply();
+            const contracts = await getContracts(false, true, false, true,false,true,false);
+            const facultyAmount = await contracts[1].getTotalSupply();
             let facultyNames = [];
             let facultyIDs = [];
             for(let i = 1; i<=Number(facultyAmount); i++){
-                let facultyName = await contracts[3].getFacultyName(i);
+                let facultyName = await contracts[1].getFacultyName(i);
                 if(facultyName !== ""){
                     facultyNames.push(facultyName);
                     facultyIDs.push(i);
@@ -859,7 +851,7 @@ function App() {
             }
             ReactDOM.render(
                 <React.StrictMode>
-                    <AddStudent courseContract={contracts[0]} departmentContract={contracts[1]} diplomaContract={contracts[2]} facultyContract={contracts[3]} facultyNames={facultyNames}/>
+                    <AddStudent departmentContract={contracts[0]} facultyContract={contracts[1]} rolesContract={contracts[2]} facultyNames={facultyNames}/>
                 </React.StrictMode>,
                 document.getElementById('root')
             );
@@ -869,7 +861,7 @@ function App() {
                 Add New Student
             </button>
         )
-    }
+    }//DONE
 
     function mintDiplomaButton() {
 
@@ -924,12 +916,12 @@ function App() {
     }
     function removeInstructorButton() {
         async function removeInstructorHandler() {
-            const contracts = await getContracts(true, true, true, true);
-            const facultyAmount = await contracts[3].getTotalSupply();
+            const contracts = await getContracts(false, true, false, true,false,true,false);
+            const facultyAmount = await contracts[1].getTotalSupply();
             let facultyNames = [];
             let facultyIDs = [];
             for(let i = 1; i<=Number(facultyAmount); i++){
-                let facultyName = await contracts[3].getFacultyName(i);
+                let facultyName = await contracts[1].getFacultyName(i);
                 if(facultyName !== ""){
                     facultyNames.push(facultyName);
                     facultyIDs.push(i);
@@ -937,7 +929,7 @@ function App() {
             }
             ReactDOM.render(
                 <React.StrictMode>
-                    <RemoveInstructor courseContract={contracts[0]} departmentContract={contracts[1]} diplomaContract={contracts[2]} facultyContract={contracts[3]} facultyNames={facultyNames}/>
+                    <RemoveInstructor departmentContract={contracts[0]} facultyContract={contracts[1]} rolesContract={contracts[2]} facultyNames={facultyNames}/>
                 </React.StrictMode>,
                 document.getElementById('root')
             );
@@ -947,15 +939,15 @@ function App() {
                 Remove Instructor
             </button>
         )
-    }
+    }//DONE
     function removeStudentButton() {
         async function removeStudentHandler() {
-            const contracts = await getContracts(true, true, true, true);
-            const facultyAmount = await contracts[3].getTotalSupply();
+            const contracts = await getContracts(false, true, false, true,false,true,false);
+            const facultyAmount = await contracts[1].getTotalSupply();
             let facultyNames = [];
             let facultyIDs = [];
             for(let i = 1; i<=Number(facultyAmount); i++){
-                let facultyName = await contracts[3].getFacultyName(i);
+                let facultyName = await contracts[1].getFacultyName(i);
                 if(facultyName !== ""){
                     facultyNames.push(facultyName);
                     facultyIDs.push(i);
@@ -963,7 +955,7 @@ function App() {
             }
             ReactDOM.render(
                 <React.StrictMode>
-                    <RemoveStudent courseContract={contracts[0]} departmentContract={contracts[1]} diplomaContract={contracts[2]} facultyContract={contracts[3]} facultyNames={facultyNames}/>
+                    <RemoveStudent departmentContract={contracts[0]} facultyContract={contracts[1]} rolesContract={contracts[2]} facultyNames={facultyNames}/>
                 </React.StrictMode>,
                 document.getElementById('root')
             );
@@ -973,7 +965,7 @@ function App() {
                 Remove Student
             </button>
         )
-    }
+    }//DONE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     return (
