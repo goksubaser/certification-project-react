@@ -37,40 +37,7 @@ function returnButton(){
         document.getElementById('root')
     );
 }
-/////////////////////////////////////// CREATE FUNCTIONS ///////////////////////////////////////////////////////////////
-function CreateDiplomaRequest(props) {
-    const [address, setAddress] = useState("");
-    const [link, setLink] = useState("");
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        await props.requestContract.createDiplomaRequest(link, address)
-        //TODO write fail alert messages
-        alert(`Diploma Request For ${address} Has Created `)
-        returnButton();
-    }
-
-    return (
-        <form onSubmit={handleSubmit}>
-            <label>Enter Diploma Link:
-                <input
-                    type="text"
-                    value={link}
-                    onChange={(e) => setLink(e.target.value)}
-                />
-            </label>
-            <label>Enter Student Address:
-                <input
-                    type="text"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                />
-            </label>
-            <input type="submit"/>
-            <button onClick={(e)=> returnButton()}>Geri</button>
-        </form>
-    )
-}
+/////////////////////////////////////// READ FUNCTIONS /////////////////////////////////////////////////////////////////
 function ReadDiplomaRequest(props){
     return (
 
@@ -101,7 +68,7 @@ function ReadDiplomaRequest(props){
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function App() {
-/////////////////////////////////////// CREATE FUNCTIONS ///////////////////////////////////////////////////////////////
+/////////////////////////////////////// READ FUNCTIONS /////////////////////////////////////////////////////////////////
     function readDiplomaRequestsButton() {
         async function readDiplomaRequestsHandler() {
             const contracts = await getContracts(false,false,false,true,true,false, true);
@@ -155,32 +122,55 @@ function App() {
         )
     }
 
+    function readCourseRequestsButton() {
+
+    }
+
     //Geçici fonksiyon test için
-    function readRequests() {
+    function readDiplomaRequests() {
 
         async function createDiplomaHandler() {
-            const contracts = await getContracts(false, false, false, false,true, false, false);
+            const contracts = await getContracts(false,false,false,false,true,false,false);
             let requests = await contracts[0].getDiplomaRequests();
             for(var i = 0; i<requests.length; i++){
                 console.log(requests[i])
             }
         }
-
         return (
             <button onClick={createDiplomaHandler} className='cta-button read-button'>
                 Read Diploma Request
             </button>
         )
     }
+    function readCourseRequests() {
+        async function createDiplomaHandler() {
+            const contracts = await getContracts(false,false,false,false,true,false,false);
+            let requests = await contracts[0].getCourseRequests();
+            for(var i = 0; i<requests.length; i++){
+                console.log(requests[i])
+            }
+        }
+        return (
+            <button onClick={createDiplomaHandler} className='cta-button read-button'>
+                Read Course Request
+            </button>
+        )
+    }
+
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     return (
         <div className='main-app'>
             <div className='create-operations'>
                 {readDiplomaRequestsButton()}
+                {readCourseRequestsButton()}
+
             </div>
             <div className='read-operations'>
-                {readRequests()}
+                {readDiplomaRequests()}
+                {readCourseRequests()}
+
             </div>
             <div className='delete-operations'></div>
         </div>

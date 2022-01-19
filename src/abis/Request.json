@@ -30472,12 +30472,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x42D7b682F0aa7210766795a530f8035F5bd62717",
-      "transactionHash": "0x730782c48b1fce110f65e9942d5babd01aa4daa905e11f17ce2b1b384933cf75"
+      "address": "0x679fD22fe1e13efEB0AE53CF7BcB1dDfdB9ACAb8",
+      "transactionHash": "0xc2ff15354c3d605aef3b71264878dd22f39824246a5165e6aa63c9628b9fa2b9"
     }
   },
   "schemaVersion": "3.4.4",
-  "updatedAt": "2022-01-19T02:18:48.542Z",
+  "updatedAt": "2022-01-19T03:30:24.972Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

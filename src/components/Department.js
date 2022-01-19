@@ -107,7 +107,7 @@ function App() {
 /////////////////////////////////////// CREATE FUNCTIONS ///////////////////////////////////////////////////////////////
     function createDiplomaRequestButton() {
         async function createDiplomaHandler() {
-            const contracts = await getContracts(false,false,false,false,true);
+            const contracts = await getContracts(false,false,false,false,true,false,false);
             ReactDOM.render(
                 <React.StrictMode>
                     <CreateDiplomaRequest requestContract={contracts[0]}/>
@@ -123,7 +123,7 @@ function App() {
     }
     function createCourseRequestButton() {
         async function createDiplomaHandler() {
-            const contracts = await getContracts(false,false,false,false,true);
+            const contracts = await getContracts(false,false,false,false,true,false,false);
             ReactDOM.render(
                 <React.StrictMode>
                     <CreateCourseRequest requestContract={contracts[0]}/>
@@ -143,7 +143,7 @@ function App() {
     function readDiplomaRequests() {
 
         async function createDiplomaHandler() {
-            const contracts = await getContracts(false, false, false, false,true);
+            const contracts = await getContracts(false,false,false,false,true,false,false);
             let requests = await contracts[0].getDiplomaRequests();
             for(var i = 0; i<requests.length; i++){
                 console.log(requests[i])
@@ -160,7 +160,7 @@ function App() {
 
     function readCourseRequests() {
         async function createDiplomaHandler() {
-            const contracts = await getContracts(false, false, false, false,true);
+            const contracts = await getContracts(false,false,false,false,true,false,false);
             let requests = await contracts[0].getCourseRequests();
             for(var i = 0; i<requests.length; i++){
                 console.log(requests[i])
