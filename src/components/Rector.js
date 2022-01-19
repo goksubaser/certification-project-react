@@ -66,7 +66,6 @@ function DepartmentList(props){
         </div>
     );
 }//DONE
-
 function InstructorList(props){
     return (
         <div>
@@ -97,7 +96,6 @@ function StudentList(props){
         </div>
     );
 }//DONE
-
 function DiplomaList(props) {//TODO Organise table looks
     return (
         <div>
@@ -214,7 +212,6 @@ function AddDepartment(props){
         </form>
     )
 }//DONE
-
 function AddInstructor(props){
     const [address, setAddress] = useState("");
     let facultyID = "";
@@ -381,7 +378,6 @@ function AddStudent(props){
         </form>
     )
 }//DONE
-
 function MintDiploma(props) {
     const [address, setAddress] = useState("");
     const [link, setLink] = useState("");
@@ -389,11 +385,9 @@ function MintDiploma(props) {
     const handleSubmit = async (event) => {
         event.preventDefault();
         await props.diplomaContract.mint(link, address)
-        await props.courseContract.grantGraduatedRole(address)
-        await props.departmentContract.grantGraduatedRole(address)
-        await props.facultyContract.grantGraduatedRole(address)
         //TODO write fail alert messages
         alert(`The Graduate ${address} Has The Diploma ${link} Now`)
+        returnButton()
     }
 
     return (
@@ -419,68 +413,6 @@ function MintDiploma(props) {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////// DELETE FUNCTIONS ///////////////////////////////////////////////////////////////
-function RemoveFaculty(props){
-    const [facultyName, setFacultyName] = useState("");
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-
-        let id = await props.facultyContract.getFacultyID(facultyName);
-        let address = await props.facultyContract.ownerOf(id);
-
-        //TODO tek transaction'a toplanabilir
-        await props.facultyContract.burn(facultyName)
-        await props.courseContract.revokeFacultyRole(address)
-        await props.departmentContract.revokeFacultyRole(address)
-        await props.diplomaContract.revokeFacultyRole(address)
-        //TODO write fail alert messages
-        alert(`${facultyName} has removed`)
-    }
-    return (
-        <form onSubmit={handleSubmit}>
-            <label>Enter Faculty Name:
-                <input
-                    type="text"
-                    value={facultyName}
-                    onChange={(e) => setFacultyName(e.target.value)}
-                />
-            </label>
-            <input type="submit"/>
-            <button onClick={(e)=> returnButton()}>Geri</button>
-        </form>
-    )
-}
-function RemoveDepartment(props){
-    const [departmentName, setDepartmentName] = useState("");
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-
-        let id = await props.departmentContract.getDepartmentID(departmentName);
-        let address = await props.departmentContract.ownerOf(id);
-
-        //TODO tek transaction'a toplanabilir
-        await props.departmentContract.burn(departmentName)
-        await props.courseContract.revokeDepartmentRole(address)
-        await props.diplomaContract.revokeDepartmentRole(address)
-        await props.facultyContract.revokeDepartmentRole(address)
-        //TODO write fail alert messages
-        alert(`${departmentName} has removed`)
-    }
-    return (
-        <form onSubmit={handleSubmit}>
-            <label>Enter Department Name:
-                <input
-                    type="text"
-                    value={departmentName}
-                    onChange={(e) => setDepartmentName(e.target.value)}
-                />
-            </label>
-            <input type="submit"/>
-            <button onClick={(e)=> returnButton()}>Geri</button>
-        </form>
-    )
-}
 function RemoveInstructor(props){
     const [address, setAddress] = useState("");
     let facultyID = "";
@@ -537,6 +469,7 @@ function RemoveInstructor(props){
 
         //TODO write fail alert messages
         alert(`${address} has removed`)
+        returnButton()
     }
     return (
         <form onSubmit={handleSubmit}>
@@ -623,6 +556,7 @@ function RemoveStudent(props){
 
         //TODO write fail alert messages
         alert(`${address} has removed`)
+        returnButton()
     }
     return (
         <form onSubmit={handleSubmit}>
@@ -705,7 +639,6 @@ function App() {
             </button>
         )
     }//DONE
-
     function checkInstructorButton() {
         async function checkInstructorHandler() {
             const contracts = await getContracts(false, false, false, false,false,true,false);
@@ -742,7 +675,6 @@ function App() {
             </button>
         )
     }//DONE
-
     function checkDiplomaButton() {
         async function checkDiplomaHandler() {
             const contracts = await getContracts(false, false, true, false);
@@ -809,7 +741,6 @@ function App() {
             </button>
         )
     }//DONE
-
     function addInstructorButton() {
         async function addInstructorHandler() {
             const contracts = await getContracts(false, true, false, true,false,true,false);
@@ -862,14 +793,13 @@ function App() {
             </button>
         )
     }//DONE
-
     function mintDiplomaButton() {
 
         async function mintDiplomaHandler() {
-            const contracts = await getContracts(true, true, true, true);
+            const contracts = await getContracts(false, false, true, false,false,false,false);
             ReactDOM.render(
                 <React.StrictMode>
-                    <MintDiploma courseContract={contracts[0]} departmentContract={contracts[1]} diplomaContract={contracts[2]} facultyContract={contracts[3]}/>
+                    <MintDiploma diplomaContract={contracts[0]}/>
                 </React.StrictMode>,
                 document.getElementById('root')
             );
@@ -882,38 +812,6 @@ function App() {
     }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////// DELETE FUNCTIONS ///////////////////////////////////////////////////////////////
-    function removeFacultyButton() {
-        async function removeFacultyHandler() {
-            const contracts = await getContracts(true, true, true, true);
-            ReactDOM.render(
-                <React.StrictMode>
-                    <RemoveFaculty courseContract={contracts[0]} departmentContract={contracts[1]} diplomaContract={contracts[2]} facultyContract={contracts[3]}/>
-                </React.StrictMode>,
-                document.getElementById('root')
-            );
-        }
-        return (
-            <button onClick={removeFacultyHandler} className='cta-button delete-button'>
-                Remove Faculty
-            </button>
-        )
-    }
-    function removeDepartmentButton() {
-        async function removeDepartmentHandler() {
-            const contracts = await getContracts(true, true, true, true);
-            ReactDOM.render(
-                <React.StrictMode>
-                    <RemoveDepartment courseContract={contracts[0]} departmentContract={contracts[1]} diplomaContract={contracts[2]} facultyContract={contracts[3]}/>
-                </React.StrictMode>,
-                document.getElementById('root')
-            );
-        }
-        return (
-            <button onClick={removeDepartmentHandler} className='cta-button delete-button'>
-                Remove Department
-            </button>
-        )
-    }
     function removeInstructorButton() {
         async function removeInstructorHandler() {
             const contracts = await getContracts(false, true, false, true,false,true,false);
@@ -985,8 +883,6 @@ function App() {
                 {checkStudentButton()}
             </div>
             <div className='delete-operations'>
-                {/*{removeFacultyButton()}*/}
-                {/*{removeDepartmentButton()}*/}
                 {removeInstructorButton()}
                 {removeStudentButton()}
             </div>
