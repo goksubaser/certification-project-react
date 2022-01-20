@@ -25,7 +25,7 @@ function returnButton() {
 
 function ApplyCourse(props) {
     async function apply(index) {
-        let buttonIndex = index.slice(-1)
+        let buttonIndex = index.slice(-1)//TODO çift basamaklı sayılarda bug oluşturur
         let courseID = Number(props.openCourseIDs[buttonIndex])
         await props.courseContract.applyCourse(courseID)
         returnButton()
@@ -137,9 +137,7 @@ function App() {
         )
     }
 
-    function listCourseButton() {
-
-    }
+    function listCourseButton() {/*TODO*/}
 
     return (
         <div className='main-app'>
@@ -155,7 +153,6 @@ function App() {
         </div>
     );
 }
-
 async function getContracts(course = false, department = false, diploma = false, faculty = false, request = false, roles = false, account = false) {
     const {ethereum} = window;
     if (!ethereum) {

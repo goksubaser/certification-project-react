@@ -29,13 +29,13 @@ function returnButton() {
 /////////////////////////////////////// READ FUNCTIONS /////////////////////////////////////////////////////////////////
 function ReadDiplomaRequest(props) {
     async function approve(index){
-        let buttonIndex = index.slice(-1)
+        let buttonIndex = index.slice(-1)//TODO çift basamaklı sayılarda bug oluşturur
         let request = props.requests[Number(props.indexes[buttonIndex])]
         await props.requestContract.approveDiplomaRequest(request)
         returnButton()
     }
     async function disapprove(index){
-        let buttonIndex = index.slice(-1)
+        let buttonIndex = index.slice(-1)//TODO çift basamaklı sayılarda bug oluşturur
         let request = props.requests[Number(props.indexes[buttonIndex])]
         await props.requestContract.disapproveDiplomaRequest(request)
         returnButton()
@@ -106,13 +106,13 @@ function ReadDiplomaRequest(props) {
 }
 function ReadCourseRequest(props) {
     async function approve(index){
-        let buttonIndex = index.slice(-1)
+        let buttonIndex = index.slice(-1)//TODO çift basamaklı sayılarda bug oluşturur
         let request = props.requests[Number(props.indexes[buttonIndex])]
         await props.requestContract.approveCourseRequest(request)
         returnButton()
     }
     async function disapprove(index){
-        let buttonIndex = index.slice(-1)
+        let buttonIndex = index.slice(-1)//TODO çift basamaklı sayılarda bug oluşturur
         let request = props.requests[Number(props.indexes[buttonIndex])]
         await props.requestContract.disapproveCourseRequest(request)
         returnButton()
