@@ -39,7 +39,7 @@ function ReadApplications(props){
         let j = Number(index.slice(index.indexOf("j")+1))
         let courseID = props.coursesGiven[i]
         let studentAddress = props.applications[i][j]
-        await props.courseContract.approveApplication(courseID,studentAddress)
+        await props.courseContract.approveDisapproveApplication(courseID,studentAddress, true)
         returnButton()
 
     }
@@ -48,9 +48,10 @@ function ReadApplications(props){
         let j = Number(index.slice(index.indexOf("j")+1))
         let courseID = props.coursesGiven[i]
         let studentAddress = props.applications[i][j]
+        await props.courseContract.approveDisapproveApplication(courseID,studentAddress, false)
         console.log(courseID)
         console.log(studentAddress)
-        // returnButton()
+        returnButton()
     }
     async function createTable() {
         console.log(props.applications)
