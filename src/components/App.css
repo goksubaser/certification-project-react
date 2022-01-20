@@ -47,6 +47,9 @@
 .disapprove-button{
     background: #ff0000;
 }
+.apply-button{
+    background: #ffff00;
+}
 /*table {*/
 /*    display: table;*/
 /*}*/
