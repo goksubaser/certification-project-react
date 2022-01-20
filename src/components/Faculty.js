@@ -39,36 +39,86 @@ function returnButton() {
 
 /////////////////////////////////////// READ FUNCTIONS /////////////////////////////////////////////////////////////////
 function ReadDiplomaRequest(props) {
-    return (
+    async function approve(index){
+        let buttonIndex = index.slice(-1)
+        let request = props.requests[Number(props.indexes[buttonIndex])]
+        console.log(request)
+        await props.requestContract.approveDiplomaRequest(request)
+        returnButton()
+    }
+    async function disapprove(index){
+        let buttonIndex = index.slice(-1)
+        let request = props.requests[Number(props.indexes[buttonIndex])]
+        console.log(request)
+        await props.requestContract.disapproveDiplomaRequest(request)
+        returnButton()
+    }
+    function createTable() {
+        var table = document.getElementById("diplomaRequestTable");
 
-        <div>
-            <tr>
-                <th>Student Addresses</th>
-                <th>Diploma Links</th>
-                <th>Requestor Departments Addresses</th>
+        table.removeChild(document.getElementById("tableBody"))
+
+        let tbody = document.createElement("tbody")
+        tbody.setAttribute("id", "tableBody")
+        table.insertBefore(tbody, document.getElementById("buttons"))
+
+        var newRow = tbody.insertRow(0)
+        var cell0 = document.createElement("th")
+        var cell1 = document.createElement("th")
+        var cell2 = document.createElement("th")
+        var cell3 = document.createElement("th")
+        var cell4 = document.createElement("th")
+        cell0.innerHTML = "Student Address";
+        cell1.innerHTML = "Diploma Link";
+        cell2.innerHTML = "Requestor Department";
+        cell3.innerHTML = "Approve";
+        cell4.innerHTML = "Disapprove";
+        newRow.appendChild(cell0)
+        newRow.appendChild(cell1)
+        newRow.appendChild(cell2)
+        newRow.appendChild(cell3)
+        newRow.appendChild(cell4)
+        for (var i = 0; i < props.requestorDepartments.length; i++) {
+            var newRow = tbody.insertRow(i+1)
+            var cell0 = newRow.insertCell(0);
+            var cell1 = newRow.insertCell(1);
+            var cell2 = newRow.insertCell(2);
+            var cell3 = newRow.insertCell(3);
+            var cell4 = newRow.insertCell(4);
+            var approveButton = document.createElement("button")
+            approveButton.setAttribute("class", "approve-button")
+            approveButton.setAttribute("type", "button")
+            approveButton.setAttribute("id", "approve"+i)
+            approveButton.onclick = function () {approve(this.id)}
+            approveButton.innerHTML = "Approve"
+            cell3.appendChild(approveButton)
+            var disapproveButton = document.createElement("button")
+            disapproveButton.setAttribute("class", "disapprove-button")
+            disapproveButton.setAttribute("type", "button")
+            disapproveButton.setAttribute("id", "disapprove"+i)
+            disapproveButton.onclick = function () {disapprove(this.id)}
+            disapproveButton.innerHTML = "Disapprove"
+            cell4.appendChild(disapproveButton)
+            cell0.innerHTML = props.studentAddresses[i];
+            cell1.innerHTML = props.diplomaLinks[i];
+            cell2.innerHTML = props.requestorDepartments[i];
+        }
+    }
+
+    return (
+        <body>
+        <table id="diplomaRequestTable">
+            <tbody id="tableBody"></tbody>
+            <tr id="buttons">
+                <button onClick={(e) => returnButton()}>Back</button>
+                <button onClick={(e) => createTable()}>Show Requests</button>
             </tr>
-            <td>
-                {props.studentAddresses.map(item => {
-                    return <h5>{item}</h5>;
-                })}
-            </td>
-            <td>
-                {props.diplomaLinks.map(item => {
-                    return <h5>{item}</h5>;
-                })}
-            </td>
-            <td>
-                {props.requestorDepartments.map(item => {
-                    return <h5>{item}</h5>;
-                })}
-            </td>
-            <button onClick={(e) => returnButton()}>Geri</button>
-        </div>
+        </table>
+        </body>
     );
 }
 
 function ReadCourseRequest(props) {
-    // window.onload = createTable()
     async function approve(index){
         let buttonIndex = index.slice(-1)
         let request = props.requests[Number(props.indexes[buttonIndex])]
@@ -152,10 +202,10 @@ function App() {
 /////////////////////////////////////// READ FUNCTIONS /////////////////////////////////////////////////////////////////
     function readDiplomaRequestsButton() {
         async function readDiplomaRequestsHandler() {
-            const contracts = await getContracts(false, false, false, true, true, false, true);
-            let facultyContract = contracts[0];
-            let requests = await contracts[1].getDiplomaRequests();
-            let account = contracts[2];
+            const contracts = await getContracts(false, true, false, true, true, false, true);
+            let facultyContract = contracts[1];
+            let requests = await contracts[2].getDiplomaRequests();
+            let account = contracts[3];
             let facultyID = 0;
             let totalSupply = await facultyContract.getTotalSupply()
             for (var i = 1; i <= totalSupply; i++) {
@@ -179,20 +229,27 @@ function App() {
                     if (departments.indexOf(requests[i].requestorDepartment) > -1) {
                         studentAddresses.push(requests[i].studentAddress)
                         diplomaLinks.push(requests[i].diplomaLink)
-                        requestorDepartments.push(requests[i].requestorDepartment)
+                        let totalSupply = await contracts[0].getTotalSupply()
+                        for (var j = 1; j <= totalSupply; j++) {
+                            let owner = await contracts[0].ownerOf(j)
+                            if (requests[i].requestorDepartment == owner) {
+                                let name = await contracts[0].getDepartmentName(j)
+                                requestorDepartments.push(name)
+                            }
+                        }
                         indexes.push(i)
                     }
                 }
             }
-            console.log(studentAddresses)
-            console.log(diplomaLinks)
-            console.log(requestorDepartments)
-            console.log(indexes)
             ReactDOM.render(
                 <React.StrictMode>
-                    <ReadDiplomaRequest requests={requests} studentAddresses={studentAddresses}
-                                        diplomaLinks={diplomaLinks} requestorDepartments={requestorDepartments}
-                                        indexes={indexes}/>
+                    <ReadDiplomaRequest requests={requests}
+                                       studentAddresses={studentAddresses}
+                                       diplomaLinks={diplomaLinks}
+                                       requestorDepartments={requestorDepartments}
+                                       indexes={indexes}
+                                       requestContract={contracts[2]}
+                    />
                 </React.StrictMode>,
                 document.getElementById('root')
             );
@@ -247,10 +304,6 @@ function App() {
                     }
                 }
             }
-            console.log(instructorAddresses)
-            console.log(courseLinks)
-            console.log(requestorDepartments)
-            console.log(indexes)
             ReactDOM.render(
                 <React.StrictMode>
                     <ReadCourseRequest requests={requests}
@@ -271,7 +324,6 @@ function App() {
             </button>
         )
     }
-
     //Geçici fonksiyon test için
     function readDiplomaRequests() {
 
@@ -289,7 +341,6 @@ function App() {
             </button>
         )
     }
-
     function readCourseRequests() {
         async function createDiplomaHandler() {
             const contracts = await getContracts(false, false, false, false, true, false, false);
@@ -305,8 +356,6 @@ function App() {
             </button>
         )
     }
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     return (
         <div className='main-app'>
