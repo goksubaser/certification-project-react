@@ -123,6 +123,28 @@ function DiplomaList(props) {//TODO Organise table looks
     );
 }
 
+function CourseList(props){//TODO Organise table looks
+    return (
+        <div>
+            <tr>
+                <th>Addresses</th>
+                <th>Links</th>
+            </tr>
+            <td>
+                {props.addresses.map(item => {
+                    return <h5>{item}</h5>;
+                })}
+            </td>
+            <td>
+                {props.links.map(item => {
+                    return <h5>{item}</h5>;
+                })}
+            </td>
+            <button onClick={(e) => returnButton()}>Geri</button>
+        </div>
+    );
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////// CREATE FUNCTIONS ///////////////////////////////////////////////////////////////
 function AddFaculty(props) {
@@ -481,6 +503,91 @@ function MintDiploma(props) {
     );
 }
 
+function MintCourse(props){
+    async function approve(index) {
+        let buttonIndex = index.slice(-1)
+        let request = props.requests[Number(props.indexes[buttonIndex])]
+        console.log(request)
+        await props.courseContract.mint(request.courseLink, request.instructorAddress)
+        //TODO write fail alert messages
+        alert(`The Instructor: ${request.instructorAddress} Has The Course ${request.courseLink} Now`)
+        returnButton()
+    }
+
+    async function disapprove(index) {
+        let buttonIndex = index.slice(-1)
+        let request = props.requests[Number(props.indexes[buttonIndex])]
+        console.log(request)
+        console.log(props.requests)
+        await props.requestContract.disapproveCourseRequest(request)
+        returnButton()
+    }
+
+    function createTable() {
+        var table = document.getElementById("diplomaRequestTable");
+        table.removeChild(document.getElementById("tableBody"))
+        let tbody = document.createElement("tbody")
+        tbody.setAttribute("id", "tableBody")
+        table.insertBefore(tbody, document.getElementById("buttons"))
+        var newRow = tbody.insertRow(0)
+        var cell0 = document.createElement("th")
+        var cell1 = document.createElement("th")
+        var cell2 = document.createElement("th")
+        var cell3 = document.createElement("th")
+        var cell4 = document.createElement("th")
+        cell0.innerHTML = "Instructor Address";
+        cell1.innerHTML = "Course Link";
+        cell2.innerHTML = "Requestor Department";
+        cell3.innerHTML = "Approve";
+        cell4.innerHTML = "Disapprove";
+        newRow.appendChild(cell0)
+        newRow.appendChild(cell1)
+        newRow.appendChild(cell2)
+        newRow.appendChild(cell3)
+        newRow.appendChild(cell4)
+        for (var i = 0; i < props.requestorDepartments.length; i++) {
+            var newRow = tbody.insertRow(i + 1)
+            var cell0 = newRow.insertCell(0);
+            var cell1 = newRow.insertCell(1);
+            var cell2 = newRow.insertCell(2);
+            var cell3 = newRow.insertCell(3);
+            var cell4 = newRow.insertCell(4);
+            var approveButton = document.createElement("button")
+            approveButton.setAttribute("class", "approve-button")
+            approveButton.setAttribute("type", "button")
+            approveButton.setAttribute("id", "approve" + i)
+            approveButton.onclick = function () {
+                approve(this.id)
+            }
+            approveButton.innerHTML = "Approve"
+            cell3.appendChild(approveButton)
+            var disapproveButton = document.createElement("button")
+            disapproveButton.setAttribute("class", "disapprove-button")
+            disapproveButton.setAttribute("type", "button")
+            disapproveButton.setAttribute("id", "disapprove" + i)
+            disapproveButton.onclick = function () {
+                disapprove(this.id)
+            }
+            disapproveButton.innerHTML = "Disapprove"
+            cell4.appendChild(disapproveButton)
+            cell0.innerHTML = props.instructorAddresses[i];
+            cell1.innerHTML = props.courseLinks[i];
+            cell2.innerHTML = props.requestorDepartments[i];
+        }
+    }
+
+    return (
+        <body>
+        <table id="diplomaRequestTable">
+            <tbody id="tableBody"></tbody>
+            <tr id="buttons">
+                <button onClick={(e) => returnButton()}>Back</button>
+                <button onClick={(e) => createTable()}>Show Requests</button>
+            </tr>
+        </table>
+        </body>
+    );}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////// DELETE FUNCTIONS ///////////////////////////////////////////////////////////////
 function RemoveInstructor(props) {
@@ -784,6 +891,30 @@ function App() {
         )
     }
 
+    function checkCourseButton() {
+        async function checkCourseHandler() {
+            const contracts = await getContracts(true, false, false, false);
+            const courseContract = contracts[0]
+            const courseLinks = await courseContract.getCourseLinks();
+            var courseAddresses = [];
+            for (var i = 1; i <= courseLinks.length; i++) {
+                courseAddresses.push(await courseContract.ownerOf(i));
+            }
+            ReactDOM.render(
+                <React.StrictMode>
+                    <CourseList links={courseLinks} addresses={courseAddresses}/>
+                </React.StrictMode>,
+                document.getElementById('root')
+            );
+        }
+
+        return (
+            <button onClick={checkCourseHandler} className='cta-button read-button'>
+                List Courses
+            </button>
+        )
+    }
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////// CREATE FUNCTIONS ///////////////////////////////////////////////////////////////
     function addFacultyButton() {
@@ -945,7 +1076,62 @@ function App() {
         )
     }
 
-    function mintCourseButton() {/*TODO*/
+    function mintCourseButton() {
+        async function readCourseRequestsHandler() {
+            const contracts = await getContracts(true, true, false, false, true, true, true);
+            let requests = await contracts[2].getCourseRequests();
+            let rolesContract = contracts[3];
+            let account = contracts[4];
+            let isRector = await rolesContract.hasRectorRole(account)
+            if (!isRector) {
+                alert(`This Account: ${account} does not have Rector Permisions`)
+                return;
+            }
+            let instructorAddresses = [];
+            let courseLinks = [];
+            let requestorDepartments = [];
+            let indexes = [];
+            for (var i = 0; i < requests.length; i++) {
+                if (requests[i].atRector) {
+                    if (!requests[i].minted) {
+                        instructorAddresses.push(requests[i].instructorAddress)
+                        courseLinks.push(requests[i].courseLink)
+                        let totalSupply = await contracts[1].getTotalSupply()
+                        for (var j = 1; j <= totalSupply; j++) {
+                            let owner = await contracts[1].ownerOf(j)
+                            if (requests[i].requestorDepartment == owner) {
+                                let name = await contracts[1].getDepartmentName(j)
+                                requestorDepartments.push(name)
+                            }
+                        }
+                        indexes.push(i)
+                    }
+                }
+            }
+            console.log(instructorAddresses)
+            console.log(courseLinks)
+            console.log(requestorDepartments)
+            console.log(indexes)
+            ReactDOM.render(
+                <React.StrictMode>
+                    <MintCourse  requests={requests}
+                                 instructorAddresses={instructorAddresses}
+                                 courseLinks={courseLinks}
+                                 requestorDepartments={requestorDepartments}
+                                 indexes={indexes}
+                                 requestContract={contracts[2]}//To make minted=true
+                                 courseContract={contracts[0]}//To mint
+                    />
+                </React.StrictMode>,
+                document.getElementById('root')
+            );
+        }
+
+        return (
+            <button onClick={readCourseRequestsHandler} className='cta-button create-button'>
+                Approve Course
+            </button>
+        )
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1021,6 +1207,7 @@ function App() {
             </div>
             <div className='read-operations'>
                 {checkDiplomaButton()}
+                {checkCourseButton()}
                 {checkFacultyButton()}
                 {checkDepartmentButton()}
                 {checkInstructorButton()}
