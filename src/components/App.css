@@ -41,6 +41,12 @@
 .mint-nft-button{
     background: #ffa500;
 }
+.approve-button{
+    background: #07ff00;
+}
+.disapprove-button{
+    background: #ff0000;
+}
 /*table {*/
 /*    display: table;*/
 /*}*/

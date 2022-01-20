@@ -20654,7 +20654,7 @@
         1496
       ],
       "Roles": [
-        5021
+        5090
       ],
       "Strings": [
         2045
@@ -20693,7 +20693,7 @@
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
         "scope": 3941,
-        "sourceUnit": 5022,
+        "sourceUnit": 5091,
         "src": "87:21:17",
         "symbolAliases": [],
         "unitAlias": ""
@@ -21175,10 +21175,10 @@
                               "name": "Roles",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 5021,
+                              "referencedDeclaration": 5090,
                               "src": "727:5:17",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_type$_t_contract$_Roles_$5021_$",
+                                "typeIdentifier": "t_type$_t_contract$_Roles_$5090_$",
                                 "typeString": "type(contract Roles)"
                               }
                             },
@@ -21193,7 +21193,7 @@
                             "src": "727:27:17",
                             "tryCall": false,
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_Roles_$5021",
+                              "typeIdentifier": "t_contract$_Roles_$5090",
                               "typeString": "contract Roles"
                             }
                           },
@@ -21204,7 +21204,7 @@
                           "lValueRequested": false,
                           "memberName": "hasRectorRole",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 4776,
+                          "referencedDeclaration": 4845,
                           "src": "727:41:17",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_bool_$",
@@ -21471,10 +21471,10 @@
                           "name": "Roles",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 5021,
+                          "referencedDeclaration": 5090,
                           "src": "929:5:17",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_type$_t_contract$_Roles_$5021_$",
+                            "typeIdentifier": "t_type$_t_contract$_Roles_$5090_$",
                             "typeString": "type(contract Roles)"
                           }
                         },
@@ -21489,7 +21489,7 @@
                         "src": "929:27:17",
                         "tryCall": false,
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_Roles_$5021",
+                          "typeIdentifier": "t_contract$_Roles_$5090",
                           "typeString": "contract Roles"
                         }
                       },
@@ -21500,7 +21500,7 @@
                       "lValueRequested": false,
                       "memberName": "grantFacultyRole",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 4671,
+                      "referencedDeclaration": 4740,
                       "src": "929:44:17",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_address_$returns$__$",
@@ -21577,10 +21577,10 @@
                               "name": "Roles",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 5021,
+                              "referencedDeclaration": 5090,
                               "src": "1008:5:17",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_type$_t_contract$_Roles_$5021_$",
+                                "typeIdentifier": "t_type$_t_contract$_Roles_$5090_$",
                                 "typeString": "type(contract Roles)"
                               }
                             },
@@ -21595,7 +21595,7 @@
                             "src": "1008:27:17",
                             "tryCall": false,
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_Roles_$5021",
+                              "typeIdentifier": "t_contract$_Roles_$5090",
                               "typeString": "contract Roles"
                             }
                           },
@@ -21606,7 +21606,7 @@
                           "lValueRequested": false,
                           "memberName": "hasFacultyRole",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 4789,
+                          "referencedDeclaration": 4858,
                           "src": "1008:42:17",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_bool_$",
@@ -22946,10 +22946,10 @@
                               "name": "Roles",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 5021,
+                              "referencedDeclaration": 5090,
                               "src": "2187:5:17",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_type$_t_contract$_Roles_$5021_$",
+                                "typeIdentifier": "t_type$_t_contract$_Roles_$5090_$",
                                 "typeString": "type(contract Roles)"
                               }
                             },
@@ -22964,7 +22964,7 @@
                             "src": "2187:27:17",
                             "tryCall": false,
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_Roles_$5021",
+                              "typeIdentifier": "t_contract$_Roles_$5090",
                               "typeString": "contract Roles"
                             }
                           },
@@ -22975,7 +22975,7 @@
                           "lValueRequested": false,
                           "memberName": "hasRectorRole",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 4776,
+                          "referencedDeclaration": 4845,
                           "src": "2187:41:17",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_bool_$",
@@ -24369,7 +24369,7 @@
         1496
       ],
       "Roles": [
-        5021
+        5090
       ],
       "Strings": [
         2045
@@ -24408,7 +24408,7 @@
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
         "scope": 3941,
-        "sourceUnit": 5022,
+        "sourceUnit": 5091,
         "src": "87:21:17",
         "symbolAliases": [],
         "unitAlias": ""
@@ -24890,10 +24890,10 @@
                               "name": "Roles",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 5021,
+                              "referencedDeclaration": 5090,
                               "src": "727:5:17",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_type$_t_contract$_Roles_$5021_$",
+                                "typeIdentifier": "t_type$_t_contract$_Roles_$5090_$",
                                 "typeString": "type(contract Roles)"
                               }
                             },
@@ -24908,7 +24908,7 @@
                             "src": "727:27:17",
                             "tryCall": false,
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_Roles_$5021",
+                              "typeIdentifier": "t_contract$_Roles_$5090",
                               "typeString": "contract Roles"
                             }
                           },
@@ -24919,7 +24919,7 @@
                           "lValueRequested": false,
                           "memberName": "hasRectorRole",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 4776,
+                          "referencedDeclaration": 4845,
                           "src": "727:41:17",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_bool_$",
@@ -25186,10 +25186,10 @@
                           "name": "Roles",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 5021,
+                          "referencedDeclaration": 5090,
                           "src": "929:5:17",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_type$_t_contract$_Roles_$5021_$",
+                            "typeIdentifier": "t_type$_t_contract$_Roles_$5090_$",
                             "typeString": "type(contract Roles)"
                           }
                         },
@@ -25204,7 +25204,7 @@
                         "src": "929:27:17",
                         "tryCall": false,
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_Roles_$5021",
+                          "typeIdentifier": "t_contract$_Roles_$5090",
                           "typeString": "contract Roles"
                         }
                       },
@@ -25215,7 +25215,7 @@
                       "lValueRequested": false,
                       "memberName": "grantFacultyRole",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 4671,
+                      "referencedDeclaration": 4740,
                       "src": "929:44:17",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_address_$returns$__$",
@@ -25292,10 +25292,10 @@
                               "name": "Roles",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 5021,
+                              "referencedDeclaration": 5090,
                               "src": "1008:5:17",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_type$_t_contract$_Roles_$5021_$",
+                                "typeIdentifier": "t_type$_t_contract$_Roles_$5090_$",
                                 "typeString": "type(contract Roles)"
                               }
                             },
@@ -25310,7 +25310,7 @@
                             "src": "1008:27:17",
                             "tryCall": false,
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_Roles_$5021",
+                              "typeIdentifier": "t_contract$_Roles_$5090",
                               "typeString": "contract Roles"
                             }
                           },
@@ -25321,7 +25321,7 @@
                           "lValueRequested": false,
                           "memberName": "hasFacultyRole",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 4789,
+                          "referencedDeclaration": 4858,
                           "src": "1008:42:17",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_bool_$",
@@ -26661,10 +26661,10 @@
                               "name": "Roles",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 5021,
+                              "referencedDeclaration": 5090,
                               "src": "2187:5:17",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_type$_t_contract$_Roles_$5021_$",
+                                "typeIdentifier": "t_type$_t_contract$_Roles_$5090_$",
                                 "typeString": "type(contract Roles)"
                               }
                             },
@@ -26679,7 +26679,7 @@
                             "src": "2187:27:17",
                             "tryCall": false,
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_Roles_$5021",
+                              "typeIdentifier": "t_contract$_Roles_$5090",
                               "typeString": "contract Roles"
                             }
                           },
@@ -26690,7 +26690,7 @@
                           "lValueRequested": false,
                           "memberName": "hasRectorRole",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 4776,
+                          "referencedDeclaration": 4845,
                           "src": "2187:41:17",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_bool_$",
@@ -28122,12 +28122,12 @@
         }
       },
       "links": {},
-      "address": "0x4C7075016D7769C5993AC2f5e01cd7b0CFBb11ce",
-      "transactionHash": "0x643ec8b0fbb7fe90a7bca781b30226d80722f69ab8db55763434a93fd0ecc143"
+      "address": "0xA3821690825c64b518fcf28F166ae213b54aA347",
+      "transactionHash": "0x5e42a29f36e3a344cfa45fe2d2827ecebe87936a09db104fe99a935ff93e50b2"
     }
   },
   "schemaVersion": "3.4.4",
-  "updatedAt": "2022-01-19T03:30:24.931Z",
+  "updatedAt": "2022-01-19T23:58:03.241Z",
   "devdoc": {
     "kind": "dev",
     "methods": {
