@@ -24047,7 +24047,7 @@
         1496
       ],
       "Roles": [
-        5090
+        5202
       ],
       "Strings": [
         2045
@@ -24086,7 +24086,7 @@
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
         "scope": 2915,
-        "sourceUnit": 5091,
+        "sourceUnit": 5203,
         "src": "87:21:14",
         "symbolAliases": [],
         "unitAlias": ""
@@ -24111,7 +24111,7 @@
               "id": 2687,
               "name": "Roles",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 5090,
+              "referencedDeclaration": 5202,
               "src": "139:5:14"
             },
             "id": 2688,
@@ -24126,7 +24126,7 @@
         "id": 2914,
         "linearizedBaseContracts": [
           2914,
-          5090,
+          5202,
           433,
           308,
           1362,
@@ -24515,7 +24515,7 @@
                         "name": "RECTOR_ROLE",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4572,
+                        "referencedDeclaration": 4684,
                         "src": "931:11:14",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes32",
@@ -24869,7 +24869,7 @@
                             "name": "INSTRUCTOR_ROLE",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 4587,
+                            "referencedDeclaration": 4699,
                             "src": "1301:15:14",
                             "typeDescriptions": {
                               "typeIdentifier": "t_bytes32",
@@ -27000,7 +27000,7 @@
         1496
       ],
       "Roles": [
-        5090
+        5202
       ],
       "Strings": [
         2045
@@ -27039,7 +27039,7 @@
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
         "scope": 2915,
-        "sourceUnit": 5091,
+        "sourceUnit": 5203,
         "src": "87:21:14",
         "symbolAliases": [],
         "unitAlias": ""
@@ -27064,7 +27064,7 @@
               "id": 2687,
               "name": "Roles",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 5090,
+              "referencedDeclaration": 5202,
               "src": "139:5:14"
             },
             "id": 2688,
@@ -27079,7 +27079,7 @@
         "id": 2914,
         "linearizedBaseContracts": [
           2914,
-          5090,
+          5202,
           433,
           308,
           1362,
@@ -27468,7 +27468,7 @@
                         "name": "RECTOR_ROLE",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4572,
+                        "referencedDeclaration": 4684,
                         "src": "931:11:14",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes32",
@@ -27822,7 +27822,7 @@
                             "name": "INSTRUCTOR_ROLE",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 4587,
+                            "referencedDeclaration": 4699,
                             "src": "1301:15:14",
                             "typeDescriptions": {
                               "typeIdentifier": "t_bytes32",
@@ -30066,12 +30066,12 @@
         }
       },
       "links": {},
-      "address": "0x97ED73B9cF86F943F7e21f7b44DD756D4aA8a366",
-      "transactionHash": "0x3aef62ab0ab80c5cdb344f24156635d8ab7511875d87d92f003ccbeb8e1b63f1"
+      "address": "0xda4535479D6c8AFc96dA52a93b6d53669fda450A",
+      "transactionHash": "0x5e8a61762a3dc90f83991bf26790e771e2c46422e2fc5ac4a58f899c7be955c6"
     }
   },
   "schemaVersion": "3.4.4",
-  "updatedAt": "2022-01-19T23:58:03.137Z",
+  "updatedAt": "2022-01-20T00:24:06.811Z",
   "devdoc": {
     "kind": "dev",
     "methods": {

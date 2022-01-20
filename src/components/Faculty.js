@@ -80,6 +80,8 @@ function ReadCourseRequest(props) {
         let buttonIndex = index.slice(-1)
         let request = props.requests[Number(props.indexes[buttonIndex])]
         console.log(request)
+        await props.requestContract.disapproveCourseRequest(request)
+        returnButton()
     }
     function createTable() {
         var table = document.getElementById("courseRequestTable");
