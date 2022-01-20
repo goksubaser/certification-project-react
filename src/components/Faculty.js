@@ -1,31 +1,20 @@
 import React, {useEffect} from 'react';
-import {useState} from 'react';
 import {ethers} from 'ethers';
 import ReactDOM from "react-dom";
 
 import './App.css';
 
-import course from '../abis/Course.json';
 import department from '../abis/Department.json';
-import diploma from '../abis/Diploma.json';
 import faculty from '../abis/Faculty.json';
-import roles from '../abis/Roles.json';
 import request from '../abis/Request.json';
 import env from '../env.json';
 
-
-const courseAddress = env.courseAddress
 const departmentAddress = env.departmentAddress
-const diplomaAddress = env.diplomaAddress
 const facultyAddress = env.facultyAddress
 const requestAddress = env.requestAddress
-const rolesAddress = env.rolesAddress
 
-const courseAbi = course.abi;
 const departmentAbi = department.abi;
-const diplomaAbi = diploma.abi;
 const facultyAbi = faculty.abi;
-const rolesAbi = roles.abi;
 const requestAbi = request.abi;
 
 function returnButton() {
@@ -42,14 +31,12 @@ function ReadDiplomaRequest(props) {
     async function approve(index){
         let buttonIndex = index.slice(-1)
         let request = props.requests[Number(props.indexes[buttonIndex])]
-        console.log(request)
         await props.requestContract.approveDiplomaRequest(request)
         returnButton()
     }
     async function disapprove(index){
         let buttonIndex = index.slice(-1)
         let request = props.requests[Number(props.indexes[buttonIndex])]
-        console.log(request)
         await props.requestContract.disapproveDiplomaRequest(request)
         returnButton()
     }
@@ -117,19 +104,16 @@ function ReadDiplomaRequest(props) {
         </body>
     );
 }
-
 function ReadCourseRequest(props) {
     async function approve(index){
         let buttonIndex = index.slice(-1)
         let request = props.requests[Number(props.indexes[buttonIndex])]
-        console.log(request)
         await props.requestContract.approveCourseRequest(request)
         returnButton()
     }
     async function disapprove(index){
         let buttonIndex = index.slice(-1)
         let request = props.requests[Number(props.indexes[buttonIndex])]
-        console.log(request)
         await props.requestContract.disapproveCourseRequest(request)
         returnButton()
     }
@@ -196,7 +180,6 @@ function ReadCourseRequest(props) {
         </body>
     );
 }
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function App() {
 /////////////////////////////////////// READ FUNCTIONS /////////////////////////////////////////////////////////////////
@@ -257,11 +240,10 @@ function App() {
 
         return (
             <button onClick={readDiplomaRequestsHandler} className='cta-button create-button'>
-                List Diploma Requests
+                Approve Diploma
             </button>
         )
     }
-
     function readCourseRequestsButton() {
         async function readCourseRequestsHandler() {
 
@@ -320,10 +302,11 @@ function App() {
 
         return (
             <button onClick={readCourseRequestsHandler} className='cta-button create-button'>
-                List Course Requests
+                Approve Course
             </button>
         )
     }
+
     //Geçici fonksiyon test için
     function readDiplomaRequests() {
 
@@ -373,7 +356,6 @@ function App() {
         </div>
     )
 }
-
 async function getContracts(course = false, department = false, diploma = false, faculty = false, request = false, roles = false, account = false) {
     const {ethereum} = window;
     if (!ethereum) {
@@ -385,17 +367,9 @@ async function getContracts(course = false, department = false, diploma = false,
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
         let contracts = [];
-        if (course) {
-            const courseContract = new ethers.Contract(courseAddress, courseAbi, signer);
-            contracts.push(courseContract);
-        }
         if (department) {
             const departmentContract = new ethers.Contract(departmentAddress, departmentAbi, signer);
             contracts.push(departmentContract)
-        }
-        if (diploma) {
-            const diplomaContract = new ethers.Contract(diplomaAddress, diplomaAbi, signer);
-            contracts.push(diplomaContract)
         }
         if (faculty) {
             const facultyContract = new ethers.Contract(facultyAddress, facultyAbi, signer);
@@ -405,10 +379,6 @@ async function getContracts(course = false, department = false, diploma = false,
             const requestContract = new ethers.Contract(requestAddress, requestAbi, signer);
             contracts.push(requestContract)
         }
-        if (roles) {
-            const rolesContract = new ethers.Contract(rolesAddress, rolesAbi, signer);
-            contracts.push(rolesContract)
-        }
         if (account) {
             const account = accounts[0];
             contracts.push(account)
@@ -416,5 +386,4 @@ async function getContracts(course = false, department = false, diploma = false,
         return contracts
     }
 }
-
 export default App;

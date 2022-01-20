@@ -5,26 +5,10 @@ import ReactDOM from "react-dom";
 
 import './App.css';
 
-import course from '../abis/Course.json';
-import department from '../abis/Department.json';
-import diploma from '../abis/Diploma.json';
-import faculty from '../abis/Faculty.json';
-import roles from '../abis/Roles.json';
 import request from '../abis/Request.json';
 import env from '../env.json';
 
-const courseAddress = env.courseAddress
-const departmentAddress = env.departmentAddress
-const diplomaAddress = env.diplomaAddress
-const facultyAddress = env.facultyAddress
 const requestAddress = env.requestAddress
-const rolesAddress = env.rolesAddress
-
-const courseAbi = course.abi;
-const departmentAbi = department.abi;
-const diplomaAbi = diploma.abi;
-const facultyAbi = faculty.abi;
-const rolesAbi = roles.abi;
 const requestAbi = request.abi;
 
 function returnButton(){
@@ -138,7 +122,6 @@ function App() {
         )
     }
 
-
     //Geçici fonksiyon test için
     function readDiplomaRequests() {
 
@@ -156,8 +139,6 @@ function App() {
             </button>
         )
     }
-
-
     function readCourseRequests() {
         async function createDiplomaHandler() {
             const contracts = await getContracts(false,false,false,false,true,false,false);
@@ -173,7 +154,6 @@ function App() {
             </button>
         )
     }
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     return (
         <div className='main-app'>
@@ -200,33 +180,9 @@ async function getContracts(course = false, department = false, diploma = false,
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
         let contracts = [];
-        if (course) {
-            const courseContract = new ethers.Contract(courseAddress, courseAbi, signer);
-            contracts.push(courseContract);
-        }
-        if (department) {
-            const departmentContract = new ethers.Contract(departmentAddress, departmentAbi, signer);
-            contracts.push(departmentContract)
-        }
-        if (diploma) {
-            const diplomaContract = new ethers.Contract(diplomaAddress, diplomaAbi, signer);
-            contracts.push(diplomaContract)
-        }
-        if (faculty) {
-            const facultyContract = new ethers.Contract(facultyAddress, facultyAbi, signer);
-            contracts.push(facultyContract)
-        }
         if(request){
             const requestContract = new ethers.Contract(requestAddress, requestAbi, signer);
             contracts.push(requestContract)
-        }
-        if(roles){
-            const rolesContract = new ethers.Contract(rolesAddress, rolesAbi, signer);
-            contracts.push(rolesContract)
-        }
-        if(account){
-            const account = accounts[0];
-            contracts.push(account)
         }
         return contracts
     }
