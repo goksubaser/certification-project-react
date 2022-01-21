@@ -1,5 +1,5 @@
 import './App.css';
-import React from "react";
+import React, {useState} from "react";
 import ReactDOM from "react-dom";
 
 import course from '../abis/Course.json';
@@ -119,6 +119,42 @@ function ReadApplications(props){
         </body>
     );
 }
+function FreezeCourse(props){
+    let courseID;
+    async function setCourse(value) {
+        for(var i = 0; i<props.unfrozenCourseLinks.length; i++){
+            if(props.unfrozenCourseLinks[i] == value){
+                courseID=props.unfrozenCourses[i]
+                break
+            }
+        }
+        let button = document.getElementById("button")
+        button.disabled = false
+    }
+
+    const handleSubmit = async (event) => {
+        console.log(courseID)
+        //TODO select'ten sonra başka yerlere tıklayınca değeri kaybediyor çünkü onChange
+        event.preventDefault();
+        await props.courseContract.freeze(courseID)
+        //TODO write fail alert messages
+        alert(`Course${courseID} has been frozen`)
+        returnButton()
+    }
+    return (
+        <form onSubmit={handleSubmit}>
+            <select type="text" id="select"
+                    onChange={(e) => setCourse(e.target.value)}>
+                <option selected hidden>Select a Course</option>
+                {props.unfrozenCourseLinks.map(item => {
+                    return <option>{item}</option>
+                })}
+            </select>
+            <input type="submit" id="button" disabled value="Freeze"/>
+            <button onClick={(e) => returnButton()}>Back</button>
+        </form>
+    )
+}
 function App() {
     function readApplicationsButton() {
         async function readCourseRequestsHandler() {
@@ -153,10 +189,53 @@ function App() {
         )
     }
 
+    function freezeCourseButton() {
+        async function readCourseRequestsHandler() {
+            const contracts = await getContracts(true, false, false, false, false, true, true);
+            let account = contracts[2];
+            let isStudent = await contracts[1].hasInstructorRole(account)
+            if (!isStudent) {
+                alert(`${account} is not a Instructor`)
+                return;
+            }
+            let coursesGiven = await contracts[0].getGivesCourses(account);
+            let unfrozenCourses = []
+            let courseLinks = await contracts[0].getCourseLinks()
+            let unfrozenCourseLinks = []
+            for(var i = 0; i<coursesGiven.length; i++){
+                let isFrozen = await contracts[0].getFrozen(coursesGiven[i])
+                console.log(!isFrozen)
+                if(!isFrozen){
+                    unfrozenCourses.push(coursesGiven[i])
+                    unfrozenCourseLinks.push(courseLinks[coursesGiven[i]-1])
+                }
+            }
+            console.log(unfrozenCourses)
+            console.log(unfrozenCourseLinks)
+
+            ReactDOM.render(
+                <React.StrictMode>
+                    <FreezeCourse unfrozenCourses={unfrozenCourses}
+                                  unfrozenCourseLinks={unfrozenCourseLinks}
+                                  courseContract={contracts[0]}
+                    />
+                </React.StrictMode>,
+                document.getElementById('root')
+            );
+        }
+
+        return (
+            <button onClick={readCourseRequestsHandler} className='cta-button create-button'>
+                Freeze Course
+            </button>
+        )
+    }
+
     return (
         <div className='main-app'>
             <div className='create-operations'>
                 {readApplicationsButton()}
+                {freezeCourseButton()}
             </div>
             <div className='read-operations'>
             </div>

@@ -113,7 +113,7 @@ function App() {
                         if(appliedStudents.indexOf(account)<=-1){//This account is already applied for the course
                             openCourseIDs.push(i)
                             instructorAddresses.push(await contracts[0].ownerOf(i))
-                            openCourseLinks.push(i - 1)
+                            openCourseLinks.push(courseLinks[i-1])
                         }
                     }
                 }
