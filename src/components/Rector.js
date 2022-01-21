@@ -420,9 +420,8 @@ function AddStudent(props) {
 
 function MintDiploma(props) {
     async function approve(index) {
-        let buttonIndex = index.slice(-1)
+        let buttonIndex = index.slice(index.indexOf("e")+1)
         let request = props.requests[Number(props.indexes[buttonIndex])]
-        console.log(request)
         await props.diplomaContract.mint(request.diplomaLink, request.studentAddress)
         //TODO write fail alert messages
         alert(`The Graduate ${request.studentAddress} Has The Diploma ${request.diplomaLink} Now`)
@@ -430,9 +429,8 @@ function MintDiploma(props) {
     }
 
     async function disapprove(index) {
-        let buttonIndex = index.slice(-1)
+        let buttonIndex = index.slice(index.indexOf("e")+1)
         let request = props.requests[Number(props.indexes[buttonIndex])]
-        console.log(request)
         await props.requestContract.disapproveDiplomaRequest(request)
         returnButton()
     }
@@ -505,9 +503,8 @@ function MintDiploma(props) {
 
 function MintCourse(props){
     async function approve(index) {
-        let buttonIndex = index.slice(-1)
+        let buttonIndex = index.slice(index.indexOf("e")+1)
         let request = props.requests[Number(props.indexes[buttonIndex])]
-        console.log(request)
         await props.courseContract.mint(request.courseLink, request.instructorAddress)
         //TODO write fail alert messages
         alert(`The Instructor: ${request.instructorAddress} Has The Course ${request.courseLink} Now`)
@@ -515,10 +512,9 @@ function MintCourse(props){
     }
 
     async function disapprove(index) {
-        let buttonIndex = index.slice(-1)
+        let buttonIndex = index.slice(index.indexOf("e")+1)
         let request = props.requests[Number(props.indexes[buttonIndex])]
-        console.log(request)
-        console.log(props.requests)
+        console.log(buttonIndex)
         await props.requestContract.disapproveCourseRequest(request)
         returnButton()
     }
@@ -733,8 +729,6 @@ function RemoveStudent(props) {
         }
         let temp = departmentStudents.slice()
         temp = temp.filter(e => e !== address);
-        console.log(allStudents)
-        console.log(departmentStudents)
 
         await props.departmentContract.setStudents(departmentID, temp, address)
 
@@ -1108,10 +1102,6 @@ function App() {
                     }
                 }
             }
-            console.log(instructorAddresses)
-            console.log(courseLinks)
-            console.log(requestorDepartments)
-            console.log(indexes)
             ReactDOM.render(
                 <React.StrictMode>
                     <MintCourse  requests={requests}

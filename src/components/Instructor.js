@@ -49,14 +49,9 @@ function ReadApplications(props){
         let courseID = props.coursesGiven[i]
         let studentAddress = props.applications[i][j]
         await props.courseContract.approveDisapproveApplication(courseID,studentAddress, false)
-        console.log(courseID)
-        console.log(studentAddress)
         returnButton()
     }
     async function createTable() {
-        console.log(props.applications)
-        // let applicationAmount = props.applications.reduce((count, row) => count + row.length, 0)
-        console.log(props.coursesGiven)
         var table = document.getElementById("courseRequestTable");
         table.removeChild(document.getElementById("tableBody"))
 
@@ -133,7 +128,6 @@ function FreezeCourse(props){
     }
 
     const handleSubmit = async (event) => {
-        console.log(courseID)
         //TODO select'ten sonra başka yerlere tıklayınca değeri kaybediyor çünkü onChange
         event.preventDefault();
         await props.courseContract.freeze(courseID)
@@ -204,14 +198,11 @@ function App() {
             let unfrozenCourseLinks = []
             for(var i = 0; i<coursesGiven.length; i++){
                 let isFrozen = await contracts[0].getFrozen(coursesGiven[i])
-                console.log(!isFrozen)
                 if(!isFrozen){
                     unfrozenCourses.push(coursesGiven[i])
                     unfrozenCourseLinks.push(courseLinks[coursesGiven[i]-1])
                 }
             }
-            console.log(unfrozenCourses)
-            console.log(unfrozenCourseLinks)
 
             ReactDOM.render(
                 <React.StrictMode>

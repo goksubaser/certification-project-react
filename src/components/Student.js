@@ -25,7 +25,7 @@ function returnButton() {
 
 function ApplyCourse(props) {
     async function apply(index) {
-        let buttonIndex = index.slice(-1)//TODO çift basamaklı sayılarda bug oluşturur
+        let buttonIndex = index.slice(index.indexOf("y")+1)
         let courseID = Number(props.openCourseIDs[buttonIndex])
         await props.courseContract.applyCourse(courseID)
         returnButton()
@@ -106,7 +106,6 @@ function App() {
                 if (!isFrozen) {//Course is frozen by instructor
                     let approvedStudents = await contracts[0].getApprovedStudents(i);
                     approvedStudents = approvedStudents.map(approvedStudent => approvedStudent.toLowerCase())
-                    // console.log(approvedStudents);//TODO test this if
                     if(approvedStudents.indexOf(account)<=-1){//This account is already approved for the course
                         let appliedStudents = await contracts[0].getRequestOfStudents(i)
                         appliedStudents = appliedStudents.map(appliedStudent => appliedStudent.toLowerCase())
