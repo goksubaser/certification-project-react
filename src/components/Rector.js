@@ -188,7 +188,6 @@ function AddFaculty(props) {
 function AddDepartment(props) {
     const [departmentAddress, setDepartmentAddress] = useState("");
     const [departmentName, setDepartmentName] = useState("");
-    // const [facultyName, setFacultyName] = useState("");
     let facultyID;
 
     async function setFacultyName(value) {
@@ -202,8 +201,9 @@ function AddDepartment(props) {
     }
 
     const handleSubmit = async (event) => {
-        //TODO select'ten sonra başka yerlere tıklayınca değeri kaybediyor çünkü onChange
         event.preventDefault();
+        let temp = document.getElementById("select")
+        facultyID = await props.facultyContract.getFacultyID(temp.value)
         let allDepartments = await props.rolesContract.getDepartmentRoles();
         if (allDepartments.indexOf(departmentAddress) > -1) {
             alert(`${departmentAddress} has the Department permissions already`)
@@ -284,9 +284,11 @@ function AddInstructor(props) {
     }
 
     const handleSubmit = async (event) => {
-        //TODO select'ten sonra başka yerlere tıklayınca değeri kaybediyor çünkü onChange
         event.preventDefault();
-
+        let facultySelect = document.getElementById("facultySelect")
+        let departmentSelect = document.getElementById("departmentSelect")
+        facultyID = await props.facultyContract.getFacultyID(facultySelect.value)
+        departmentID = await props.departmentContract.getDepartmentID(departmentSelect.value)
         let allInstructors = await props.rolesContract.getInstructorRoles()
         if (allInstructors.indexOf(address) > -1) {//existance check
             alert(`${address} is already a instructor`)
@@ -372,8 +374,11 @@ function AddStudent(props) {
     }
 
     const handleSubmit = async (event) => {
-        //TODO select'ten sonra başka yerlere tıklayınca değeri kaybediyor çünkü onChange
         event.preventDefault();
+        let facultySelect = document.getElementById("facultySelect")
+        let departmentSelect = document.getElementById("departmentSelect")
+        facultyID = await props.facultyContract.getFacultyID(facultySelect.value)
+        departmentID = await props.departmentContract.getDepartmentID(departmentSelect.value)
         let allStudents = await props.rolesContract.getStudentRoles()
         if (allStudents.indexOf(address) > -1) {//existance check
             alert(`${address} is already a student`)
@@ -626,8 +631,11 @@ function RemoveInstructor(props) {
     }
 
     const handleSubmit = async (event) => {
-        //TODO select'ten sonra başka yerlere tıklayınca değeri kaybediyor çünkü onChange
         event.preventDefault();
+        let facultySelect = document.getElementById("facultySelect")
+        let departmentSelect = document.getElementById("departmentSelect")
+        facultyID = await props.facultyContract.getFacultyID(facultySelect.value)
+        departmentID = await props.departmentContract.getDepartmentID(departmentSelect.value)
         let allInstructors = await props.rolesContract.getInstructorRoles()
         if (allInstructors.indexOf(address) <= -1) {//existance check
             alert(`${address} is not an instructor`)
@@ -715,8 +723,11 @@ function RemoveStudent(props) {
     }
 
     const handleSubmit = async (event) => {
-        //TODO select'ten sonra başka yerlere tıklayınca değeri kaybediyor çünkü onChange
         event.preventDefault();
+        let facultySelect = document.getElementById("facultySelect")
+        let departmentSelect = document.getElementById("departmentSelect")
+        facultyID = await props.facultyContract.getFacultyID(facultySelect.value)
+        departmentID = await props.departmentContract.getDepartmentID(departmentSelect.value)
         let allStudents = await props.rolesContract.getStudentRoles()
         if (allStudents.indexOf(address) <= -1) {//existance check
             alert(`${address} is not an student`)
