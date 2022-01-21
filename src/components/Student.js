@@ -206,7 +206,7 @@ function App() {
         }
 
         return (
-            <button onClick={listCourseHandler} className='cta-button create-button'>
+            <button onClick={listCourseHandler} className='cta-button read-button'>
                 Courses Taken
             </button>
         )

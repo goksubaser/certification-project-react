@@ -50,6 +50,12 @@
 .apply-button{
     background: #ffff00;
 }
+.freeze-button{
+    background: #00b1ff;
+}
+.edit-button{
+    background: #ff00b7;
+}
 /*table {*/
 /*    display: table;*/
 /*}*/
