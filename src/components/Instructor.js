@@ -176,7 +176,7 @@ function ReadCourses(props){
         let buttonIndex = id.slice(id.lastIndexOf("e")+1)
         let courseID = props.coursesGiven[buttonIndex]
         await props.courseContract.freeze(courseID)
-        await createTable()
+        returnButton()
     }
 
     async function drop(id, courseLink) {//TODO
