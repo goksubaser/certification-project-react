@@ -85,6 +85,44 @@ function ApplyCourse(props) {
     );
 }
 
+function ListCourse(props){
+
+    function createTable() {
+        var table = document.getElementById("courseRequestTable");
+        table.removeChild(document.getElementById("tableBody"))
+
+        let tbody = document.createElement("tbody")
+        tbody.setAttribute("id", "tableBody")
+        table.insertBefore(tbody, document.getElementById("buttons"))
+
+        var newRow = tbody.insertRow(0)
+        var cell0 = document.createElement("th")
+        var cell1 = document.createElement("th")
+        cell0.innerHTML = "Instructor Address";
+        cell1.innerHTML = "Course Link";
+        newRow.appendChild(cell0)
+        newRow.appendChild(cell1)
+        for (var i = 0; i < props.takenCourseLinks.length; i++) {
+            var newRow = tbody.insertRow(i + 1)
+            var cell0 = newRow.insertCell(0);
+            var cell1 = newRow.insertCell(1);
+            cell0.innerHTML = props.instructorAddresses[i];
+            cell1.innerHTML = props.takenCourseLinks[i];
+        }
+    }
+    return (
+        <body>
+        <table id="courseRequestTable">
+            <tbody id="tableBody"></tbody>
+            <tr id="buttons">
+                <button onClick={(e) => returnButton()}>Back</button>
+                <button onClick={(e) => createTable()}>Show Requests</button>
+            </tr>
+        </table>
+        </body>
+    );
+}
+
 function App() {
 
     function applyCourseButton() {
@@ -136,7 +174,43 @@ function App() {
         )
     }
 
-    function listCourseButton() {/*TODO*/}
+    function listCourseButton() {
+
+        async function listCourseHandler() {
+            const contracts = await getContracts(true, false, false, false, false, true, true);
+            let account = contracts[2];
+            let isStudent = await contracts[1].hasStudentRole(account)
+            if (!isStudent) {
+                alert(`${account} is not a Student`)
+                return;
+            }
+            let takenCourseIDs = await contracts[0].getTakesCourses(account)
+            let instructorAddresses = [];
+            let courseLinks = await contracts[0].getCourseLinks();
+            let takenCourseLinks = []
+            for(var i = 0; i<takenCourseIDs.length; i++){
+                instructorAddresses.push(await contracts[0].ownerOf(takenCourseIDs[i]))
+                takenCourseLinks.push(courseLinks[takenCourseIDs[i]-1])
+            }
+            console.log(instructorAddresses)
+            console.log(takenCourseLinks)
+
+            ReactDOM.render(
+                <React.StrictMode>
+                    <ListCourse instructorAddresses={instructorAddresses}
+                                 takenCourseLinks={takenCourseLinks}
+                    />
+                </React.StrictMode>,
+                document.getElementById('root')
+            );
+        }
+
+        return (
+            <button onClick={listCourseHandler} className='cta-button create-button'>
+                Courses Taken
+            </button>
+        )
+    }
 
     return (
         <div className='main-app'>
