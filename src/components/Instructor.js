@@ -179,7 +179,7 @@ function ReadCourses(props){
         returnButton()
     }
 
-    async function drop(id, courseLink) {//TODO
+    async function drop(id, courseLink) {
         let buttonIndex = id.slice(id.lastIndexOf("p")+1)
         let courseID = props.coursesGiven[buttonIndex]
         let students = await props.courseContract.getApprovedStudents(courseID)
@@ -196,7 +196,7 @@ function ReadCourses(props){
 
     }
 
-    async function edit(id, courseLink) {//TODO
+    async function edit(id, courseLink) {
         let buttonIndex = id.slice(id.lastIndexOf("t")+1)
         let courseID = props.coursesGiven[buttonIndex]
         ReactDOM.render(
@@ -312,7 +312,6 @@ function FreezeCourse(props){
     }
 
     const handleSubmit = async (event) => {
-        //TODO select'ten sonra başka yerlere tıklayınca değeri kaybediyor çünkü onChange
         event.preventDefault();
         await props.courseContract.freeze(courseID)
         //TODO write fail alert messages
