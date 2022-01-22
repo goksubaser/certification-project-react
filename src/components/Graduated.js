@@ -26,7 +26,7 @@ function Diploma(props) {
     return (
         <body>
         <tr>
-            <h1>{props.diplomaLink}</h1>
+            <h1>Diploma Link: {props.diplomaLink}</h1>
         </tr>
         <button onClick={(e) => returnButton()}>Back</button>
         </body>

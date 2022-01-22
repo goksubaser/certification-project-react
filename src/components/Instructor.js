@@ -106,11 +106,11 @@ function ReadApplications(props){
         <body>
         <table id="courseRequestTable">
             <tbody id="tableBody"></tbody>
-            <tr id="buttons">
-                <button onClick={(e) => returnButton()}>Back</button>
-                <button onClick={(e) => createTable()}>Show Requests</button>
-            </tr>
         </table>
+        <tr id="buttons">
+            <button onClick={(e) => returnButton()}>Back</button>
+            <button onClick={(e) => createTable()}>Show Requests</button>
+        </tr>
         </body>
     );
 }
@@ -290,11 +290,11 @@ function ReadCourses(props){
     return (<body>
         <table id="courseRequestTable">
             <tbody id="tableBody"></tbody>
-            <tr id="buttons">
-                <button onClick={(e) => returnButton()}>Back</button>
-                <button onClick={(e) => createTable()}>Show Requests</button>
-            </tr>
         </table>
+        <tr id="buttons">
+            <button onClick={(e) => returnButton()}>Back</button>
+            <button onClick={(e) => createTable()}>Show Requests</button>
+        </tr>
         </body>);
 }
 

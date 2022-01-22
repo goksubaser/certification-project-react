@@ -2,6 +2,9 @@
     text-align: center;
     margin: 100px;
 }
+table, th, td {
+    border: 1px solid black;
+}
 /*.create-operations{*/
 /*    vertical-align: top;*/
 /*    text-align: left;*/
@@ -56,12 +59,3 @@
 .edit-button{
     background: #ff00b7;
 }
-/*table {*/
-/*    display: table;*/
-/*}*/
-/*table tr {*/
-/*    display: table-cell;*/
-/*}*/
-/*table tr td {*/
-/*    display: block;*/
-/*}*/

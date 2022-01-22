@@ -445,7 +445,7 @@ function MintDiploma(props) {
         table.removeChild(document.getElementById("tableBody"))
         let tbody = document.createElement("tbody")
         tbody.setAttribute("id", "tableBody")
-        table.insertBefore(tbody, document.getElementById("buttons"))
+        table.appendChild(tbody)
         var newRow = tbody.insertRow(0)
         var cell0 = document.createElement("th")
         var cell1 = document.createElement("th")
@@ -497,11 +497,11 @@ function MintDiploma(props) {
         <body>
         <table id="diplomaRequestTable">
             <tbody id="tableBody"></tbody>
-            <tr id="buttons">
-                <button onClick={(e) => returnButton()}>Back</button>
-                <button onClick={(e) => createTable()}>Show Requests</button>
-            </tr>
         </table>
+        <tr id="buttons">
+            <button onClick={(e) => returnButton()}>Back</button>
+            <button onClick={(e) => createTable()}>Show Requests</button>
+        </tr>
         </body>
     );
 }
@@ -529,7 +529,8 @@ function MintCourse(props){
         table.removeChild(document.getElementById("tableBody"))
         let tbody = document.createElement("tbody")
         tbody.setAttribute("id", "tableBody")
-        table.insertBefore(tbody, document.getElementById("buttons"))
+        table.appendChild(tbody)
+
         var newRow = tbody.insertRow(0)
         var cell0 = document.createElement("th")
         var cell1 = document.createElement("th")
@@ -581,11 +582,11 @@ function MintCourse(props){
         <body>
         <table id="diplomaRequestTable">
             <tbody id="tableBody"></tbody>
-            <tr id="buttons">
-                <button onClick={(e) => returnButton()}>Back</button>
-                <button onClick={(e) => createTable()}>Show Requests</button>
-            </tr>
         </table>
+        <tr id="buttons">
+            <button onClick={(e) => returnButton()}>Back</button>
+            <button onClick={(e) => createTable()}>Show Requests</button>
+        </tr>
         </body>
     );}
 

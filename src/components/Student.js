@@ -76,11 +76,11 @@ function ApplyCourse(props) {
         <body>
         <table id="courseRequestTable">
             <tbody id="tableBody"></tbody>
-            <tr id="buttons">
-                <button onClick={(e) => returnButton()}>Back</button>
-                <button onClick={(e) => createTable()}>Show Requests</button>
-            </tr>
         </table>
+        <tr id="buttons">
+            <button onClick={(e) => returnButton()}>Back</button>
+            <button onClick={(e) => createTable()}>Show Requests</button>
+        </tr>
         </body>
     );
 }
@@ -114,11 +114,11 @@ function ListCourse(props){
         <body>
         <table id="courseRequestTable">
             <tbody id="tableBody"></tbody>
-            <tr id="buttons">
-                <button onClick={(e) => returnButton()}>Back</button>
-                <button onClick={(e) => createTable()}>Show Requests</button>
-            </tr>
         </table>
+        <tr id="buttons">
+            <button onClick={(e) => returnButton()}>Back</button>
+            <button onClick={(e) => createTable()}>Show Requests</button>
+        </tr>
         </body>
     );
 }
