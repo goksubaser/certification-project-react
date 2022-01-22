@@ -29,18 +29,20 @@ function returnButton() {
 
 /////////////////////////////////////// READ FUNCTIONS /////////////////////////////////////////////////////////////////
 function ReadDiplomaRequest(props) {
-    async function approve(index){
-        let buttonIndex = index.slice(index.indexOf("e")+1)
+    async function approve(index) {
+        let buttonIndex = index.slice(index.indexOf("e") + 1)
         let request = props.requests[Number(props.indexes[buttonIndex])]
         await props.requestContract.approveDiplomaRequest(request)
         returnButton()
     }
-    async function disapprove(index){
-        let buttonIndex = index.slice(index.indexOf("e")+1)
+
+    async function disapprove(index) {
+        let buttonIndex = index.slice(index.indexOf("e") + 1)
         let request = props.requests[Number(props.indexes[buttonIndex])]
         await props.requestContract.disapproveDiplomaRequest(request)
         returnButton()
     }
+
     function createTable() {
         var table = document.getElementById("diplomaRequestTable");
 
@@ -66,7 +68,7 @@ function ReadDiplomaRequest(props) {
         newRow.appendChild(cell3)
         newRow.appendChild(cell4)
         for (var i = 0; i < props.requestorDepartments.length; i++) {
-            var newRow = tbody.insertRow(i+1)
+            var newRow = tbody.insertRow(i + 1)
             var cell0 = newRow.insertCell(0);
             var cell1 = newRow.insertCell(1);
             var cell2 = newRow.insertCell(2);
@@ -75,15 +77,19 @@ function ReadDiplomaRequest(props) {
             var approveButton = document.createElement("button")
             approveButton.setAttribute("class", "approve-button")
             approveButton.setAttribute("type", "button")
-            approveButton.setAttribute("id", "approve"+i)
-            approveButton.onclick = function () {approve(this.id)}
+            approveButton.setAttribute("id", "approve" + i)
+            approveButton.onclick = function () {
+                approve(this.id)
+            }
             approveButton.innerHTML = "Approve"
             cell3.appendChild(approveButton)
             var disapproveButton = document.createElement("button")
             disapproveButton.setAttribute("class", "disapprove-button")
             disapproveButton.setAttribute("type", "button")
-            disapproveButton.setAttribute("id", "disapprove"+i)
-            disapproveButton.onclick = function () {disapprove(this.id)}
+            disapproveButton.setAttribute("id", "disapprove" + i)
+            disapproveButton.onclick = function () {
+                disapprove(this.id)
+            }
             disapproveButton.innerHTML = "Disapprove"
             cell4.appendChild(disapproveButton)
             cell0.innerHTML = props.studentAddresses[i];
@@ -104,19 +110,22 @@ function ReadDiplomaRequest(props) {
         </body>
     );
 }
+
 function ReadCourseRequest(props) {
-    async function approve(index){
-        let buttonIndex = index.slice(index.indexOf("e")+1)
+    async function approve(index) {
+        let buttonIndex = index.slice(index.indexOf("e") + 1)
         let request = props.requests[Number(props.indexes[buttonIndex])]
         await props.requestContract.approveCourseRequest(request)
         returnButton()
     }
-    async function disapprove(index){
-        let buttonIndex = index.slice(index.indexOf("e")+1)
+
+    async function disapprove(index) {
+        let buttonIndex = index.slice(index.indexOf("e") + 1)
         let request = props.requests[Number(props.indexes[buttonIndex])]
         await props.requestContract.disapproveCourseRequest(request)
         returnButton()
     }
+
     function createTable() {
         var table = document.getElementById("courseRequestTable");
         table.removeChild(document.getElementById("tableBody"))
@@ -141,7 +150,7 @@ function ReadCourseRequest(props) {
         newRow.appendChild(cell3)
         newRow.appendChild(cell4)
         for (var i = 0; i < props.requestorDepartments.length; i++) {
-            var newRow = tbody.insertRow(i+1)
+            var newRow = tbody.insertRow(i + 1)
             var cell0 = newRow.insertCell(0);
             var cell1 = newRow.insertCell(1);
             var cell2 = newRow.insertCell(2);
@@ -150,15 +159,19 @@ function ReadCourseRequest(props) {
             var approveButton = document.createElement("button")
             approveButton.setAttribute("class", "approve-button")
             approveButton.setAttribute("type", "button")
-            approveButton.setAttribute("id", "approve"+i)
-            approveButton.onclick = function () {approve(this.id)}
+            approveButton.setAttribute("id", "approve" + i)
+            approveButton.onclick = function () {
+                approve(this.id)
+            }
             approveButton.innerHTML = "Approve"
             cell3.appendChild(approveButton)
             var disapproveButton = document.createElement("button")
             disapproveButton.setAttribute("class", "disapprove-button")
             disapproveButton.setAttribute("type", "button")
-            disapproveButton.setAttribute("id", "disapprove"+i)
-            disapproveButton.onclick = function () {disapprove(this.id)}
+            disapproveButton.setAttribute("id", "disapprove" + i)
+            disapproveButton.onclick = function () {
+                disapprove(this.id)
+            }
             disapproveButton.innerHTML = "Disapprove"
             cell4.appendChild(disapproveButton)
             cell0.innerHTML = props.instructorAddresses[i];
@@ -179,6 +192,7 @@ function ReadCourseRequest(props) {
         </body>
     );
 }
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function App() {
 /////////////////////////////////////// READ FUNCTIONS /////////////////////////////////////////////////////////////////
@@ -226,11 +240,11 @@ function App() {
             ReactDOM.render(
                 <React.StrictMode>
                     <ReadDiplomaRequest requests={requests}
-                                       studentAddresses={studentAddresses}
-                                       diplomaLinks={diplomaLinks}
-                                       requestorDepartments={requestorDepartments}
-                                       indexes={indexes}
-                                       requestContract={contracts[2]}
+                                        studentAddresses={studentAddresses}
+                                        diplomaLinks={diplomaLinks}
+                                        requestorDepartments={requestorDepartments}
+                                        indexes={indexes}
+                                        requestContract={contracts[2]}
                     />
                 </React.StrictMode>,
                 document.getElementById('root')
@@ -243,6 +257,7 @@ function App() {
             </button>
         )
     }
+
     function readCourseRequestsButton() {
         async function readCourseRequestsHandler() {
 
@@ -306,55 +321,17 @@ function App() {
         )
     }
 
-    //Geçici fonksiyon test için
-    function readDiplomaRequests() {
-
-        async function createDiplomaHandler() {
-            const contracts = await getContracts(false, false, false, false, true, false, false);
-            let requests = await contracts[0].getDiplomaRequests();
-            for (var i = 0; i < requests.length; i++) {
-                console.log(requests[i])
-            }
-        }
-
-        return (
-            <button onClick={createDiplomaHandler} className='cta-button read-button'>
-                Read Diploma Request
-            </button>
-        )
-    }
-    function readCourseRequests() {
-        async function createDiplomaHandler() {
-            const contracts = await getContracts(false, false, false, false, true, false, false);
-            let requests = await contracts[0].getCourseRequests();
-            for (var i = 0; i < requests.length; i++) {
-                console.log(requests[i])
-            }
-        }
-
-        return (
-            <button onClick={createDiplomaHandler} className='cta-button read-button'>
-                Read Course Request
-            </button>
-        )
-    }
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     return (
         <div className='main-app'>
             <div className='create-operations'>
                 {readDiplomaRequestsButton()}
                 {readCourseRequestsButton()}
-
-            </div>
-            <div className='read-operations'>
-                {readDiplomaRequests()}
-                {readCourseRequests()}
-
             </div>
             <div className='delete-operations'></div>
         </div>
     )
 }
+
 async function getContracts(course = false, department = false, diploma = false, faculty = false, request = false, roles = false, account = false) {
     const {ethereum} = window;
     if (!ethereum) {
@@ -385,4 +362,5 @@ async function getContracts(course = false, department = false, diploma = false,
         return contracts
     }
 }
+
 export default App;

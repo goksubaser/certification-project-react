@@ -37,8 +37,7 @@ function ApplyCourse(props) {
 
         let tbody = document.createElement("tbody")
         tbody.setAttribute("id", "tableBody")
-        table.insertBefore(tbody, document.getElementById("buttons"))
-
+        table.appendChild(tbody)
         var newRow = tbody.insertRow(0)
         var cell0 = document.createElement("th")
         var cell1 = document.createElement("th")
@@ -93,7 +92,7 @@ function ListCourse(props){
 
         let tbody = document.createElement("tbody")
         tbody.setAttribute("id", "tableBody")
-        table.insertBefore(tbody, document.getElementById("buttons"))
+        table.appendChild(tbody)
 
         var newRow = tbody.insertRow(0)
         var cell0 = document.createElement("th")

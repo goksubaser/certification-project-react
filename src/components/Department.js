@@ -11,7 +11,7 @@ import env from '../env.json';
 const requestAddress = env.requestAddress
 const requestAbi = request.abi;
 
-function returnButton(){
+function returnButton() {
     ReactDOM.render(
         <React.StrictMode>
             <App/>
@@ -19,6 +19,7 @@ function returnButton(){
         document.getElementById('root')
     );
 }
+
 /////////////////////////////////////// CREATE FUNCTIONS ///////////////////////////////////////////////////////////////
 function CreateDiplomaRequest(props) {
     const [address, setAddress] = useState("");
@@ -49,10 +50,11 @@ function CreateDiplomaRequest(props) {
                 />
             </label>
             <input type="submit"/>
-            <button onClick={(e)=> returnButton()}>Geri</button>
+            <button onClick={(e) => returnButton()}>Geri</button>
         </form>
     )
 }
+
 function CreateCourseRequest(props) {
     const [address, setAddress] = useState("");
     const [link, setLink] = useState("");
@@ -82,16 +84,17 @@ function CreateCourseRequest(props) {
                 />
             </label>
             <input type="submit"/>
-            <button onClick={(e)=> returnButton()}>Geri</button>
+            <button onClick={(e) => returnButton()}>Geri</button>
         </form>
     )
 }
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function App() {
 /////////////////////////////////////// CREATE FUNCTIONS ///////////////////////////////////////////////////////////////
     function createDiplomaRequestButton() {
         async function createDiplomaHandler() {
-            const contracts = await getContracts(false,false,false,false,true,false,false);
+            const contracts = await getContracts(false, false, false, false, true, false, false);
             ReactDOM.render(
                 <React.StrictMode>
                     <CreateDiplomaRequest requestContract={contracts[0]}/>
@@ -99,15 +102,17 @@ function App() {
                 document.getElementById('root')
             );
         }
+
         return (
             <button onClick={createDiplomaHandler} className='cta-button create-button'>
                 Create Diploma Request
             </button>
         )
     }
+
     function createCourseRequestButton() {
         async function createDiplomaHandler() {
-            const contracts = await getContracts(false,false,false,false,true,false,false);
+            const contracts = await getContracts(false, false, false, false, true, false, false);
             ReactDOM.render(
                 <React.StrictMode>
                     <CreateCourseRequest requestContract={contracts[0]}/>
@@ -115,6 +120,7 @@ function App() {
                 document.getElementById('root')
             );
         }
+
         return (
             <button onClick={createDiplomaHandler} className='cta-button create-button'>
                 Create Course Request
@@ -122,38 +128,6 @@ function App() {
         )
     }
 
-    //Geçici fonksiyon test için
-    function readDiplomaRequests() {
-
-        async function createDiplomaHandler() {
-            const contracts = await getContracts(false,false,false,false,true,false,false);
-            let requests = await contracts[0].getDiplomaRequests();
-            for(var i = 0; i<requests.length; i++){
-                console.log(requests[i])
-            }
-        }
-
-        return (
-            <button onClick={createDiplomaHandler} className='cta-button read-button'>
-                Read Diploma Request
-            </button>
-        )
-    }
-    function readCourseRequests() {
-        async function createDiplomaHandler() {
-            const contracts = await getContracts(false,false,false,false,true,false,false);
-            let requests = await contracts[0].getCourseRequests();
-            for(var i = 0; i<requests.length; i++){
-                console.log(requests[i])
-            }
-        }
-
-        return (
-            <button onClick={createDiplomaHandler} className='cta-button read-button'>
-                Read Course Request
-            </button>
-        )
-    }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     return (
         <div className='main-app'>
@@ -161,14 +135,11 @@ function App() {
                 {createDiplomaRequestButton()}
                 {createCourseRequestButton()}
             </div>
-            <div className='read-operations'>
-                {readDiplomaRequests()}
-                {readCourseRequests()}
-            </div>
             <div className='delete-operations'></div>
         </div>
     )
 }
+
 async function getContracts(course = false, department = false, diploma = false, faculty = false, request = false, roles = false, account = false) {
     const {ethereum} = window;
     if (!ethereum) {
@@ -180,11 +151,12 @@ async function getContracts(course = false, department = false, diploma = false,
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
         let contracts = [];
-        if(request){
+        if (request) {
             const requestContract = new ethers.Contract(requestAddress, requestAbi, signer);
             contracts.push(requestContract)
         }
         return contracts
     }
 }
+
 export default App;

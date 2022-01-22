@@ -57,7 +57,7 @@ function ReadApplications(props){
 
         let tbody = document.createElement("tbody")
         tbody.setAttribute("id", "tableBody")
-        table.insertBefore(tbody, document.getElementById("buttons"))
+        table.appendChild(tbody)
 
         var newRow = tbody.insertRow(0)
         var cell0 = document.createElement("th")
@@ -215,7 +215,7 @@ function ReadCourses(props){
         table.removeChild(document.getElementById("tableBody"))
         let tbody = document.createElement("tbody")
         tbody.setAttribute("id", "tableBody")
-        table.insertBefore(tbody, document.getElementById("buttons"))
+        table.appendChild(tbody)
         var newRow = tbody.insertRow(0)
         var cell0 = document.createElement("th")
         var cell1 = document.createElement("th")
