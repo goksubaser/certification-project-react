@@ -192,9 +192,6 @@ function App() {
                 instructorAddresses.push(await contracts[0].ownerOf(takenCourseIDs[i]))
                 takenCourseLinks.push(courseLinks[takenCourseIDs[i]-1])
             }
-            console.log(instructorAddresses)
-            console.log(takenCourseLinks)
-
             ReactDOM.render(
                 <React.StrictMode>
                     <ListCourse instructorAddresses={instructorAddresses}

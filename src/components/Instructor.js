@@ -432,9 +432,6 @@ function App() {
             </button>
         )
     }
-
-
-
     return (
         <div className='main-app'>
             <div className='create-operations'>
