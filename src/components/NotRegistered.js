@@ -59,11 +59,10 @@ function VerifyDiploma(props) {
                 />
             </label>
             <input type="submit"/>
-            <button onClick={(e) => returnButton()}>Geri</button>
+            <button onClick={(e) => returnButton()}>Back</button>
         </form>
     )
 }
-
 
 function App() {
     function verifyDiplomaButton() {

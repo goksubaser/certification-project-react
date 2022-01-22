@@ -177,7 +177,7 @@ function App() {
 
     const checkRoleButton = () => {
         return (
-            <button onClick={checkRoleHandler} className='cta-button mint-nft-button'>
+            <button onClick={checkRoleHandler} className='cta-button login-button'>
                 {currentAccountType}
             </button>
         )

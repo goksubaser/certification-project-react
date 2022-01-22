@@ -42,21 +42,17 @@ function ApplyCourse(props) {
         var cell0 = document.createElement("th")
         var cell1 = document.createElement("th")
         var cell2 = document.createElement("th")
-        var cell3 = document.createElement("th")
-        var cell4 = document.createElement("th")
         cell0.innerHTML = "Instructor Address";
         cell1.innerHTML = "Course Link";
-        cell3.innerHTML = "Apply";
+        cell2.innerHTML = "Apply";
         newRow.appendChild(cell0)
         newRow.appendChild(cell1)
         newRow.appendChild(cell2)
-        newRow.appendChild(cell3)
         for (var i = 0; i < props.openCourseIDs.length; i++) {
             var newRow = tbody.insertRow(i + 1)
             var cell0 = newRow.insertCell(0);
             var cell1 = newRow.insertCell(1);
             var cell2 = newRow.insertCell(2);
-            var cell3 = newRow.insertCell(3);
             var applyButton = document.createElement("button")
             applyButton.setAttribute("class", "apply-button")
             applyButton.setAttribute("type", "button")
@@ -65,7 +61,7 @@ function ApplyCourse(props) {
                 apply(this.id)
             }
             applyButton.innerHTML = "Apply"
-            cell3.appendChild(applyButton)
+            cell2.appendChild(applyButton)
             cell0.innerHTML = props.instructorAddresses[i];
             cell1.innerHTML = props.openCourseLinks[i];
         }
@@ -78,7 +74,7 @@ function ApplyCourse(props) {
         </table>
         <tr id="buttons">
             <button onClick={(e) => returnButton()}>Back</button>
-            <button onClick={(e) => createTable()}>Show Requests</button>
+            <button onClick={(e) => createTable()}>Show Courses</button>
         </tr>
         </body>
     );
@@ -116,7 +112,7 @@ function ListCourse(props){
         </table>
         <tr id="buttons">
             <button onClick={(e) => returnButton()}>Back</button>
-            <button onClick={(e) => createTable()}>Show Requests</button>
+            <button onClick={(e) => createTable()}>Show Courses</button>
         </tr>
         </body>
     );

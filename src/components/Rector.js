@@ -48,7 +48,7 @@ function FacultyList(props) {//TODO Organise table looks
                     return <h5>{item}</h5>;
                 })}
             </td>
-            <button onClick={(e) => returnButton()}>Geri</button>
+            <button onClick={(e) => returnButton()}>Back</button>
         </div>
     );
 }
@@ -64,7 +64,7 @@ function DepartmentList(props) {
                     return <h5>{item}</h5>;
                 })}
             </td>
-            <button onClick={(e) => returnButton()}>Geri</button>
+            <button onClick={(e) => returnButton()}>Back</button>
         </div>
     );
 }
@@ -80,7 +80,7 @@ function InstructorList(props) {
                     return <h5>{item}</h5>;
                 })}
             </td>
-            <button onClick={(e) => returnButton()}>Geri</button>
+            <button onClick={(e) => returnButton()}>Back</button>
         </div>
     );
 }
@@ -96,7 +96,7 @@ function StudentList(props) {
                     return <h5>{item}</h5>;
                 })}
             </td>
-            <button onClick={(e) => returnButton()}>Geri</button>
+            <button onClick={(e) => returnButton()}>Back</button>
         </div>
     );
 }
@@ -118,7 +118,7 @@ function DiplomaList(props) {//TODO Organise table looks
                     return <h5>{item}</h5>;
                 })}
             </td>
-            <button onClick={(e) => returnButton()}>Geri</button>
+            <button onClick={(e) => returnButton()}>Back</button>
         </div>
     );
 }
@@ -140,7 +140,7 @@ function CourseList(props){//TODO Organise table looks
                     return <h5>{item}</h5>;
                 })}
             </td>
-            <button onClick={(e) => returnButton()}>Geri</button>
+            <button onClick={(e) => returnButton()}>Back</button>
         </div>
     );
 }
@@ -180,7 +180,7 @@ function AddFaculty(props) {
                 />
             </label>
             <input type="submit"/>
-            <button onClick={(e) => returnButton()}>Geri</button>
+            <button onClick={(e) => returnButton()}>Back</button>
         </form>
     )
 }
@@ -239,7 +239,7 @@ function AddDepartment(props) {
                 />
             </label>
             <input type="submit" id="button" hidden/>
-            <button onClick={(e) => returnButton()}>Geri</button>
+            <button onClick={(e) => returnButton()}>Back</button>
         </form>
     )
 }
@@ -329,7 +329,7 @@ function AddInstructor(props) {
                 />
             </label>
             <input type="submit" id="button" hidden/>
-            <button onClick={(e) => returnButton()}>Geri</button>
+            <button onClick={(e) => returnButton()}>Back</button>
         </form>
     )
 }
@@ -418,7 +418,7 @@ function AddStudent(props) {
                 />
             </label>
             <input type="submit" id="button" hidden/>
-            <button onClick={(e) => returnButton()}>Geri</button>
+            <button onClick={(e) => returnButton()}>Back</button>
         </form>
     )
 }
@@ -679,7 +679,7 @@ function RemoveInstructor(props) {
                 />
             </label>
             <input type="submit" id="button" hidden/>
-            <button onClick={(e) => returnButton()}>Geri</button>
+            <button onClick={(e) => returnButton()}>Back</button>
         </form>
     )
 }
@@ -771,7 +771,7 @@ function RemoveStudent(props) {
                 />
             </label>
             <input type="submit" id="button" hidden/>
-            <button onClick={(e) => returnButton()}>Geri</button>
+            <button onClick={(e) => returnButton()}>Back</button>
         </form>
     )
 }

@@ -41,9 +41,9 @@ table, th, td {
 .delete-button {
     background: #ff0000;
 }
-.mint-nft-button{
-    background: #ffa500;
-}
+/*.mint-nft-button{*/
+/*    background: #ffa500;*/
+/*}*/
 .approve-button{
     background: #07ff00;
 }
@@ -58,4 +58,7 @@ table, th, td {
 }
 .edit-button{
     background: #ff00b7;
+}
+.login-button{
+    background: #87f364;
 }

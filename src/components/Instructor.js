@@ -109,7 +109,7 @@ function ReadApplications(props){
         </table>
         <tr id="buttons">
             <button onClick={(e) => returnButton()}>Back</button>
-            <button onClick={(e) => createTable()}>Show Requests</button>
+            <button onClick={(e) => createTable()}>Show Applications</button>
         </tr>
         </body>
     );
@@ -167,7 +167,7 @@ function ReadCourses(props){
                     />
                 </label>
                 <input type="submit"/>
-                <button onClick={(e) => returnButton()}>Geri</button>
+                <button onClick={(e) => returnButton()}>Back</button>
             </form>
         )
     }
@@ -293,7 +293,7 @@ function ReadCourses(props){
         </table>
         <tr id="buttons">
             <button onClick={(e) => returnButton()}>Back</button>
-            <button onClick={(e) => createTable()}>Show Requests</button>
+            <button onClick={(e) => createTable()}>Show Courses</button>
         </tr>
         </body>);
 }
