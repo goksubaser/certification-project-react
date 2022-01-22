@@ -123,7 +123,7 @@ function DiplomaList(props) {//TODO Organise table looks
     );
 }
 
-function CourseList(props){//TODO Organise table looks
+function CourseList(props) {//TODO Organise table looks
     return (
         <div>
             <tr>
@@ -164,24 +164,26 @@ function AddFaculty(props) {
         returnButton()
     }
     return (
-        <form onSubmit={handleSubmit}>
-            <label>Enter Faculty Name:
-                <input
-                    type="text"
-                    value={facultyName}
-                    onChange={(e) => setFacultyName(e.target.value)}
-                />
-            </label>
-            <label>Enter Faculty Address:
-                <input
-                    type="text"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                />
-            </label>
-            <input type="submit"/>
-            <button onClick={(e) => returnButton()}>Back</button>
-        </form>
+        <div className='form'>
+            <form onSubmit={handleSubmit}>
+                <label>Enter Faculty Name:
+                    <input
+                        type="text"
+                        value={facultyName}
+                        onChange={(e) => setFacultyName(e.target.value)}
+                    />
+                </label>
+                <label>Enter Faculty Address:
+                    <input
+                        type="text"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                    />
+                </label>
+                <input type="submit" value="Send"/>
+                <button onClick={(e) => returnButton()}>Back</button>
+            </form>
+        </div>
     )
 }
 
@@ -216,31 +218,33 @@ function AddDepartment(props) {
         returnButton()
     }
     return (
-        <form onSubmit={handleSubmit}>
-            <select type="text" id="select"
-                    onChange={(e) => setFacultyName(e.target.value)}>
-                <option selected hidden>Select a Faculty</option>
-                {props.facultyNames.map(item => {
-                    return <option>{item}</option>
-                })}
-            </select>
-            <label id="enterName" hidden>Enter Department Name:
-                <input
-                    type="text"
-                    value={departmentName}
-                    onChange={(e) => setDepartmentName(e.target.value)}
-                />
-            </label>
-            <label id="enterAddress" hidden>Enter Department Address:
-                <input
-                    type="text"
-                    value={departmentAddress}
-                    onChange={(e) => setDepartmentAddress(e.target.value)}
-                />
-            </label>
-            <input type="submit" id="button" hidden/>
-            <button onClick={(e) => returnButton()}>Back</button>
-        </form>
+        <div className='form'>
+            <form onSubmit={handleSubmit}>
+                <select type="text" id="select"
+                        onChange={(e) => setFacultyName(e.target.value)}>
+                    <option selected hidden>Select a Faculty</option>
+                    {props.facultyNames.map(item => {
+                        return <option>{item}</option>
+                    })}
+                </select>
+                <label id="enterName" hidden>Enter Department Name:
+                    <input
+                        type="text"
+                        value={departmentName}
+                        onChange={(e) => setDepartmentName(e.target.value)}
+                    />
+                </label>
+                <label id="enterAddress" hidden>Enter Department Address:
+                    <input
+                        type="text"
+                        value={departmentAddress}
+                        onChange={(e) => setDepartmentAddress(e.target.value)}
+                    />
+                </label>
+                <input type="submit" id="button" value="Send" hidden/>
+                <button onClick={(e) => returnButton()}>Back</button>
+            </form>
+        </div>
     )
 }
 
@@ -306,31 +310,33 @@ function AddInstructor(props) {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <div className="form">
+            <form onSubmit={handleSubmit}>
 
-            <select id="facultySelect"
-                    type="text"
-                    onChange={(e) => setFacultyName(e.target.value)}>
-                <option selected hidden>Select a Faculty</option>
-                {props.facultyNames.map(item => {
-                    return <option>{item}</option>
-                })}
-            </select>
-            <select id="departmentSelect"
-                    hidden
-                    type="text"
-                    onChange={(e) => setDepartmentName(e.target.value)}>
-            </select>
-            <label id="addressForm" hidden>Enter Instructor Address:
-                <input
-                    type="text"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                />
-            </label>
-            <input type="submit" id="button" hidden/>
-            <button onClick={(e) => returnButton()}>Back</button>
-        </form>
+                <select id="facultySelect"
+                        type="text"
+                        onChange={(e) => setFacultyName(e.target.value)}>
+                    <option selected hidden>Select a Faculty</option>
+                    {props.facultyNames.map(item => {
+                        return <option>{item}</option>
+                    })}
+                </select>
+                <select id="departmentSelect"
+                        hidden
+                        type="text"
+                        onChange={(e) => setDepartmentName(e.target.value)}>
+                </select>
+                <label id="addressForm" hidden>Enter Instructor Address:
+                    <input
+                        type="text"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                    />
+                </label>
+                <input type="submit" id="button" value="Send" hidden/>
+                <button onClick={(e) => returnButton()}>Back</button>
+            </form>
+        </div>
     )
 }
 
@@ -395,37 +401,39 @@ function AddStudent(props) {
         returnButton()
     }
     return (
-        <form onSubmit={handleSubmit}>
+        <div className="form">
+            <form onSubmit={handleSubmit}>
 
-            <select id="facultySelect"
-                    type="text"
-                    onChange={(e) => setFacultyName(e.target.value)}>
-                <option selected hidden>Select a Faculty</option>
-                {props.facultyNames.map(item => {
-                    return <option>{item}</option>
-                })}
-            </select>
-            <select id="departmentSelect"
-                    hidden
-                    type="text"
-                    onChange={(e) => setDepartmentName(e.target.value)}>
-            </select>
-            <label id="addressForm" hidden>Enter Student Address:
-                <input
-                    type="text"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                />
-            </label>
-            <input type="submit" id="button" hidden/>
-            <button onClick={(e) => returnButton()}>Back</button>
-        </form>
+                <select id="facultySelect"
+                        type="text"
+                        onChange={(e) => setFacultyName(e.target.value)}>
+                    <option selected hidden>Select a Faculty</option>
+                    {props.facultyNames.map(item => {
+                        return <option>{item}</option>
+                    })}
+                </select>
+                <select id="departmentSelect"
+                        hidden
+                        type="text"
+                        onChange={(e) => setDepartmentName(e.target.value)}>
+                </select>
+                <label id="addressForm" hidden>Enter Student Address:
+                    <input
+                        type="text"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                    />
+                </label>
+                <input type="submit" id="button" hidden/>
+                <button onClick={(e) => returnButton()}>Back</button>
+            </form>
+        </div>
     )
 }
 
 function MintDiploma(props) {
     async function approve(index) {
-        let buttonIndex = index.slice(index.indexOf("e")+1)
+        let buttonIndex = index.slice(index.indexOf("e") + 1)
         let request = props.requests[Number(props.indexes[buttonIndex])]
         await props.diplomaContract.mint(request.diplomaLink, request.studentAddress)
         //TODO write fail alert messages
@@ -434,7 +442,7 @@ function MintDiploma(props) {
     }
 
     async function disapprove(index) {
-        let buttonIndex = index.slice(index.indexOf("e")+1)
+        let buttonIndex = index.slice(index.indexOf("e") + 1)
         let request = props.requests[Number(props.indexes[buttonIndex])]
         await props.requestContract.disapproveDiplomaRequest(request)
         returnButton()
@@ -506,9 +514,9 @@ function MintDiploma(props) {
     );
 }
 
-function MintCourse(props){
+function MintCourse(props) {
     async function approve(index) {
-        let buttonIndex = index.slice(index.indexOf("e")+1)
+        let buttonIndex = index.slice(index.indexOf("e") + 1)
         let request = props.requests[Number(props.indexes[buttonIndex])]
         await props.courseContract.mint(request.courseLink, request.instructorAddress)
         //TODO write fail alert messages
@@ -517,7 +525,7 @@ function MintCourse(props){
     }
 
     async function disapprove(index) {
-        let buttonIndex = index.slice(index.indexOf("e")+1)
+        let buttonIndex = index.slice(index.indexOf("e") + 1)
         let request = props.requests[Number(props.indexes[buttonIndex])]
         console.log(buttonIndex)
         await props.requestContract.disapproveCourseRequest(request)
@@ -588,7 +596,8 @@ function MintCourse(props){
             <button onClick={(e) => createTable()}>Show Requests</button>
         </tr>
         </body>
-    );}
+    );
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////// DELETE FUNCTIONS ///////////////////////////////////////////////////////////////
@@ -800,7 +809,7 @@ function App() {
         }
 
         return (
-            <button onClick={checkFacultyHandler} className='cta-button read-button'>
+            <button onClick={checkFacultyHandler} className='read-button'>
                 List Faculties
             </button>
         )
@@ -827,7 +836,7 @@ function App() {
         }
 
         return (
-            <button onClick={checkDepartmentHandler} className='cta-button read-button'>
+            <button onClick={checkDepartmentHandler} className='read-button'>
                 List Departments
             </button>
         )
@@ -847,7 +856,7 @@ function App() {
         }
 
         return (
-            <button onClick={checkInstructorHandler} className='cta-button read-button'>
+            <button onClick={checkInstructorHandler} className='read-button'>
                 List Instructors
             </button>
         )
@@ -867,7 +876,7 @@ function App() {
         }
 
         return (
-            <button onClick={checkStudentHandler} className='cta-button read-button'>
+            <button onClick={checkStudentHandler} className='read-button'>
                 List Students
             </button>
         )
@@ -891,7 +900,7 @@ function App() {
         }
 
         return (
-            <button onClick={checkDiplomaHandler} className='cta-button read-button'>
+            <button onClick={checkDiplomaHandler} className='read-button'>
                 List Diplomas
             </button>
         )
@@ -915,7 +924,7 @@ function App() {
         }
 
         return (
-            <button onClick={checkCourseHandler} className='cta-button read-button'>
+            <button onClick={checkCourseHandler} className='read-button'>
                 List Courses
             </button>
         )
@@ -935,8 +944,8 @@ function App() {
         }
 
         return (
-            <button onClick={addFacultyHandler} className='cta-button create-button'>
-                Add New Faculty
+            <button onClick={addFacultyHandler} className='create-button'>
+                Add Faculty
             </button>
         )
     }
@@ -964,8 +973,8 @@ function App() {
         }
 
         return (
-            <button onClick={addDepartmentHandler} className='cta-button create-button'>
-                Add New Department
+            <button onClick={addDepartmentHandler} className='create-button'>
+                Add Department
             </button>
         )
     }
@@ -993,8 +1002,8 @@ function App() {
         }
 
         return (
-            <button onClick={addInstructorHandler} className='cta-button create-button'>
-                Add New Instructor
+            <button onClick={addInstructorHandler} className='create-button'>
+                Add Instructor
             </button>
         )
     }
@@ -1022,8 +1031,8 @@ function App() {
         }
 
         return (
-            <button onClick={addStudentHandler} className='cta-button create-button'>
-                Add New Student
+            <button onClick={addStudentHandler} className='create-button'>
+                Add Student
             </button>
         )
     }
@@ -1076,7 +1085,7 @@ function App() {
         }
 
         return (
-            <button onClick={readDiplomaRequestsHandler} className='cta-button create-button'>
+            <button onClick={readDiplomaRequestsHandler} className='create-button'>
                 Approve Diploma
             </button>
         )
@@ -1116,13 +1125,13 @@ function App() {
             }
             ReactDOM.render(
                 <React.StrictMode>
-                    <MintCourse  requests={requests}
-                                 instructorAddresses={instructorAddresses}
-                                 courseLinks={courseLinks}
-                                 requestorDepartments={requestorDepartments}
-                                 indexes={indexes}
-                                 requestContract={contracts[2]}//To make minted=true
-                                 courseContract={contracts[0]}//To mint
+                    <MintCourse requests={requests}
+                                instructorAddresses={instructorAddresses}
+                                courseLinks={courseLinks}
+                                requestorDepartments={requestorDepartments}
+                                indexes={indexes}
+                                requestContract={contracts[2]}//To make minted=true
+                                courseContract={contracts[0]}//To mint
                     />
                 </React.StrictMode>,
                 document.getElementById('root')
@@ -1130,7 +1139,7 @@ function App() {
         }
 
         return (
-            <button onClick={readCourseRequestsHandler} className='cta-button create-button'>
+            <button onClick={readCourseRequestsHandler} className='create-button'>
                 Approve Course
             </button>
         )
@@ -1161,7 +1170,7 @@ function App() {
         }
 
         return (
-            <button onClick={removeInstructorHandler} className='cta-button delete-button'>
+            <button onClick={removeInstructorHandler} className='delete-button'>
                 Remove Instructor
             </button>
         )
@@ -1190,7 +1199,7 @@ function App() {
         }
 
         return (
-            <button onClick={removeStudentHandler} className='cta-button delete-button'>
+            <button onClick={removeStudentHandler} className='delete-button'>
                 Remove Student
             </button>
         )
@@ -1198,7 +1207,7 @@ function App() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     return (
-        <div className='main-app'>
+        <div className='rector-app'>
             <div className='create-operations'>
                 {addFacultyButton()}
                 {addDepartmentButton()}

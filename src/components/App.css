@@ -1,23 +1,22 @@
+body{
+    background-image: url("../design/boun.jpeg");
+    background-color: #75a541;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-attachment: fixed;
+    font-size: 18px;
+}
+/*Main Page*/
 .main-app {
+    margin: 75px auto auto auto;
+    border: 4px solid #835c4f;
+    border-radius: 30px;
+    padding: 15px;
     text-align: center;
-    margin: 100px;
+    background-color: #abada8;
+    height: fit-content;
+    width: fit-content;
 }
-table, th, td {
-    border: 1px solid black;
-}
-/*.create-operations{*/
-/*    vertical-align: top;*/
-/*    text-align: left;*/
-/*}*/
-/*.read-operations{*/
-/*    vertical-align: top;*/
-/*    text-align: right;*/
-/*}*/
-/*.delete-operations{*/
-/*    vertical-align: bottom;*/
-/*    text-align: left;*/
-/*}*/
-
 .cta-button {
     padding: 15px;
     border: none;
@@ -27,23 +26,80 @@ table, th, td {
     font-size: 18px;
     cursor: pointer;
 }
+.login-button{
+    background: #668535;
+}
+/*Rector App*/
+.rector-app {
+    margin: 75px auto auto auto;
+    border: 4px solid #835c4f;
+    border-radius: 30px;
+    padding: 15px;
+    text-align: center;
+    background-color: #abada8;
+    height: fit-content;
+    width: fit-content;
+}
+.form{
+    margin: 75px auto auto auto;
+    border: 4px solid #835c4f;
+    border-radius: 30px;
+    padding: 15px;
+    text-align: center;
+    background-color: #abada8;
+    height: fit-content;
+    width: fit-content;
+}
+select{
+    display: block;
+    margin: auto;
+    font-size: 18px;
+}
+input{
+    display: block;
+    margin: auto;
+    font-size: 18px;
+}
+button{
+    font-size: 18px;
+}
+.create-button {
+    padding: 5px;
+    background: #d4d9e4;
+    font-size: 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 105px;
+    height: 105px;
+}
+.read-button {
+    padding: 5px;
+    background: #a2b097;
+    font-size: 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 105px;
+    height: 105px;
+}
+.delete-button {
+    padding: 5px;
+    background: #b47c72;
+    font-size: 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 105px;
+    height: 105px;
+}
 
+
+
+table, th, td {
+    border: 1px solid black;
+}
+/*Buttons*/
 .connect-wallet-button {
     background: rgb(32, 129, 226);
 }
-
-.create-button {
-    background: #ffa500;
-}
-.read-button {
-    background: #a00197;
-}
-.delete-button {
-    background: #ff0000;
-}
-/*.mint-nft-button{*/
-/*    background: #ffa500;*/
-/*}*/
 .approve-button{
     background: #07ff00;
 }
@@ -58,7 +114,4 @@ table, th, td {
 }
 .edit-button{
     background: #ff00b7;
-}
-.login-button{
-    background: #87f364;
 }
