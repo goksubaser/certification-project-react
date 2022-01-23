@@ -24,7 +24,7 @@ function App() {
 //TODO if the address is not connected it returns the last opened connected address as the default address
     const checkWalletIsConnected = async () => {
         const {ethereum} = window;
-
+        console.log(ethereum)
         if (!ethereum) {
             console.log("Make Sure you have Metamask installed!");
             return;
@@ -187,14 +187,12 @@ function App() {
         checkWalletIsConnected();
     }, [])
 
-    return (
-        <div className='main-app'>
+    return (<div className='main-app'>
             <h1>{currentAccount ? "Continue As" : "Your Wallet Is Not Connected"}</h1>
             <div>
                 {currentAccount ? checkRoleButton() : connectWalletButton()}
             </div>
-        </div>
-    )
+        </div>)
 }
 
 export default App;
