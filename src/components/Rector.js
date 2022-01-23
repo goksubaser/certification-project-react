@@ -430,7 +430,7 @@ function AddStudent(props) {
                         onChange={(e) => setAddress(e.target.value)}
                     />
                 </label>
-                <input type="submit" id="button" hidden/>
+                <input type="submit" id="button" value="Send" hidden/>
                 <button onClick={(e) => returnButton()}>Back</button>
             </form>
         </div>

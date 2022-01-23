@@ -128,18 +128,20 @@ function ReadCourses(props) {
         }
 
         return (
-            <form onSubmit={handleSubmit}>
-                <h1>{props.courseLink}</h1>
-                <select type="text" id="select"
-                        onChange={(e) => setStudent(e.target.value)}>
-                    <option selected hidden>Select a Student</option>
-                    {props.students.map(item => {
-                        return <option>{item}</option>
-                    })}
-                </select>
-                <input type="submit" id="button" value="Drop"/>
-                <button onClick={(e) => returnButton()}>Back</button>
-            </form>
+            <div className="form">
+                <form onSubmit={handleSubmit}>
+                    <h3>Link: {props.courseLink}</h3>
+                    <select type="text" id="select"
+                            onChange={(e) => setStudent(e.target.value)}>
+                        <option selected hidden>Select a Student</option>
+                        {props.students.map(item => {
+                            return <option>{item}</option>
+                        })}
+                    </select>
+                    <input type="submit" id="button" value="Drop"/>
+                    <button onClick={(e) => returnButton()}>Back</button>
+                </form>
+            </div>
         )
     }
 
@@ -155,18 +157,20 @@ function ReadCourses(props) {
             returnButton()
         }
         return (
-            <form onSubmit={handleSubmit}>
-                <h1>{props.courseLink}</h1>
-                <label>Enter New Link:
-                    <input
-                        type="text"
-                        value={newLink}
-                        onChange={(e) => setLink(e.target.value)}
-                    />
-                </label>
-                <input type="submit"/>
-                <button onClick={(e) => returnButton()}>Back</button>
-            </form>
+            <div className="form">
+                <form onSubmit={handleSubmit}>
+                    <h3>Link: {props.courseLink}</h3>
+                    <label>Enter New Link:
+                        <input
+                            type="text"
+                            value={newLink}
+                            onChange={(e) => setLink(e.target.value)}
+                        />
+                    </label>
+                    <input type="submit" value="Send"/>
+                    <button onClick={(e) => returnButton()}>Back</button>
+                </form>
+            </div>
         )
     }
 

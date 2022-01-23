@@ -53,7 +53,7 @@ function App() {
                 setAccountType("Student")
             } else if (await rolesContract.hasGraduatedRole(account)) {
                 setAccountType("Graduated")
-            }else{
+            } else {
                 setAccountType("Not Registered")
             }
 
@@ -89,7 +89,7 @@ function App() {
                 setAccountType("Student")
             } else if (await rolesContract.hasGraduatedRole(account)) {
                 setAccountType("Graduated")
-            }else{
+            } else {
                 setAccountType("Not Registered")
             }
 
@@ -109,49 +109,49 @@ function App() {
                 if (await rolesContract.hasRectorRole(currentAccount)) {
                     ReactDOM.render(
                         <React.StrictMode>
-                            <Rector />
+                            <Rector/>
                         </React.StrictMode>,
                         document.getElementById('root')
                     );
                 } else if (await rolesContract.hasFacultyRole(currentAccount)) {
                     ReactDOM.render(
                         <React.StrictMode>
-                            <Faculty />
+                            <Faculty/>
                         </React.StrictMode>,
                         document.getElementById('root')
                     );
                 } else if (await rolesContract.hasDepartmentRole(currentAccount)) {
                     ReactDOM.render(
                         <React.StrictMode>
-                            <Department />
+                            <Department/>
                         </React.StrictMode>,
                         document.getElementById('root')
                     );
                 } else if (await rolesContract.hasInstructorRole(currentAccount)) {
                     ReactDOM.render(
                         <React.StrictMode>
-                            <Instructor />
+                            <Instructor/>
                         </React.StrictMode>,
                         document.getElementById('root')
                     );
                 } else if (await rolesContract.hasStudentRole(currentAccount)) {
                     ReactDOM.render(
                         <React.StrictMode>
-                            <Student />
+                            <Student/>
                         </React.StrictMode>,
                         document.getElementById('root')
                     );
                 } else if (await rolesContract.hasGraduatedRole(currentAccount)) {
                     ReactDOM.render(
                         <React.StrictMode>
-                            <Graduated />
+                            <Graduated/>
                         </React.StrictMode>,
                         document.getElementById('root')
                     );
-                }else{
+                } else {
                     ReactDOM.render(
                         <React.StrictMode>
-                            <NotRegistered />
+                            <NotRegistered/>
                         </React.StrictMode>,
                         document.getElementById('root')
                     );

@@ -70,25 +70,26 @@ function CreateCourseRequest(props) {
     }
 
     return (
-       <div className="form">
-       <form onSubmit={handleSubmit}>
-            <label>Enter Course Link:
-                <input
-                    type="text"
-                    value={link}
-                    onChange={(e) => setLink(e.target.value)}
-                />
-            </label>
-            <label>Enter Instructor Address:
-                <input
-                    type="text"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                />
-            </label>
-            <input type="submit" value="Send"/>
-            <button onClick={(e) => returnButton()}>Back</button>
-        </form></div>
+        <div className="form">
+            <form onSubmit={handleSubmit}>
+                <label>Enter Course Link:
+                    <input
+                        type="text"
+                        value={link}
+                        onChange={(e) => setLink(e.target.value)}
+                    />
+                </label>
+                <label>Enter Instructor Address:
+                    <input
+                        type="text"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                    />
+                </label>
+                <input type="submit" value="Send"/>
+                <button onClick={(e) => returnButton()}>Back</button>
+            </form>
+        </div>
     )
 }
 

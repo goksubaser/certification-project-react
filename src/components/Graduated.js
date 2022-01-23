@@ -24,12 +24,10 @@ function returnButton() {
 
 function Diploma(props) {
     return (
-        <body>
-        <tr>
-            <h1>Diploma Link: {props.diplomaLink}</h1>
-        </tr>
-        <button onClick={(e) => returnButton()}>Back</button>
-        </body>
+        <div className="form">
+            <h3>Diploma Link: {props.diplomaLink}</h3>
+            <button onClick={(e) => returnButton()}>Back</button>
+        </div>
     );
 }
 
@@ -56,7 +54,7 @@ function App() {
         }
 
         return (
-            <button onClick={listDiplomaHandler} className='cta-button read-button'>
+            <button onClick={listDiplomaHandler} className='read-button'>
                 Diploma
             </button>
         )

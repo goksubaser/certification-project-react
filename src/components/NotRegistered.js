@@ -5,6 +5,7 @@ import React, {useState} from 'react';
 import diploma from '../abis/Diploma.json';
 import env from "../env.json";
 import ReactDOM from "react-dom";
+
 const diplomaAddress = env.diplomaAddress
 const diplomaAbi = diploma.abi;
 
@@ -26,41 +27,43 @@ function VerifyDiploma(props) {
         let diplomaID = 0;
         let diplomaLinks = await props.diplomaContract.getDiplomaLinks();
         console.log(diplomaLinks)
-        for(var i = 0; i<diplomaLinks.length; i++){
-            if(diplomaLinks[i] === diplomaLink){
-                diplomaID = i+1;
+        for (var i = 0; i < diplomaLinks.length; i++) {
+            if (diplomaLinks[i] === diplomaLink) {
+                diplomaID = i + 1;
             }
         }
-        if(diplomaID===0){
+        if (diplomaID === 0) {
             alert(`${diplomaLink} has not found`)
             return;
         }
         let owner = await props.diplomaContract.ownerOf(diplomaID)
-        if(owner.toUpperCase() === address.toUpperCase()){
+        if (owner.toUpperCase() === address.toUpperCase()) {
             alert(`Address: ${address} | Link: ${diplomaLink} | VERFIED`)
-        }else{
+        } else {
             alert(`Address: ${address} | Link: ${diplomaLink} | UNVERIFIED`)
         }
     }
     return (
-        <form onSubmit={handleSubmit}>
-            <label>Enter Diploma Link:
-                <input
-                    type="text"
-                    value={diplomaLink}
-                    onChange={(e) => setDiplomaLink(e.target.value)}
-                />
-            </label>
-            <label>Enter Graduate Address:
-                <input
-                    type="text"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                />
-            </label>
-            <input type="submit"/>
-            <button onClick={(e) => returnButton()}>Back</button>
-        </form>
+        <div className="form">
+            <form onSubmit={handleSubmit}>
+                <label>Enter Diploma Link:
+                    <input
+                        type="text"
+                        value={diplomaLink}
+                        onChange={(e) => setDiplomaLink(e.target.value)}
+                    />
+                </label>
+                <label>Enter Graduate Address:
+                    <input
+                        type="text"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                    />
+                </label>
+                <input type="submit" value="Send"/>
+                <button onClick={(e) => returnButton()}>Back</button>
+            </form>
+        </div>
     )
 }
 
@@ -77,7 +80,7 @@ function App() {
         }
 
         return (
-            <button onClick={verifyDiplomaHandler} className='cta-button read-button'>
+            <button onClick={verifyDiplomaHandler} className='read-button'>
                 Verify Diploma
             </button>
         )
@@ -91,6 +94,7 @@ function App() {
         </div>
     )
 }
+
 async function getContracts(course = false, department = false, diploma = false, faculty = false, request = false, roles = false, account = false) {
     const {ethereum} = window;
     if (!ethereum) {

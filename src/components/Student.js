@@ -25,7 +25,7 @@ function returnButton() {
 
 function ApplyCourse(props) {
     async function apply(index) {
-        let buttonIndex = index.slice(index.indexOf("y")+1)
+        let buttonIndex = index.slice(index.indexOf("y") + 1)
         let courseID = Number(props.openCourseIDs[buttonIndex])
         await props.courseContract.applyCourse(courseID)
         returnButton()
@@ -68,19 +68,21 @@ function ApplyCourse(props) {
     }
 
     return (
-        <body>
-        <table id="courseRequestTable">
-            <tbody id="tableBody"></tbody>
-        </table>
-        <tr id="buttons">
-            <button onClick={(e) => returnButton()}>Back</button>
-            <button onClick={(e) => createTable()}>Show Courses</button>
-        </tr>
-        </body>
+        <div className="form">
+            <body className="table-body">
+            <table id="courseRequestTable">
+                <tbody id="tableBody"></tbody>
+            </table>
+            <tr id="buttons">
+                <button onClick={(e) => returnButton()}>Back</button>
+                <button onClick={(e) => createTable()}>Show Courses</button>
+            </tr>
+            </body>
+        </div>
     );
 }
 
-function ListCourse(props){
+function ListCourse(props) {
 
     function createTable() {
         var table = document.getElementById("courseRequestTable");
@@ -105,16 +107,19 @@ function ListCourse(props){
             cell1.innerHTML = props.takenCourseLinks[i];
         }
     }
+
     return (
-        <body>
-        <table id="courseRequestTable">
-            <tbody id="tableBody"></tbody>
-        </table>
-        <tr id="buttons">
-            <button onClick={(e) => returnButton()}>Back</button>
-            <button onClick={(e) => createTable()}>Show Courses</button>
-        </tr>
-        </body>
+        <div className="form">
+            <body className="table-body">
+            <table id="courseRequestTable">
+                <tbody id="tableBody"></tbody>
+            </table>
+            <tr id="buttons">
+                <button onClick={(e) => returnButton()}>Back</button>
+                <button onClick={(e) => createTable()}>Show Courses</button>
+            </tr>
+            </body>
+        </div>
     );
 }
 
@@ -139,13 +144,13 @@ function App() {
                 if (!isFrozen) {//Course is frozen by instructor
                     let approvedStudents = await contracts[0].getApprovedStudents(i);
                     approvedStudents = approvedStudents.map(approvedStudent => approvedStudent.toLowerCase())
-                    if(approvedStudents.indexOf(account)<=-1){//This account is already approved for the course
+                    if (approvedStudents.indexOf(account) <= -1) {//This account is already approved for the course
                         let appliedStudents = await contracts[0].getRequestOfStudents(i)
                         appliedStudents = appliedStudents.map(appliedStudent => appliedStudent.toLowerCase())
-                        if(appliedStudents.indexOf(account)<=-1){//This account is already applied for the course
+                        if (appliedStudents.indexOf(account) <= -1) {//This account is already applied for the course
                             openCourseIDs.push(i)
                             instructorAddresses.push(await contracts[0].ownerOf(i))
-                            openCourseLinks.push(courseLinks[i-1])
+                            openCourseLinks.push(courseLinks[i - 1])
                         }
                     }
                 }
@@ -163,7 +168,7 @@ function App() {
         }
 
         return (
-            <button onClick={applyCourseHandler} className='cta-button create-button'>
+            <button onClick={applyCourseHandler} className='create-button'>
                 Apply Courses
             </button>
         )
@@ -183,14 +188,14 @@ function App() {
             let instructorAddresses = [];
             let courseLinks = await contracts[0].getCourseLinks();
             let takenCourseLinks = []
-            for(var i = 0; i<takenCourseIDs.length; i++){
+            for (var i = 0; i < takenCourseIDs.length; i++) {
                 instructorAddresses.push(await contracts[0].ownerOf(takenCourseIDs[i]))
-                takenCourseLinks.push(courseLinks[takenCourseIDs[i]-1])
+                takenCourseLinks.push(courseLinks[takenCourseIDs[i] - 1])
             }
             ReactDOM.render(
                 <React.StrictMode>
                     <ListCourse instructorAddresses={instructorAddresses}
-                                 takenCourseLinks={takenCourseLinks}
+                                takenCourseLinks={takenCourseLinks}
                     />
                 </React.StrictMode>,
                 document.getElementById('root')
@@ -198,7 +203,7 @@ function App() {
         }
 
         return (
-            <button onClick={listCourseHandler} className='cta-button read-button'>
+            <button onClick={listCourseHandler} className='read-button'>
                 Courses Taken
             </button>
         )
@@ -218,6 +223,7 @@ function App() {
         </div>
     );
 }
+
 async function getContracts(course = false, department = false, diploma = false, faculty = false, request = false, roles = false, account = false) {
     const {ethereum} = window;
     if (!ethereum) {
@@ -260,4 +266,5 @@ async function getContracts(course = false, department = false, diploma = false,
         return contracts
     }
 }
+
 export default App;
