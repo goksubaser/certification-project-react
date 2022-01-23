@@ -100,15 +100,15 @@ function ReadDiplomaRequest(props) {
 
     return (
         <div className="form">
-        <body className="table-body">
-        <table id="diplomaRequestTable">
-            <tbody id="tableBody"></tbody>
-        </table>
-        <tr id="buttons">
-            <button onClick={(e) => returnButton()}>Back</button>
-            <button onClick={(e) => createTable()}>Show Requests</button>
-        </tr>
-        </body>
+            <body className="table-body">
+            <table id="diplomaRequestTable">
+                <tbody id="tableBody"></tbody>
+            </table>
+            <tr id="buttons">
+                <button onClick={(e) => returnButton()}>Back</button>
+                <button onClick={(e) => createTable()}>Show Requests</button>
+            </tr>
+            </body>
         </div>
     );
 }
@@ -184,15 +184,15 @@ function ReadCourseRequest(props) {
 
     return (
         <div className="form">
-        <body className="table-body">
-        <table id="courseRequestTable">
-            <tbody id="tableBody"></tbody>
-        </table>
-        <tr id="buttons">
-            <button onClick={(e) => returnButton()}>Back</button>
-            <button onClick={(e) => createTable()}>Show Requests</button>
-        </tr>
-        </body>
+            <body className="table-body">
+            <table id="courseRequestTable">
+                <tbody id="tableBody"></tbody>
+            </table>
+            <tr id="buttons">
+                <button onClick={(e) => returnButton()}>Back</button>
+                <button onClick={(e) => createTable()}>Show Requests</button>
+            </tr>
+            </body>
         </div>
     );
 }

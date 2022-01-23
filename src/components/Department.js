@@ -34,24 +34,26 @@ function CreateDiplomaRequest(props) {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <label>Enter Diploma Link:
-                <input
-                    type="text"
-                    value={link}
-                    onChange={(e) => setLink(e.target.value)}
-                />
-            </label>
-            <label>Enter Student Address:
-                <input
-                    type="text"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                />
-            </label>
-            <input type="submit"/>
-            <button onClick={(e) => returnButton()}>Back</button>
-        </form>
+        <div className="form">
+            <form onSubmit={handleSubmit}>
+                <label>Enter Diploma Link:
+                    <input
+                        type="text"
+                        value={link}
+                        onChange={(e) => setLink(e.target.value)}
+                    />
+                </label>
+                <label>Enter Student Address:
+                    <input
+                        type="text"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                    />
+                </label>
+                <input type="submit" value="Send"/>
+                <button onClick={(e) => returnButton()}>Back</button>
+            </form>
+        </div>
     )
 }
 
@@ -68,7 +70,8 @@ function CreateCourseRequest(props) {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+       <div className="form">
+       <form onSubmit={handleSubmit}>
             <label>Enter Course Link:
                 <input
                     type="text"
@@ -83,9 +86,9 @@ function CreateCourseRequest(props) {
                     onChange={(e) => setAddress(e.target.value)}
                 />
             </label>
-            <input type="submit"/>
+            <input type="submit" value="Send"/>
             <button onClick={(e) => returnButton()}>Back</button>
-        </form>
+        </form></div>
     )
 }
 
@@ -104,7 +107,7 @@ function App() {
         }
 
         return (
-            <button onClick={createDiplomaHandler} className='cta-button create-button'>
+            <button onClick={createDiplomaHandler} className='create-button'>
                 Create Diploma Request
             </button>
         )
@@ -122,7 +125,7 @@ function App() {
         }
 
         return (
-            <button onClick={createDiplomaHandler} className='cta-button create-button'>
+            <button onClick={createDiplomaHandler} className='create-button'>
                 Create Course Request
             </button>
         )
