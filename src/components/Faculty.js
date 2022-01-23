@@ -99,7 +99,8 @@ function ReadDiplomaRequest(props) {
     }
 
     return (
-        <body>
+        <div className="form">
+        <body className="table-body">
         <table id="diplomaRequestTable">
             <tbody id="tableBody"></tbody>
         </table>
@@ -108,6 +109,7 @@ function ReadDiplomaRequest(props) {
             <button onClick={(e) => createTable()}>Show Requests</button>
         </tr>
         </body>
+        </div>
     );
 }
 
@@ -181,7 +183,8 @@ function ReadCourseRequest(props) {
     }
 
     return (
-        <body>
+        <div className="form">
+        <body className="table-body">
         <table id="courseRequestTable">
             <tbody id="tableBody"></tbody>
         </table>
@@ -190,6 +193,7 @@ function ReadCourseRequest(props) {
             <button onClick={(e) => createTable()}>Show Requests</button>
         </tr>
         </body>
+        </div>
     );
 }
 
@@ -252,7 +256,7 @@ function App() {
         }
 
         return (
-            <button onClick={readDiplomaRequestsHandler} className='cta-button create-button'>
+            <button onClick={readDiplomaRequestsHandler} className='create-button'>
                 Approve Diploma
             </button>
         )
@@ -315,7 +319,7 @@ function App() {
         }
 
         return (
-            <button onClick={readCourseRequestsHandler} className='cta-button create-button'>
+            <button onClick={readCourseRequestsHandler} className='create-button'>
                 Approve Course
             </button>
         )
