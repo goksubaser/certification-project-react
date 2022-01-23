@@ -97,9 +97,15 @@ table{
     width: 105px;
     height: 105px;
 }
-
-
-
+.transfer-button{
+    padding: 5px;
+    margin: auto auto 2px 500px;
+    background: #b47c72;
+    font-size: 18px;
+    cursor: pointer;
+    width: fit-content;
+    height: auto;
+}
 table, th, td, tr {
     border: 1px solid black;
 }

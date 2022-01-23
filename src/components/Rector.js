@@ -609,6 +609,33 @@ function MintCourse(props) {
     );
 }
 
+function TransferRectorship(props){
+    const [address, setAddress] = useState("");
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        await props.rolesContract.grantRectorRole(address)
+        //TODO write fail alert messages
+        alert(`${address} has the Rector Permissions Now`)
+        window.location.reload();
+    }
+    return (
+        <div className='form'>
+            <form onSubmit={handleSubmit}>
+                <label>Enter New Rector Address:
+                    <input
+                        type="text"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                    />
+                </label>
+                <input type="submit" value="Send"/>
+                <button onClick={(e) => returnButton()}>Back</button>
+            </form>
+        </div>
+    )
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////// DELETE FUNCTIONS ///////////////////////////////////////////////////////////////
 function RemoveInstructor(props) {
@@ -1159,6 +1186,31 @@ function App() {
         )
     }
 
+    function transferRectorshipButton() {
+        async function transferRectorshipHandler() {
+            const contracts = await getContracts(false, false, false, false, false, true, true);
+            let account = contracts[1];
+            let isRector = await contracts[0].hasRectorRole(account);
+            if(!isRector){
+                alert("This account does not have Rector Permissions")
+                return;
+            }
+            ReactDOM.render(
+                <React.StrictMode>
+                    <TransferRectorship rolesContract={contracts[0]}/>
+                </React.StrictMode>,
+                document.getElementById('root')
+            );
+        }
+
+        return (
+            <button onClick={transferRectorshipHandler} className='transfer-button'>
+                Transfer Rectorship
+            </button>
+        )
+    }
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////// DELETE FUNCTIONS ///////////////////////////////////////////////////////////////
     function removeInstructorButton() {
@@ -1241,6 +1293,9 @@ function App() {
             <div className='delete-operations'>
                 {removeInstructorButton()}
                 {removeStudentButton()}
+            </div>
+            <div className="transfer-operations">
+                {transferRectorshipButton()}
             </div>
         </div>
     )

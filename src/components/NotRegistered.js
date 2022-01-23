@@ -38,7 +38,7 @@ function VerifyDiploma(props) {
         }
         let owner = await props.diplomaContract.ownerOf(diplomaID)
         if (owner.toUpperCase() === address.toUpperCase()) {
-            alert(`Address: ${address} | Link: ${diplomaLink} | VERFIED`)
+            alert(`Address: ${address} | Link: ${diplomaLink} | VERIFIED`)
         } else {
             alert(`Address: ${address} | Link: ${diplomaLink} | UNVERIFIED`)
         }
