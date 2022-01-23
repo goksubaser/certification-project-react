@@ -3,29 +3,17 @@ import React, {useState} from "react";
 import ReactDOM from "react-dom";
 
 import course from '../abis/Course.json';
-import department from '../abis/Department.json';
-import diploma from '../abis/Diploma.json';
-import faculty from '../abis/Faculty.json';
 import roles from '../abis/Roles.json';
-import request from '../abis/Request.json';
 import env from '../env.json';
 import {ethers} from "ethers";
 
 const courseAddress = env.courseAddress
-const departmentAddress = env.departmentAddress
-const diplomaAddress = env.diplomaAddress
-const facultyAddress = env.facultyAddress
-const requestAddress = env.requestAddress
 const rolesAddress = env.rolesAddress
 
 const courseAbi = course.abi;
-const departmentAbi = department.abi;
-const diplomaAbi = diploma.abi;
-const facultyAbi = faculty.abi;
 const rolesAbi = roles.abi;
-const requestAbi = request.abi;
 
-function returnButton(){
+function returnButton() {
     ReactDOM.render(
         <React.StrictMode>
             <App/>
@@ -33,24 +21,27 @@ function returnButton(){
         document.getElementById('root')
     );
 }
-function ReadApplications(props){
-    async function approve(index){
-        let i = Number(index.slice(index.indexOf("i")+1, index.indexOf("j")))
-        let j = Number(index.slice(index.indexOf("j")+1))
+
+function ReadApplications(props) {
+    async function approve(index) {
+        let i = Number(index.slice(index.indexOf("i") + 1, index.indexOf("j")))
+        let j = Number(index.slice(index.indexOf("j") + 1))
         let courseID = props.coursesGiven[i]
         let studentAddress = props.applications[i][j]
-        await props.courseContract.approveDisapproveApplication(courseID,studentAddress, true)
+        await props.courseContract.approveDisapproveApplication(courseID, studentAddress, true)
         returnButton()
 
     }
-    async function disapprove(index){
-        let i = Number(index.slice(index.indexOf("i")+1, index.indexOf("j")))
-        let j = Number(index.slice(index.indexOf("j")+1))
+
+    async function disapprove(index) {
+        let i = Number(index.slice(index.indexOf("i") + 1, index.indexOf("j")))
+        let j = Number(index.slice(index.indexOf("j") + 1))
         let courseID = props.coursesGiven[i]
         let studentAddress = props.applications[i][j]
-        await props.courseContract.approveDisapproveApplication(courseID,studentAddress, false)
+        await props.courseContract.approveDisapproveApplication(courseID, studentAddress, false)
         returnButton()
     }
+
     async function createTable() {
         var table = document.getElementById("courseRequestTable");
         table.removeChild(document.getElementById("tableBody"))
@@ -74,7 +65,7 @@ function ReadApplications(props){
         newRow.appendChild(cell3)
         let count = 0;
         for (var i = 0; i < props.applications.length; i++) {
-            for (var j = 0; j < props.applications[i].length; j++){
+            for (var j = 0; j < props.applications[i].length; j++) {
                 count++
                 var newRow = tbody.insertRow(count)
                 var cell0 = newRow.insertCell(0);
@@ -84,39 +75,46 @@ function ReadApplications(props){
                 var approveButton = document.createElement("button")
                 approveButton.setAttribute("class", "approve-button")
                 approveButton.setAttribute("type", "button")
-                approveButton.setAttribute("id", "i" +i+"j"+j)
-                approveButton.onclick = function () {approve(this.id)}
+                approveButton.setAttribute("id", "i" + i + "j" + j)
+                approveButton.onclick = function () {
+                    approve(this.id)
+                }
                 approveButton.innerHTML = "Approve"
                 cell2.appendChild(approveButton)
                 var disapproveButton = document.createElement("button")
                 disapproveButton.setAttribute("class", "disapprove-button")
                 disapproveButton.setAttribute("type", "button")
-                disapproveButton.setAttribute("id", "i" + i+"j"+j)
-                disapproveButton.onclick = function () {disapprove(this.id)}
+                disapproveButton.setAttribute("id", "i" + i + "j" + j)
+                disapproveButton.onclick = function () {
+                    disapprove(this.id)
+                }
                 disapproveButton.innerHTML = "Disapprove"
                 cell3.appendChild(disapproveButton)
                 let courseLinks = await props.courseContract.getCourseLinks();
-                cell0.innerHTML = courseLinks[props.coursesGiven[i]-1];
+                cell0.innerHTML = courseLinks[props.coursesGiven[i] - 1];
                 cell1.innerHTML = props.applications[i][j];
             }
         }
     }
 
     return (
-        <body>
-        <table id="courseRequestTable">
-            <tbody id="tableBody"></tbody>
-        </table>
-        <tr id="buttons">
-            <button onClick={(e) => returnButton()}>Back</button>
-            <button onClick={(e) => createTable()}>Show Applications</button>
-        </tr>
-        </body>
+        <div className="form">
+            <body className="table-body">
+            <table id="courseRequestTable">
+                <tbody id="tableBody"></tbody>
+            </table>
+            <tr id="buttons">
+                <button onClick={(e) => returnButton()}>Back</button>
+                <button onClick={(e) => createTable()}>Show Applications</button>
+            </tr>
+            </body>
+        </div>
     );
 }
-function ReadCourses(props){
 
-    function DropStudent(props){
+function ReadCourses(props) {
+
+    function DropStudent(props) {
 
         let [studentAddress, setStudent] = useState("");
 
@@ -145,7 +143,7 @@ function ReadCourses(props){
         )
     }
 
-    function EditLink(props){
+    function EditLink(props) {
 
         const [newLink, setLink] = useState("");
 
@@ -173,14 +171,14 @@ function ReadCourses(props){
     }
 
     async function freeze(id) {
-        let buttonIndex = id.slice(id.lastIndexOf("e")+1)
+        let buttonIndex = id.slice(id.lastIndexOf("e") + 1)
         let courseID = props.coursesGiven[buttonIndex]
         await props.courseContract.freeze(courseID)
         returnButton()
     }
 
     async function drop(id, courseLink) {
-        let buttonIndex = id.slice(id.lastIndexOf("p")+1)
+        let buttonIndex = id.slice(id.lastIndexOf("p") + 1)
         let courseID = props.coursesGiven[buttonIndex]
         let students = await props.courseContract.getApprovedStudents(courseID)
         ReactDOM.render(
@@ -197,13 +195,13 @@ function ReadCourses(props){
     }
 
     async function edit(id, courseLink) {
-        let buttonIndex = id.slice(id.lastIndexOf("t")+1)
+        let buttonIndex = id.slice(id.lastIndexOf("t") + 1)
         let courseID = props.coursesGiven[buttonIndex]
         ReactDOM.render(
             <React.StrictMode>
                 <EditLink courseLink={courseLink}
-                             courseId={courseID}
-                             courseContract={props.courseContract}
+                          courseId={courseID}
+                          courseContract={props.courseContract}
                 />
             </React.StrictMode>,
             document.getElementById('root')
@@ -237,16 +235,16 @@ function ReadCourses(props){
             var cell1 = newRow.insertCell(1);
             var cell2 = newRow.insertCell(2);
             var cell3 = newRow.insertCell(3);
-            cell0.innerHTML = courseLinks[props.coursesGiven[i]-1];
+            cell0.innerHTML = courseLinks[props.coursesGiven[i] - 1];
 
             let isFrozen = await props.courseContract.getFrozen(props.coursesGiven[i])
 
             var freezeButton = document.createElement("button")
             freezeButton.setAttribute("type", "button")
-            if(isFrozen){
-                freezeButton.disabled=true;
+            if (isFrozen) {
+                freezeButton.disabled = true;
                 freezeButton.innerHTML = "Frozen"
-            }else{
+            } else {
                 freezeButton.setAttribute("class", "freeze-button")
                 freezeButton.setAttribute("id", "freeze" + i)
                 freezeButton.onclick = function () {
@@ -258,9 +256,9 @@ function ReadCourses(props){
 
             var dropButton = document.createElement("button")
             dropButton.setAttribute("type", "button")
-            if(isFrozen){
-                dropButton.disabled=true;
-            }else{
+            if (isFrozen) {
+                dropButton.disabled = true;
+            } else {
                 dropButton.setAttribute("class", "disapprove-button")
                 dropButton.setAttribute("id", "drop" + i)
                 dropButton.value = cell0.innerHTML
@@ -273,9 +271,9 @@ function ReadCourses(props){
 
             var editButton = document.createElement("button")
             editButton.setAttribute("type", "button")
-            if(isFrozen){
-                editButton.disabled=true;
-            }else{
+            if (isFrozen) {
+                editButton.disabled = true;
+            } else {
                 editButton.setAttribute("class", "edit-button")
                 editButton.setAttribute("id", "edit" + i)
                 editButton.value = cell0.innerHTML
@@ -287,7 +285,9 @@ function ReadCourses(props){
             cell3.appendChild(editButton)
         }
     }
-    return (<body>
+
+    return (<div className="form">
+        <body className="table-body">
         <table id="courseRequestTable">
             <tbody id="tableBody"></tbody>
         </table>
@@ -295,15 +295,17 @@ function ReadCourses(props){
             <button onClick={(e) => returnButton()}>Back</button>
             <button onClick={(e) => createTable()}>Show Courses</button>
         </tr>
-        </body>);
+        </body>
+    </div>);
 }
 
-function FreezeCourse(props){
+function FreezeCourse(props) {
     let courseID;
+
     async function setCourse(value) {
-        for(var i = 0; i<props.unfrozenCourseLinks.length; i++){
-            if(props.unfrozenCourseLinks[i] == value){
-                courseID=props.unfrozenCourses[i]
+        for (var i = 0; i < props.unfrozenCourseLinks.length; i++) {
+            if (props.unfrozenCourseLinks[i] == value) {
+                courseID = props.unfrozenCourses[i]
                 break
             }
         }
@@ -319,17 +321,19 @@ function FreezeCourse(props){
         returnButton()
     }
     return (
-        <form onSubmit={handleSubmit}>
-            <select type="text" id="select"
-                    onChange={(e) => setCourse(e.target.value)}>
-                <option selected hidden>Select a Course</option>
-                {props.unfrozenCourseLinks.map(item => {
-                    return <option>{item}</option>
-                })}
-            </select>
-            <input type="submit" id="button" disabled value="Freeze"/>
-            <button onClick={(e) => returnButton()}>Back</button>
-        </form>
+        <div className="form">
+            <form onSubmit={handleSubmit}>
+                <select type="text" id="select"
+                        onChange={(e) => setCourse(e.target.value)}>
+                    <option selected hidden>Select a Course</option>
+                    {props.unfrozenCourseLinks.map(item => {
+                        return <option>{item}</option>
+                    })}
+                </select>
+                <input type="submit" id="button" disabled value="Freeze"/>
+                <button onClick={(e) => returnButton()}>Back</button>
+            </form>
+        </div>
     )
 }
 
@@ -345,7 +349,7 @@ function App() {
             }
             let coursesGiven = await contracts[0].getGivesCourses(account);
             let applications = []
-            for(var i = 0; i<coursesGiven.length; i++){
+            for (var i = 0; i < coursesGiven.length; i++) {
                 let temp = await contracts[0].getRequestOfStudents(coursesGiven[i])
                 applications.push(temp)
             }
@@ -361,11 +365,12 @@ function App() {
         }
 
         return (
-            <button onClick={readCourseRequestsHandler} className='cta-button read-button'>
+            <button onClick={readCourseRequestsHandler} className='read-button'>
                 List Student Applications
             </button>
         )
     }
+
     function readCoursesButton() {
 
         async function readCoursesHandler() {
@@ -388,7 +393,7 @@ function App() {
         }
 
         return (
-            <button onClick={readCoursesHandler} className='cta-button read-button'>
+            <button onClick={readCoursesHandler} className='read-button'>
                 List Courses Given
             </button>
         )
@@ -407,11 +412,11 @@ function App() {
             let unfrozenCourses = []
             let courseLinks = await contracts[0].getCourseLinks()
             let unfrozenCourseLinks = []
-            for(var i = 0; i<coursesGiven.length; i++){
+            for (var i = 0; i < coursesGiven.length; i++) {
                 let isFrozen = await contracts[0].getFrozen(coursesGiven[i])
-                if(!isFrozen){
+                if (!isFrozen) {
                     unfrozenCourses.push(coursesGiven[i])
-                    unfrozenCourseLinks.push(courseLinks[coursesGiven[i]-1])
+                    unfrozenCourseLinks.push(courseLinks[coursesGiven[i] - 1])
                 }
             }
 
@@ -427,11 +432,12 @@ function App() {
         }
 
         return (
-            <button onClick={readCourseRequestsHandler} className='cta-button create-button'>
+            <button onClick={readCourseRequestsHandler} className='create-button'>
                 Freeze Course
             </button>
         )
     }
+
     return (
         <div className='main-app'>
             <div className='create-operations'>
@@ -445,6 +451,7 @@ function App() {
         </div>
     )
 }
+
 async function getContracts(course = false, department = false, diploma = false, faculty = false, request = false, roles = false, account = false) {
     const {ethereum} = window;
     if (!ethereum) {
@@ -487,4 +494,5 @@ async function getContracts(course = false, department = false, diploma = false,
         return contracts
     }
 }
+
 export default App;
