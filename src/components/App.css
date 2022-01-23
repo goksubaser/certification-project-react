@@ -6,6 +6,10 @@ body{
     background-attachment: fixed;
     font-size: 18px;
 }
+.table-body{
+    background-image: none;
+    background-color: #abada8;
+}
 /*Main Page*/
 .main-app {
     margin: 75px auto auto auto;
@@ -27,7 +31,7 @@ body{
     cursor: pointer;
 }
 .login-button{
-    background: #668535;
+    background: inherit;
 }
 /*Rector App*/
 .rector-app {
@@ -62,6 +66,9 @@ input{
 }
 button{
     font-size: 18px;
+}
+table{
+    /*background-color: #abada8;*/
 }
 .create-button {
     padding: 5px;

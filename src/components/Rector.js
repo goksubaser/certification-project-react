@@ -37,33 +37,38 @@ function returnButton() {
 }
 
 /////////////////////////////////////// READ FUNCTIONS /////////////////////////////////////////////////////////////////
-function FacultyList(props) {//TODO Organise table looks
+function FacultyList(props) {
     return (
-        <div>
-            <tr>
-                <th>Faculties</th>
-            </tr>
-            <td>
+        <div className="form">
+            <table>
+                <tr>
+                    <th>Faculties</th>
+                </tr>
                 {props.facultyNames.map(item => {
-                    return <h5>{item}</h5>;
+                    return <tr>
+                        <td>{item}</td>
+                    </tr>;
                 })}
-            </td>
+            </table>
             <button onClick={(e) => returnButton()}>Back</button>
+
         </div>
     );
 }
 
 function DepartmentList(props) {
     return (
-        <div>
-            <tr>
-                <th>Departments</th>
-            </tr>
-            <td>
+        <div className="form">
+            <table>
+                <tr>
+                    <th>Departments</th>
+                </tr>
                 {props.departmentNames.map(item => {
-                    return <h5>{item}</h5>;
+                    return <tr>
+                        <td>{item}</td>
+                    </tr>;
                 })}
-            </td>
+            </table>
             <button onClick={(e) => returnButton()}>Back</button>
         </div>
     );
@@ -71,15 +76,18 @@ function DepartmentList(props) {
 
 function InstructorList(props) {
     return (
-        <div>
-            <tr>
-                <th>Instructors</th>
-            </tr>
-            <td>
+        <div className="form">
+            <table>
+                <tr>
+                    <th>Instructors</th>
+                </tr>
+
                 {props.instructorAddresses.map(item => {
-                    return <h5>{item}</h5>;
+                    return <tr>
+                        <td>{item}</td>
+                    </tr>;
                 })}
-            </td>
+            </table>
             <button onClick={(e) => returnButton()}>Back</button>
         </div>
     );
@@ -87,59 +95,57 @@ function InstructorList(props) {
 
 function StudentList(props) {
     return (
-        <div>
-            <tr>
-                <th>Students</th>
-            </tr>
-            <td>
+        <div className="form">
+            <table>
+                <tr>
+                    <th>Students</th>
+                </tr>
                 {props.studentAddresses.map(item => {
-                    return <h5>{item}</h5>;
+                    return <tr>
+                        <td>{item}</td>
+                    </tr>;
                 })}
-            </td>
+            </table>
             <button onClick={(e) => returnButton()}>Back</button>
         </div>
     );
 }
 
-function DiplomaList(props) {//TODO Organise table looks
+function DiplomaList(props) {
     return (
-        <div>
-            <tr>
-                <th>Addresses</th>
-                <th>Links</th>
-            </tr>
-            <td>
-                {props.addresses.map(item => {
-                    return <h5>{item}</h5>;
+        <div className="form">
+            <table>
+                <tr>
+                    <th>Addresses</th>
+                    <th>Links</th>
+                </tr>
+                {props.addresses.map((item, i) => {
+                    return (<tr>
+                        <td>{item}</td>
+                        <td>{props.links[i]}</td>
+                    </tr>);
                 })}
-            </td>
-            <td>
-                {props.links.map(item => {
-                    return <h5>{item}</h5>;
-                })}
-            </td>
+            </table>
             <button onClick={(e) => returnButton()}>Back</button>
         </div>
     );
 }
 
-function CourseList(props) {//TODO Organise table looks
+function CourseList(props) {
     return (
-        <div>
-            <tr>
-                <th>Addresses</th>
-                <th>Links</th>
-            </tr>
-            <td>
-                {props.addresses.map(item => {
-                    return <h5>{item}</h5>;
+        <div className="form">
+            <table>
+                <tr>
+                    <th>Addresses</th>
+                    <th>Links</th>
+                </tr>
+                {props.addresses.map((item, i) => {
+                    return (<tr>
+                        <td>{item}</td>
+                        <td>{props.links[i]}</td>
+                    </tr>);
                 })}
-            </td>
-            <td>
-                {props.links.map(item => {
-                    return <h5>{item}</h5>;
-                })}
-            </td>
+            </table>
             <button onClick={(e) => returnButton()}>Back</button>
         </div>
     );
@@ -502,15 +508,17 @@ function MintDiploma(props) {
     }
 
     return (
-        <body>
-        <table id="diplomaRequestTable">
-            <tbody id="tableBody"></tbody>
-        </table>
-        <tr id="buttons">
-            <button onClick={(e) => returnButton()}>Back</button>
-            <button onClick={(e) => createTable()}>Show Requests</button>
-        </tr>
-        </body>
+        <div className="form">
+            <body className="table-body">
+            <table id="diplomaRequestTable">
+                <tbody id="tableBody"></tbody>
+            </table>
+            <tr id="buttons">
+                <button onClick={(e) => returnButton()}>Back</button>
+                <button onClick={(e) => createTable()}>Show Requests</button>
+            </tr>
+            </body>
+        </div>
     );
 }
 
@@ -587,15 +595,17 @@ function MintCourse(props) {
     }
 
     return (
-        <body>
-        <table id="diplomaRequestTable">
-            <tbody id="tableBody"></tbody>
-        </table>
-        <tr id="buttons">
-            <button onClick={(e) => returnButton()}>Back</button>
-            <button onClick={(e) => createTable()}>Show Requests</button>
-        </tr>
-        </body>
+        <div className="form">
+            <body className="table-body">
+            <table id="diplomaRequestTable">
+                <tbody id="tableBody"></tbody>
+            </table>
+            <tr id="buttons">
+                <button onClick={(e) => returnButton()}>Back</button>
+                <button onClick={(e) => createTable()}>Show Requests</button>
+            </tr>
+            </body>
+        </div>
     );
 }
 
@@ -666,30 +676,32 @@ function RemoveInstructor(props) {
         returnButton()
     }
     return (
-        <form onSubmit={handleSubmit}>
-            <select id="facultySelect"
-                    type="text"
-                    onChange={(e) => setFacultyName(e.target.value)}>
-                <option selected hidden>Select a Faculty</option>
-                {props.facultyNames.map(item => {
-                    return <option>{item}</option>
-                })}
-            </select>
-            <select id="departmentSelect"
-                    hidden
-                    type="text"
-                    onChange={(e) => setDepartmentName(e.target.value)}>
-            </select>
-            <label id="addressForm" hidden>Enter Instructor Address:
-                <input
-                    type="text"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                />
-            </label>
-            <input type="submit" id="button" hidden/>
-            <button onClick={(e) => returnButton()}>Back</button>
-        </form>
+        <div className="form">
+            <form onSubmit={handleSubmit}>
+                <select id="facultySelect"
+                        type="text"
+                        onChange={(e) => setFacultyName(e.target.value)}>
+                    <option selected hidden>Select a Faculty</option>
+                    {props.facultyNames.map(item => {
+                        return <option>{item}</option>
+                    })}
+                </select>
+                <select id="departmentSelect"
+                        hidden
+                        type="text"
+                        onChange={(e) => setDepartmentName(e.target.value)}>
+                </select>
+                <label id="addressForm" hidden>Enter Instructor Address:
+                    <input
+                        type="text"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                    />
+                </label>
+                <input type="submit" id="button" value="Send" hidden/>
+                <button onClick={(e) => returnButton()}>Back</button>
+            </form>
+        </div>
     )
 }
 
@@ -758,30 +770,32 @@ function RemoveStudent(props) {
         returnButton()
     }
     return (
-        <form onSubmit={handleSubmit}>
-            <select id="facultySelect"
-                    type="text"
-                    onChange={(e) => setFacultyName(e.target.value)}>
-                <option selected hidden>Select a Faculty</option>
-                {props.facultyNames.map(item => {
-                    return <option>{item}</option>
-                })}
-            </select>
-            <select id="departmentSelect"
-                    hidden
-                    type="text"
-                    onChange={(e) => setDepartmentName(e.target.value)}>
-            </select>
-            <label id="addressForm" hidden>Enter Student Address:
-                <input
-                    type="text"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                />
-            </label>
-            <input type="submit" id="button" hidden/>
-            <button onClick={(e) => returnButton()}>Back</button>
-        </form>
+        <div className="form">
+            <form onSubmit={handleSubmit}>
+                <select id="facultySelect"
+                        type="text"
+                        onChange={(e) => setFacultyName(e.target.value)}>
+                    <option selected hidden>Select a Faculty</option>
+                    {props.facultyNames.map(item => {
+                        return <option>{item}</option>
+                    })}
+                </select>
+                <select id="departmentSelect"
+                        hidden
+                        type="text"
+                        onChange={(e) => setDepartmentName(e.target.value)}>
+                </select>
+                <label id="addressForm" hidden>Enter Student Address:
+                    <input
+                        type="text"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                    />
+                </label>
+                <input type="submit" id="button" value="Send" hidden/>
+                <button onClick={(e) => returnButton()}>Back</button>
+            </form>
+        </div>
     )
 }
 
@@ -1217,12 +1231,12 @@ function App() {
                 {mintCourseButton()}
             </div>
             <div className='read-operations'>
-                {checkDiplomaButton()}
-                {checkCourseButton()}
                 {checkFacultyButton()}
                 {checkDepartmentButton()}
                 {checkInstructorButton()}
                 {checkStudentButton()}
+                {checkDiplomaButton()}
+                {checkCourseButton()}
             </div>
             <div className='delete-operations'>
                 {removeInstructorButton()}
